@@ -53,4 +53,4 @@ dkms.conf
 
 # Misc files to ignore
 .vscode
-main.exe
+*.exe

@@ -20,3 +20,9 @@
 2. Provide input in the form of user input or a file.
 
 3. The program should successfully perform the hashing algorithim on the given input and proof of it's success should be evident.
+
+## References
+[1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf
+[2] https://www.nist.gov/publications/secure-hash-standard
+[3] https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Expressions-and-Operators
+[4] https://graphics.stanford.edu/~seander/bithacks.html
