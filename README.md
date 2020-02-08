@@ -18,7 +18,7 @@
 * [Assignment Overview](#md5-overview)
 * [Running the Program](#running-the-program)
 * [How it Works](#how-does-it-work) 
-* [Developer Diary & Research](#research-and-project-progress)
+* [Research & Development Diary](#research-and-development-diary)
 
 ## MD5 Overview
 The MD5 hash works by taking a string of any length and encoding it into a 128-bit fingerprint. Encoding the same string over and over will always yielf the same 128-bit hash output. 
@@ -30,7 +30,7 @@ For a detailed breakdown of the algorithim, [see below](#How-does-it-work?)
 ## Running the Program
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
 2. Navigate to the <b> \program\ </b> directory: `cd program`
-3. Compile the program: `gcc -o md5 md5.c`
+3. Compile the program: `gcc -o md5 md5.c` || `make md5`
 4. Execute the program: `md5.exe TestFile.txt` || `md5.exe`
 
 #### The program may be executed in three different ways 
@@ -109,7 +109,7 @@ Four auxiliary functions are defined that each receive three 'words' as input, a
 ```
 
 In each bit position F acts as a conditional: if X then Y else Z.
-The other functions, G, H and I aren't too different from the F function. They function in bitwise parallell to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased[3](https://tools.ietf.org/html/rfc1321).
+The other functions, G, H and I aren't too different from the F function. They function in bitwise parallell to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased[[3]](https://tools.ietf.org/html/rfc1321).
 
 Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD then the following additions are performed
 ```C
@@ -123,12 +123,15 @@ Each of the four registered are incremented by the value it had before the block
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
 
-## Research and Project Progress
-
+## Research and Development Diary
+* Week One
+	* The first week involved the setup of the repository and also getting setup on my Google cloud virtual machine. I also included a skeleton implementation of the program that just included some file readers and other basic functions. In preperation for the assignment I watched some related external videos that would help cement my understanding of the underlying concepts behind the project [[6]](https://www.youtube.com/watch?v=6h7_YAmtzGw) [[7]](https://www.youtube.com/watch?v=53O9J2J5i14).
+	
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
 [3] https://tools.ietf.org/html/rfc1321 <br>
-[3] https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Expressions-and-Operators <br>
-[4] https://graphics.stanford.edu/~seander/bithacks.html <br>
-[5] https://www.youtube.com/watch?v=53O9J2J5i14 <br>
+[4] https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Expressions-and-Operators <br>
+[5] https://graphics.stanford.edu/~seander/bithacks.html <br>
+[6] https://www.youtube.com/watch?v=6h7_YAmtzGw <br>
+[7] https://www.youtube.com/watch?v=53O9J2J5i14 <br>
