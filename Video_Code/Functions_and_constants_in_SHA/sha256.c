@@ -75,8 +75,6 @@ uint32_t sig_one(uint32_t x) {
     return ROTR(x, 17) ^ ROTR(x, 19) ^ SHR(x,10); 
 }
 
-
-
 int main(int argc, char *argv[]) {
     uint32_t x = 0x0f0f0f0f;
     uint32_t y = 0xcccccccc;
