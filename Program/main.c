@@ -1,6 +1,6 @@
 // Author :     Faris Nassif
 // Module :     Theory Of Algorithms
-// Summary:     A program that executes the Secure Hash Algorithim(SHA-256) on a given input 
+// Summary:     A program that executes a MD5 Hash on a given input 
 
 #include <stdio.h> // Input/Output
 #include <stdlib.h> // TODO
@@ -67,6 +67,8 @@ uint32_t sig_zero(uint32_t x);
     =>  Section 4.1.2
 */
 uint32_t sig_one(uint32_t x);
+void md5();
+void writeToFile();
 
 char filename[100], c; // Temp for storing the name of file read
 
@@ -100,7 +102,7 @@ int main(int argc, char *argv[]) {
                 printf ("%c", c); // Prints out the contents of the file one character at a time
                 c = fgetc(fptr); 
             }
-            sha256Calculation();
+            md5();
             writeToFile();
         }
     }
@@ -109,14 +111,14 @@ int main(int argc, char *argv[]) {
     return 0; 
 }
 
-// --------------------- Sha 256 Implementation ----------------------- 
-void sha256Calculation() {
-    printf("In sha256Calculation()");
+// --------------------- MD5 Implementation ----------------------- 
+void md5() {
+    printf("\nIn md5()");
 }
 
 // --------------------------- File Writer ---------------------------- 
 void writeToFile() {
-    printf("In writeToFile");
+    printf("\nIn writeToFile()");
 }
 // ----------------- Bit Operations (Implementation) ------------------ // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
 
