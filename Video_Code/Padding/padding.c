@@ -2,6 +2,12 @@
 #include <stdio.h> // I/O Stuff
 #include <inttypes.h> // Also includes formatters for printf
 
+union block { 
+    uint64_t sixfour[8];
+    uint32_t threetwo[16];
+    uint8_t eight[64];
+};
+
 uint64_t nozerobytes(uint64_t nobits) {
 
     uint64_t result = 512ULL - (nobits % 512ULL); // How many bits did you have?
@@ -28,10 +34,13 @@ int main(int argc, char *argv[]) {
     }
 
     uint8_t b;
+    // Instead of reading every byte on the fly
+    union block M;
     uint64_t nobits; // 64 bits limitation for SHA
-
-    for (nobits = 0;fread(&b, 1, 1, infile) == 1; nobits += 8) { // & => Sends the address of b, fread can use to override whats stored at b
-        printf("%02" PRIx8, b); // PRIx8 correct format specifier for an unsigned 8 bit int 
+    uint8_t i;
+    
+    for (nobits = 0, i = 0;fread(&M.eight[i], 1, 1, infile) == 1; nobits += 8) { // & => Sends the address of b, fread can use to override whats stored at b
+        printf("%02" PRIx8, M.eight[i]); // PRIx8 correct format specifier for an unsigned 8 bit int 
     }
 
     printf("%02" PRIx8 , 0x80); // Bits: 1000 0000
