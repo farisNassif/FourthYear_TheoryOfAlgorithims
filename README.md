@@ -25,7 +25,7 @@ The MD5 hash works by taking a string of any length and encoding it into a 128-b
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
-For a detailed breakdown of the algorithim, [see below](#How-does-it-work?)
+For a detailed breakdown of the algorithim, [see below](#how-does-it-work?).
 
 ## Running the Program
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
@@ -77,17 +77,17 @@ The first step consists of padding (or <i>extending</i>) the message so that the
 There are three possible cases that may be executed when a message is about to be padded
 
 1. The message block is fortunately 64 bytes (<i>512 bits</i>) already
-No need to perform any padding on this block, return
+	* No need to perform any padding on this block, return
 2. The message block is less than 56 bytes (<i>448 bits</i>
-Add a byte and fill with 0's so that that the length in bits of the padded message becomes congruent to 448 modulo 512
+	* Add a byte and fill with 0's so that that the length in bits of the padded message becomes congruent to 448 modulo 512
 3. The message block is greater than 56 bytes and less than 64 bytes
-Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
+	* Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
 
 ### Append Length
 A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step
 
 ### Initialize Message Digest Buffer
-A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register[[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
+A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register [[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
 
 ```C
 WORD A = 0x67452301;
@@ -109,7 +109,7 @@ Four auxiliary functions are defined that each receive three 'words' as input, a
 ```
 
 In each bit position F acts as a conditional: if X then Y else Z.
-The other functions, G, H and I aren't too different from the F function. They function in bitwise parallell to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased[[3]](https://tools.ietf.org/html/rfc1321).
+The other functions, G, H and I aren't too different from the F function. They function in bitwise parallell to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiasedb[[3]](https://tools.ietf.org/html/rfc1321).
 
 Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD then the following additions are performed
 ```C
@@ -126,7 +126,9 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 ## Research and Development Diary
 * Week One
 	* The first week involved the setup of the repository and also getting setup on my Google cloud virtual machine. I also included a skeleton implementation of the program that just included some file readers and other basic functions. In preperation for the assignment I watched some related external videos that would help cement my understanding of the underlying concepts behind the project [[6]](https://www.youtube.com/watch?v=6h7_YAmtzGw) [[7]](https://www.youtube.com/watch?v=53O9J2J5i14).
-	
+* Week Two
+	* During this week I completed the first video that discussed the SHA standard. I didn't fully understand everything in the video so I looked over the document in my own time [[2]](https://www.nist.gov/publications/secure-hash-standard) and watched a video [[9]](https://www.youtube.com/watch?v=DMtFhACPnTY) that helped provide a bit more insight. I also had a look at the main differences between MD5 and SHA [[10]](https://stackoverflow.com/questions/2948156/algorithm-complexity-security-md5-or-sha1) which helped me get a handle on the main differences in terms of speed, amount of attacks required to find the original message, message digest length and security.
+
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
@@ -135,3 +137,6 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 [5] https://graphics.stanford.edu/~seander/bithacks.html <br>
 [6] https://www.youtube.com/watch?v=6h7_YAmtzGw <br>
 [7] https://www.youtube.com/watch?v=53O9J2J5i14 <br>
+[8] https://www.thesslstore.com/blog/difference-sha-1-sha-2-sha-256-hash-algorithms/ <br>
+[9] https://www.youtube.com/watch?v=DMtFhACPnTY <br>
+[10] https://stackoverflow.com/questions/2948156/algorithm-complexity-security-md5-or-sha1 <br>
