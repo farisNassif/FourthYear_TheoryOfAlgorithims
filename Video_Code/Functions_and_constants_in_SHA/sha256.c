@@ -28,7 +28,7 @@ const uint32_t K[64] = {
     0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
 
-// // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf - Page 15_5.3.3
+// https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf - Page 15_5.3.3
 // Initial has value H(0), consists of the following eight 32bit words (in hex)
 uint32_t H[8] = {
     0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
@@ -37,12 +37,12 @@ uint32_t H[8] = {
 
 uint32_t Ch(uint32_t x, uint32_t y, uint32_t z) {
     // Section 4.1.2
-    return (x & y) ^ (~x & z);
+    return ((x & y) ^ (~x & z));
 }
 
 uint32_t Maj(uint32_t x, uint32_t y, uint32_t z) {
     // Section 4.1.2
-    return (x & y) ^ (x & z) ^ (y & z);
+    return ((x & y) ^ (x & z) ^ (y & z));
 }
 
 uint32_t SHR(uint32_t x, int n) {
