@@ -8,11 +8,6 @@
 #include <stdint.h> // Req for uint(x) unsigned int
 
 /*
-    C requires function (prototype) declarations before main()
-    This condition is required for the said functions to be called
-*/
-
-/*
     [Majority Function]
     =>  Produces a 1 if and ONLY if the majority of inputs are 1's, otherwise output a 0.
     =>  Section 4.1.2
@@ -67,13 +62,38 @@ uint32_t sig_zero(uint32_t x);
     =>  Section 4.1.2
 */
 uint32_t sig_one(uint32_t x);
+
+/*
+    Status controller when reading the pad file
+
+    READ: Still reading file, not EOF
+    PAD0: Already started padding some 0's
+    PAD1: Read all the way to the end, and fill a block
+    Finish: Finished all padding
+*/
+enum flag {
+    READ, 
+    PAD0, 
+    PAD1, 
+    FINISH 
+};
+
+/*
+
+*/
+union block { 
+    uint64_t sixfour[8];
+    uint32_t threetwo[16];
+    uint8_t eight[64];
+};
+
 void md5();
 void writeToFile();
 
 char filename[100], c; // Temp for storing the name of file read
 
 /*
-    Acts as the Runner of the program
+    Executor of the program
 
     argc: The num of paramaters that are used
     argv[]: Array of paramater names
