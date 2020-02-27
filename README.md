@@ -25,7 +25,7 @@ The MD5 hash works by taking a string of any length and encoding it into a 128-b
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
-For a detailed breakdown of the algorithim, [see below](#how-does-it-work?).
+For a detailed breakdown of the algorithim, [see below](#how-does-it-work-?).
 
 ## Running the Program
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
@@ -130,6 +130,8 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 	* During this week I completed the first video that discussed the SHA standard. I didn't fully understand everything in the video so I looked over the document in my own time [[2]](https://www.nist.gov/publications/secure-hash-standard) and watched a video [[9]](https://www.youtube.com/watch?v=DMtFhACPnTY) that helped provide a bit more insight. I also had a look at the main differences between MD5 and SHA [[10]](https://stackoverflow.com/questions/2948156/algorithm-complexity-security-md5-or-sha1) which helped me get a handle on the main differences in terms of speed, amount of attacks required to find the original message, message digest length and security [[12]](https://stackoverflow.com/a/37235104).
 * Week Three
 	* I finished the [C bit operations](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Video_Code/C_bit_operations/lookatbits.c) video and looked over some examples and tutorials of bit manipulation in C [[5]](https://graphics.stanford.edu/~seander/bithacks.html) [[11]](https://www.tutorialspoint.com/cprogramming/c_bitwise_operators.htm). I spent a good bit of time this week reading up on VI and learning some new editing and file commands [[13]](https://www.guru99.com/the-vi-editor.html).
+* Week Four
+	* This week I was a bit behind with videos so caught up on both the [Functions and Constants in SHA](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Video_Code/Functions_and_constants_in_SHA/sha256.c) and [Padding](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Video_Code/Padding/padding.c) videos. I attempted to code up some functions for MD5 by looking through the Request for Comments [[3]](https://tools.ietf.org/html/rfc1321) summary and began defining constants like the four auxillary functions and constants for the transformation routine. Since I still wasn't fully sure of the fully process required for the MD5 algorithim I found an article [[14]](http://www.boblandstrom.com/the-md5-hashing-algorithm/) that helped simplify the whole process for me, I got a better understanding of the role of auxillary functions in the block processing and how each sixteen oprations of the four rounds work.
 	
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
@@ -145,3 +147,4 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 [11] https://www.tutorialspoint.com/cprogramming/c_bitwise_operators.htm <br>
 [12] https://stackoverflow.com/a/37235104 <br>
 [13] https://www.guru99.com/the-vi-editor.html <br>
+[14] http://www.boblandstrom.com/the-md5-hashing-algorithm/ <br>
