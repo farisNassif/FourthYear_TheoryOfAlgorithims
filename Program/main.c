@@ -97,7 +97,8 @@ enum flag {
 };
 
 /*
-
+    All union members will share the same memory location
+    Different definitions depending on bit impelemtation
 */
 union block { 
     uint64_t sixfour[8];
@@ -109,7 +110,6 @@ union block {
     6.6.2 Hash Standard
     Takes M and H, overrides H
 */
-
 void nexthash(union block *M, uint32_t *H) {
     uint32_t W[64];
     uint32_t a, b, c, d, e, f, g, h, T1, T2; // Should become what current H[] is
