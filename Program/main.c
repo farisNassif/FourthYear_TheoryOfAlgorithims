@@ -6,6 +6,7 @@
 #include <stdlib.h> // TODO
 #include <string.h>
 #include <stdint.h> // Req for uint(x) unsigned int
+#include <inttypes.h> // Also includes formatters for printf
 
 /*
     Page 11 - 4.2.2
@@ -15,18 +16,26 @@
     The 0x prefix denotes the number succeeding it is being written in hex
 */
 const uint32_t K[64] = {
-	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
-	0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
-	0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
-    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
-    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
-	0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
-	0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
-	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,
+    0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+	0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,
+    0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+	0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,
+    0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,
+    0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,
+    0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+	0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,
+    0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+	0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,
+    0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,
+    0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
 
 /*
-    [Majority Function]
+    [Majority Function (Vote)]
     =>  Produces a 1 if and ONLY if the majority of inputs are 1's, otherwise output a 0.
     =>  Section 4.1.2
 */
@@ -89,22 +98,88 @@ uint32_t sig_one(uint32_t x);
     PAD1: Read all the way to the end, and fill a block
     Finish: Finished all padding
 */
-enum flag {
+typedef enum flag {
     READ, 
     PAD0, 
     PAD1, 
     FINISH 
-};
+} PADFLAG;
 
 /*
     All union members will share the same memory location
     Different definitions depending on bit impelemtation
+
+    Kind of an interface allowing the use of specific memory adresses
 */
-union block { 
+typedef union block { 
     uint64_t sixfour[8];
     uint32_t threetwo[16];
     uint8_t eight[64];
-};
+} block;
+/*
+    Keeps track of the number of bits that were read
+
+*/
+int nextblock(union block *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
+    
+    // Before stuff gets read in, need to check the value of status
+    // If finished, return
+    if(*status == FINISH) {
+        return 0;
+    }
+    // If = PAD1, send a block back that contains all 0's, except the last 64 bits should be nobits (Big endian int)
+    if(*status == PAD1) {
+        M->eight[0] = 0x80;
+
+        for (int i = 1; i < 56; i++){
+            M->eight[i] = 0;
+        }
+        M->sixfour[7] = *nobits;
+        *status = FINISH;
+        
+        return 1;
+    }
+    
+    if(*status == PAD0) {
+        for(int i = 0l; i < 56; i++) {
+            M->eight[i] = 0;
+        }
+
+        M->sixfour[7] = *nobits;
+        *status = FINISH;
+        
+        return 1;
+    }
+
+    // Read 64 1 bytes and store them in M->eight
+    size_t nobytesread = fread(M->eight, 1, 64, infile);
+
+    if (nobytesread == 64) {
+        return 1;
+    }
+
+    // If can fit all padding in last block ..
+    if(nobytesread < 56) {
+        M->eight[nobytesread] = 0x80;
+        for (int i = nobytesread + 1; i < 56; i++) {
+            M->eight[i] = 0;
+        }
+        M->sixfour[7] = *nobits;
+        *status = FINISH;
+
+        return 1;
+    }
+
+    // If get down here, means read at least 56 bytes from file, but less than 64
+    // So need to pad some 0's
+    M->eight[nobytesread] = 0x80;
+    for(int i = nobytesread + 1; i < 64; i++) {
+        M->eight[i] = 0;
+    }
+    *status = PAD0;
+    return 1;
+
+}
 
 /*
     6.6.2 Hash Standard
@@ -153,8 +228,9 @@ char filename[100], c; // Temp for storing the name of file read
 */
 int main(int argc, char *argv[]) {
     // Pointer for file
-    FILE *fptr; 
-  
+    //FILE *fptr; 
+    
+    /*
   	// Only runs if an argument was passed as a param
 	if (argv[1] == NULL)
 	{
@@ -181,10 +257,45 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(fptr); // Close the file ..
+    */
+
+    if (argc != 2) {
+        printf("Error: expected single filename as argument. \n");
+        return 1;
+    }
+    
+    FILE *infile = fopen(argv[1], "rb");
+    if (!infile) {
+        printf("Error: couldn't open file %s. \n", argv[1]);
+    }
+
+    // Section 5.3.3
+    uint32_t H[] = {
+        0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
+        0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+    };
+
+    // Instead of reading every byte on the fly
+    union block M;
+    uint64_t nobits = 0;
+    PADFLAG status = READ;  
+
+    // Keep looping, reading next block from message
+    while (nextblock(&M, infile, &nobits, &status)) { // Everytime something is read from the file
+        nexthash(&M, H); // Return blocks
+    }
+
+    for (int i = 0; i < 8; i++) {
+        printf("%02" PRIX32, H[i]);
+    }
+
+    printf("\n");
+    fclose(infile);
+
     return 0; 
 }
 
-// --------------------- MD5 Implementation ----------------------- 
+// ----------------------- MD5 Implementation ------------------------ 
 void md5() {
     printf("\nIn md5()");
 }
