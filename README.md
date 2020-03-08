@@ -26,3 +26,4 @@
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
 [3] https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Expressions-and-Operators <br>
 [4] https://graphics.stanford.edu/~seander/bithacks.html <br>
+[5] https://www.youtube.com/watch?v=53O9J2J5i14 <br>
