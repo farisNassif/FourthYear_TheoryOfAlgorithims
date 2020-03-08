@@ -61,14 +61,13 @@
     [FF, GG, HH, II] => Transformations for rounds 1, 2, 3, and 4
     The first 4 Paramaters for each function are the four 16 bit Words
     The fifth Paramater consists of the union message
-    The sixth Paramater contains one of the constants for the MD5 transform
+    The sixth Paramater contains one of the constants for the MD5 transform (SXX)
     The final Paramater is the corresponding constant T defined below
 */
 #define FF(a,b,c,d,m,s,t) { a += F(b,c,d) + m + t; a = b + ROTL(a,s); }
 #define GG(a,b,c,d,m,s,t) { a += G(b,c,d) + m + t; a = b + ROTL(a,s); }
 #define HH(a,b,c,d,m,s,t) { a += H(b,c,d) + m + t; a = b + ROTL(a,s); }
 #define II(a,b,c,d,m,s,t) { a += I(b,c,d) + m + t; a = b + ROTL(a,s); }
-
 
 /*
     https://tools.ietf.org/html/rfc1321 => Page 13 and 14
@@ -97,11 +96,62 @@ const WORD T[] = {
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 4
 
-    Four word buffer initialized with hex values used in the Message Digest computation
+    Four 'Word' buffer initialized with hex values used in the Message Digest computation
 */
 WORD A = 0x67452301;
 WORD B = 0xefcdab89;
 WORD C = 0x98badcfe;
 WORD D = 0x10325476;
+
+/*
+    All union members will share the same memory location
+    Different definitions depending on bit impelemtation
+
+    Kind of an interface allowing the use of specific memory adresses.
+    Takes up 64 bytes altogether
+*/
+typedef union { 
+    uint64_t sixfour[8];
+    uint32_t threetwo[16];
+    uint8_t eight[64];
+} BLOCK;
+
+/*
+    Status controller when reading the pad file
+
+    READ: Still reading file, not EOF
+    PAD0: Already started padding some 0's
+    Finish: Finished all padding
+*/
+typedef enum {
+    READ, 
+    PAD0, 
+    FINISH 
+} PADFLAG;
+
+/* -------------------------- Main Method ---------------------------- */
+int main(int argc, char *argv[]){
+    hashMD5();
+
+    return 0;
+} 
+
+/* ----------------------- MD5 Implementation ------------------------ */
+void md5(){
+    WORD a, b, c, d;
+
+    a = A;
+    b = B;
+    c = C;
+    d = D;
+
+    printf("TEST");
+}
+
+/* ----------------------------- Padding ----------------------------- */
+int nextblock() {
+
+}
+
 
 
