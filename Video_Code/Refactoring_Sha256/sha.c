@@ -163,7 +163,9 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
   int i;
   size_t nobytesread;
 
+  /* Before stuff gets read in, need to check the value of status */  
   switch(*status){
+    /* If finished, return */
     case FINISH:
       return 0;
     case PAD0:
@@ -199,7 +201,26 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
     M->threetwo[i] = be32toh(M->threetwo[i]);
   
   return 1;
+}
 
+uint64_t swap_endian(uint64_t x) {
+    uint64_t mask[8];
+    mask[0] = 0xff;
+    for(int i = 0; i < 8; i++) {
+        mask[i] = mask[0] << (8 * i);
+    }
+
+    uint64_t y = 
+       (x >> 56) & mask[0]
+    ^ ((x >> 40) & mask[1])     
+    ^ ((x >> 24) & mask[2])
+    ^ ((x >> 8)  & mask[3])
+    ^ ((x << 24) & mask[4])
+    ^ ((x << 16) & mask[5])
+    ^ ((x << 8)  & mask[6])
+    ^ ((x << 48) & mask[7]);
+
+    return y;
 }
 
 int main(int argc, char *argv[]) {

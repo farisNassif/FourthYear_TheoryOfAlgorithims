@@ -130,27 +130,84 @@ typedef enum {
 } PADFLAG;
 
 /* -------------------------- Main Method ---------------------------- */
-int main(int argc, char *argv[]){
-    hashMD5();
+int main(int argc, char *argv[]) {
+    // Expect and open a single filename.
+    if (argc != 2) {
+        printf("Error: expected single filename as argument.\n");
+        return 1;
+    }
+
+    FILE *infile = fopen(argv[1], "rb");
+    if (!infile) {
+        printf("Error: couldn't open file %s.\n", argv[1]);
+        return 1;
+    }
+  // The current padded message block.
+  BLOCK M;
+  uint64_t nobits = 0;
+  PADFLAG status = READ;
+
+  // Read through all of the padded message blocks.
+  while (pad(&M, infile, &nobits, &status)) {
+    // Calculate the next hash value.
+    md5(&M);
+  }
+    printf(infile);
+    fclose(infile);
 
     return 0;
 } 
 
 /* ----------------------- MD5 Implementation ------------------------ */
-void md5(){
+void md5(BLOCK *M) {
     WORD a, b, c, d;
 
     a = A;
     b = B;
     c = C;
     d = D;
-
-    printf("TEST");
 }
 
 /* ----------------------------- Padding ----------------------------- */
-int nextblock() {
+int pad(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
+  int i;
+  size_t nobytesread;
 
+  /* Before stuff gets read in, need to check the value of status */  
+    switch(*status) {
+    /* If finished, return */
+    case FINISH:
+        return 0;
+    case PAD0:
+        // We need an all-padding block without the 1 bit.
+        for (int i = 0; i < 56; i++) {
+            M->eight[i] = 0x00;
+        }
+        M->sixfour[7] = *nobits;
+        *status = FINISH;
+        break;
+    default:
+        // Try to read 64 bytes from the file.
+        nobytesread = fread(M->eight, 1, 64, infile);
+        *nobits += (8ULL * ((uint64_t) nobytesread));
+        if (nobytesread < 56) {
+            // We can put all padding in this block.
+            M->eight[nobytesread] = 0x80;
+            for (i = nobytesread + 1; i < 56; i++){
+                M->eight[i] = 0x00;
+            }
+            M->sixfour[7] = *nobits;
+            *status = FINISH;
+        } else if (nobytesread < 64) {
+            // Otherwise we have read between 56 (incl) and 64 (excl) bytes.
+            M->eight[nobytesread] = 0x80;
+            for (int i = nobytesread + 1; i < 64; i++) {
+                M->eight[i] = 0x00;
+            }
+            *status = PAD0;
+        }
+    }
+    return 1;
 }
 
 
