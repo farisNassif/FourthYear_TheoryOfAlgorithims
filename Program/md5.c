@@ -50,10 +50,10 @@
     Auxillary function definitions. Each recieve three 'Words'
     and produce one 'Word' as their output
 */
-#define F(X,Y,Z) = ((x & y) | (~x & z)) // XY v not(X) Z
-#define G(X,Y,Z) = ((x & z) | (y & ~z)) // XZ v Y not(Z)
-#define H(X,Y,Z) = (x ^ y ^ z)          // X xor Y xor Z
-#define I(X,Y,Z) = (y ^ (x | ~z))       // Y xor (X v not(Z))
+#define F(x,y,z) ((x & y) | (~x & z)) // XY v not(X) Z
+#define G(x,y,z) ((x & z) | (y & ~z)) // XZ v Y not(Z)
+#define H(x,y,z) (x ^ y ^ z)          // X xor Y xor Z
+#define I(x,y,z) (y ^ (x | ~z))       // Y xor (X v not(Z))
 
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 10
@@ -129,43 +129,34 @@ typedef enum {
     FINISH 
 } PADFLAG;
 
-/* -------------------------- Main Method ---------------------------- */
-int main(int argc, char *argv[]) {
-    // Expect and open a single filename.
-    if (argc != 2) {
-        printf("Error: expected single filename as argument.\n");
-        return 1;
-    }
-
-    FILE *infile = fopen(argv[1], "rb");
-    if (!infile) {
-        printf("Error: couldn't open file %s.\n", argv[1]);
-        return 1;
-    }
-  // The current padded message block.
-  BLOCK M;
-  uint64_t nobits = 0;
-  PADFLAG status = READ;
-
-  // Read through all of the padded message blocks.
-  while (pad(&M, infile, &nobits, &status)) {
-    // Calculate the next hash value.
-    md5(&M);
-  }
-    printf(infile);
-    fclose(infile);
-
-    return 0;
-} 
+// Temp for outputting, will change later
+uint32_t output[4];
 
 /* ----------------------- MD5 Implementation ------------------------ */
 void md5(BLOCK *M) {
-    WORD a, b, c, d;
+    WORD a = A, b = B, c = C, d = D;
 
-    a = A;
-    b = B;
-    c = C;
-    d = D;
+    FF (a, b, c, d, M->threetwo[0], S11, T[1]);  /* 1  */
+    FF (d, a, b, c, M->threetwo[1], S12, T[2]);  /* 2  */
+    FF (c, d, a, b, M->threetwo[0], S13, T[3]);  /* 3  */
+    FF (b, c, d, a, M->threetwo[0], S14, T[4]);  /* 4  */
+    FF (a, b, c, d, M->threetwo[0], S11, T[5]);  /* 5  */
+    FF (d, a, b, c, M->threetwo[0], S12, T[6]);  /* 6  */
+    FF (c, d, a, b, M->threetwo[0], S13, T[7]);  /* 7  */
+    FF (b, c, d, a, M->threetwo[0], S14, T[8]);  /* 8  */
+    FF (a, b, c, d, M->threetwo[0], S11, T[9]);  /* 9  */
+    FF (d, a, b, c, M->threetwo[0], S12, T[10]); /* 10 */
+    FF (c, d, a, b, M->threetwo[0], S13, T[11]); /* 11 */
+    FF (b, c, d, a, M->threetwo[0], S14, T[12]); /* 12 */
+    FF (a, b, c, d, M->threetwo[0], S11, T[13]); /* 13 */
+    FF (d, a, b, c, M->threetwo[0], S12, T[14]); /* 14 */
+    FF (c, d, a, b, M->threetwo[0], S13, T[15]); /* 15 */
+    FF (b, c, d, a, M->threetwo[0], S14, T[16]); /* 16 */
+    
+    output[0] += a;
+    output[1] += b;
+    output[2] += c;
+    output[3] += d;
 }
 
 /* ----------------------------- Padding ----------------------------- */
@@ -210,5 +201,38 @@ int pad(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
     return 1;
 }
 
+/* -------------------------- Main Method ---------------------------- */
+int main(int argc, char *argv[]) {
+    // Expect and open a single filename.
+    if (argc != 2) {
+        printf("Error: expected single filename as argument.\n");
+        return 1;
+    }
 
+    FILE *infile = fopen(argv[1], "rb");
+    if (!infile) {
+        printf("Error: couldn't open file %s.\n", argv[1]);
+        return 1;
+    }
+    // The current padded message block.
+    BLOCK M;
+    uint64_t nobits = 0;
+    PADFLAG status = READ;
+
+    // Read through all of the padded message blocks.
+    while (pad(&M, infile, &nobits, &status)) {
+        // Calculate the next hash value.
+        md5(&M);
+    }
+
+    for(int i=0;i<4;i++) {
+        printf("%02x", output[i]);
+    }
+
+    printf("\n");
+
+    fclose(infile);
+
+    return 0;
+} 
 
