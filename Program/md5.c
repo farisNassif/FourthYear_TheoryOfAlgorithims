@@ -15,28 +15,6 @@
 #define WORD uint32_t
 #define BYTE uint8_t
 
-/* 
-    https://tools.ietf.org/html/rfc1321 => Page 10
-
-    Predefined constants for the MD5 Transform routine
-*/
-#define S11 7
-#define S12 12
-#define S13 17
-#define S14 22
-#define S21 5
-#define S22 9
-#define S23 14
-#define S24 20
-#define S31 4
-#define S32 11
-#define S33 16
-#define S34 23
-#define S41 6
-#define S42 10
-#define S43 15
-#define S44 21
-
 /*
     [Rotate Function]
     =>  Rotates (x) left by (n) bits
@@ -60,7 +38,7 @@
 
     [FF, GG, HH, II] => Transformations for rounds 1, 2, 3, and 4
     The first 4 Paramaters for each function are the four 16 bit Words
-    The fifth Paramater consists of the union message
+    The fifth Paramater consists of the union block message (Input for MD5 is 64 bytes / 16 x 32 bit)
     The sixth Paramater contains one of the constants for the MD5 transform (SXX)
     The final Paramater is the corresponding constant T defined below
 */
@@ -73,6 +51,7 @@
     https://tools.ietf.org/html/rfc1321 => Page 13 and 14
 
     Predefined hashing constants required for MD5
+    Integer part of the sines of integers (in radians) * 2^32
 */
 const WORD T[] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
@@ -91,6 +70,19 @@ const WORD T[] = {
     0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
     0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
     0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
+};
+
+/* 
+    https://tools.ietf.org/html/rfc1321 => Page 10
+
+    Predefined constants for the MD5 Transform routine
+    Specifies the per-round shift amounts
+*/
+const WORD S[] = {
+    7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+    5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
+    4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
 };
 
 /* 
@@ -136,23 +128,44 @@ uint32_t output[4];
 void md5(BLOCK *M) {
     WORD a = A, b = B, c = C, d = D;
 
-    FF (a, b, c, d, M->threetwo[0], S11, T[1]);  /* 1  */
-    FF (d, a, b, c, M->threetwo[1], S12, T[2]);  /* 2  */
-    FF (c, d, a, b, M->threetwo[0], S13, T[3]);  /* 3  */
-    FF (b, c, d, a, M->threetwo[0], S14, T[4]);  /* 4  */
-    FF (a, b, c, d, M->threetwo[0], S11, T[5]);  /* 5  */
-    FF (d, a, b, c, M->threetwo[0], S12, T[6]);  /* 6  */
-    FF (c, d, a, b, M->threetwo[0], S13, T[7]);  /* 7  */
-    FF (b, c, d, a, M->threetwo[0], S14, T[8]);  /* 8  */
-    FF (a, b, c, d, M->threetwo[0], S11, T[9]);  /* 9  */
-    FF (d, a, b, c, M->threetwo[0], S12, T[10]); /* 10 */
-    FF (c, d, a, b, M->threetwo[0], S13, T[11]); /* 11 */
-    FF (b, c, d, a, M->threetwo[0], S14, T[12]); /* 12 */
-    FF (a, b, c, d, M->threetwo[0], S11, T[13]); /* 13 */
-    FF (d, a, b, c, M->threetwo[0], S12, T[14]); /* 14 */
-    FF (c, d, a, b, M->threetwo[0], S13, T[15]); /* 15 */
-    FF (b, c, d, a, M->threetwo[0], S14, T[16]); /* 16 */
+    // Round 1
+    // This should be looped once everything starts working
+    FF (a, b, c, d, M->threetwo[0] , S[0] , T[0]) ;  /* 1  */
+    FF (d, a, b, c, M->threetwo[1] , S[1] , T[1]) ;  /* 2  */
+    FF (c, d, a, b, M->threetwo[2] , S[2] , T[2]) ;  /* 3  */
+    FF (b, c, d, a, M->threetwo[3] , S[3] , T[3]) ;  /* 4  */
+    FF (a, b, c, d, M->threetwo[4] , S[4] , T[4]) ;  /* 5  */
+    FF (d, a, b, c, M->threetwo[5] , S[5] , T[5]) ;  /* 6  */
+    FF (c, d, a, b, M->threetwo[6] , S[6] , T[6]) ;  /* 7  */
+    FF (b, c, d, a, M->threetwo[7] , S[7] , T[7]) ;  /* 8  */
+    FF (a, b, c, d, M->threetwo[8] , S[8] , T[8]) ;  /* 9  */
+    FF (d, a, b, c, M->threetwo[9] , S[9] , T[9]) ;  /* 10 */
+    FF (c, d, a, b, M->threetwo[10], S[10], T[10]); /* 11 */
+    FF (b, c, d, a, M->threetwo[11], S[11], T[11]); /* 12 */
+    FF (a, b, c, d, M->threetwo[12], S[12], T[12]); /* 13 */
+    FF (d, a, b, c, M->threetwo[13], S[13], T[13]); /* 14 */
+    FF (c, d, a, b, M->threetwo[14], S[14], T[14]); /* 15 */
+    FF (b, c, d, a, M->threetwo[15], S[15], T[15]); /* 16 */
     
+    // Round 2
+    GG (a, b, c, d, M->threetwo[1] , S[16], T[16]); /* 17 */
+    GG (d, a, b, c, M->threetwo[6] , S[17], T[17]); /* 18 */
+    GG (c, d, a, b, M->threetwo[11], S[18], T[18]); /* 19 */
+    GG (b, c, d, a, M->threetwo[0] , S[19], T[19]); /* 20 */
+    GG (a, b, c, d, M->threetwo[5] , S[20], T[20]); /* 21 */
+    GG (d, a, b, c, M->threetwo[10], S[21], T[21]); /* 22 */
+    GG (c, d, a, b, M->threetwo[15], S[22], T[22]); /* 23 */
+    GG (b, c, d, a, M->threetwo[4] , S[23], T[23]); /* 24 */
+    GG (a, b, c, d, M->threetwo[9] , S[24], T[24]); /* 25 */
+    GG (d, a, b, c, M->threetwo[14], S[25], T[25]); /* 26 */
+    GG (c, d, a, b, M->threetwo[3] , S[26], T[26]); /* 27 */
+    GG (b, c, d, a, M->threetwo[8] , S[27], T[27]); /* 28 */
+    GG (a, b, c, d, M->threetwo[13], S[28], T[28]); /* 29 */
+    GG (d, a, b, c, M->threetwo[2] , S[29], T[29]); /* 30 */
+    GG (c, d, a, b, M->threetwo[7] , S[30], T[30]); /* 31 */
+    GG (b, c, d, a, M->threetwo[12], S[31], T[31]); /* 32 */
+
+
     output[0] += a;
     output[1] += b;
     output[2] += c;
