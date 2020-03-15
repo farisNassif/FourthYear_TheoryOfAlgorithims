@@ -130,16 +130,16 @@ void md5(BLOCK *M) {
 
     // Round 1
     // This should be looped once everything starts working
-    FF (a, b, c, d, M->threetwo[0] , S[0] , T[0]) ;  /* 1  */
-    FF (d, a, b, c, M->threetwo[1] , S[1] , T[1]) ;  /* 2  */
-    FF (c, d, a, b, M->threetwo[2] , S[2] , T[2]) ;  /* 3  */
-    FF (b, c, d, a, M->threetwo[3] , S[3] , T[3]) ;  /* 4  */
-    FF (a, b, c, d, M->threetwo[4] , S[4] , T[4]) ;  /* 5  */
-    FF (d, a, b, c, M->threetwo[5] , S[5] , T[5]) ;  /* 6  */
-    FF (c, d, a, b, M->threetwo[6] , S[6] , T[6]) ;  /* 7  */
-    FF (b, c, d, a, M->threetwo[7] , S[7] , T[7]) ;  /* 8  */
-    FF (a, b, c, d, M->threetwo[8] , S[8] , T[8]) ;  /* 9  */
-    FF (d, a, b, c, M->threetwo[9] , S[9] , T[9]) ;  /* 10 */
+    FF (a, b, c, d, M->threetwo[0] , S[0] , T[0]) ; /* 1  */
+    FF (d, a, b, c, M->threetwo[1] , S[1] , T[1]) ; /* 2  */
+    FF (c, d, a, b, M->threetwo[2] , S[2] , T[2]) ; /* 3  */
+    FF (b, c, d, a, M->threetwo[3] , S[3] , T[3]) ; /* 4  */
+    FF (a, b, c, d, M->threetwo[4] , S[4] , T[4]) ; /* 5  */
+    FF (d, a, b, c, M->threetwo[5] , S[5] , T[5]) ; /* 6  */
+    FF (c, d, a, b, M->threetwo[6] , S[6] , T[6]) ; /* 7  */
+    FF (b, c, d, a, M->threetwo[7] , S[7] , T[7]) ; /* 8  */
+    FF (a, b, c, d, M->threetwo[8] , S[8] , T[8]) ; /* 9  */
+    FF (d, a, b, c, M->threetwo[9] , S[9] , T[9]) ; /* 10 */
     FF (c, d, a, b, M->threetwo[10], S[10], T[10]); /* 11 */
     FF (b, c, d, a, M->threetwo[11], S[11], T[11]); /* 12 */
     FF (a, b, c, d, M->threetwo[12], S[12], T[12]); /* 13 */
@@ -165,6 +165,23 @@ void md5(BLOCK *M) {
     GG (c, d, a, b, M->threetwo[7] , S[30], T[30]); /* 31 */
     GG (b, c, d, a, M->threetwo[12], S[31], T[31]); /* 32 */
 
+    // Round 3
+    HH (a, b, c, d, M->threetwo[5] , S[32], T[32]);  /* 33 */
+    HH (d, a, b, c, M->threetwo[8] , S[33], T[33]);  /* 34 */
+    HH (c, d, a, b, M->threetwo[11], S[34], T[34]);  /* 35 */
+    HH (b, c, d, a, M->threetwo[14], S[35], T[35]);  /* 36 */
+    HH (a, b, c, d, M->threetwo[1] , S[36], T[36]);  /* 37 */
+    HH (d, a, b, c, M->threetwo[4] , S[37], T[37]);  /* 38 */
+    HH (c, d, a, b, M->threetwo[7] , S[38], T[38]);  /* 39 */
+    HH (b, c, d, a, M->threetwo[10], S[39], T[39]);  /* 40 */
+    HH (a, b, c, d, M->threetwo[13], S[40], T[40]);  /* 41 */
+    HH (d, a, b, c, M->threetwo[0] , S[41], T[41]);  /* 42 */
+    HH (c, d, a, b, M->threetwo[3] , S[42], T[42]);  /* 43 */
+    HH (b, c, d, a, M->threetwo[6] , S[43], T[43]);  /* 44 */
+    HH (a, b, c, d, M->threetwo[9] , S[44], T[44]);  /* 45 */
+    HH (d, a, b, c, M->threetwo[12], S[45], T[45]);  /* 46 */
+    HH (c, d, a, b, M->threetwo[15], S[46], T[46]);  /* 47 */
+    HH (b, c, d, a, M->threetwo[2] , S[47], T[47]);  /* 48 */
 
     output[0] += a;
     output[1] += b;
