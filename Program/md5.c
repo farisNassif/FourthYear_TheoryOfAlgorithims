@@ -47,14 +47,6 @@
 #define HH(a,b,c,d,m,s,t) { a += H(b,c,d) + m + t; a = b + ROTL(a,s); }
 #define II(a,b,c,d,m,s,t) { a += I(b,c,d) + m + t; a = b + ROTL(a,s); }
 
-void to_bytes(uint32_t val, uint8_t *bytes)
-{
-    bytes[0] = (uint8_t) val;
-    bytes[1] = (uint8_t) (val >> 8);
-    bytes[2] = (uint8_t) (val >> 16);
-    bytes[3] = (uint8_t) (val >> 24);
-}
-
 /*
     https://tools.ietf.org/html/rfc1321 => Page 13 and 14
 
@@ -116,6 +108,20 @@ typedef union {
     uint8_t eight[64];
 } BLOCK;
 
+/* UINT4 defines a four byte word */
+typedef unsigned long int UINT4;
+
+/*
+    https://tools.ietf.org/html/rfc1321 => Page 9
+
+    MD5 Context defining State(ABCD), Count(Num of bits) and input buffer
+*/
+typedef struct {
+  UINT4 state[4];   
+  UINT4 count[2];     
+  unsigned char buffer[64];  
+} MD5_CONTEXT;
+
 /*
     Status controller when reading the pad file
 
@@ -129,12 +135,29 @@ typedef enum {
     FINISH 
 } PADFLAG;
 
+/* 
+    MD5 initialization. Begins an MD5 operation, writing a new context.
+*/
+void MD5Init (MD5_CONTEXT *context) {
+  context->count[0] = context->count[1] = 0;
+  /* Load magic initialization constants.
+*/
+  context->state[0] = A;
+  context->state[1] = B;
+  context->state[2] = C;
+  context->state[3] = D;
+}  
+
 // Temp for outputting, will change later
 uint32_t output[4];
 
 /* ----------------------- MD5 Implementation ------------------------ */
-void md5(BLOCK *M, uint8_t *digest) {
+void md5(UINT4 *state, BLOCK *M) {
     WORD a = A, b = B, c = C, d = D;
+    a = state[0];
+    b = state[1];
+    c = state[2];
+    d = state[3];
 
     // Round 1
     // This should be looped once everything starts working
@@ -213,12 +236,6 @@ void md5(BLOCK *M, uint8_t *digest) {
     output[1] += b;
     output[2] += c;
     output[3] += d;
-
-
-    to_bytes(output[0], digest);
-    to_bytes(output[1], digest + 4);
-    to_bytes(output[2], digest + 8);
-    to_bytes(output[3], digest + 12);
 }
 
 /* ----------------------------- Padding ----------------------------- */
@@ -262,11 +279,13 @@ int pad(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
     }
     return 1;
 }
+/* ----------------------- MD5 Pre Processor ------------------------- */
+void MD5_Prepare(MD5_CONTEXT *context, char *da) {
+
+}
 
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
-    uint8_t result[16];
-
     // Expect and open a single filename.
     if (argc != 2) {
         printf("Error: expected single filename as argument.\n");
@@ -278,15 +297,19 @@ int main(int argc, char *argv[]) {
         printf("Error: couldn't open file %s.\n", argv[1]);
         return 1;
     }
-    // The current padded message block.
+    
+    MD5_CONTEXT _MD5_CONTEXT;
+    // The current padded message block
     BLOCK M;
     uint64_t nobits = 0;
     PADFLAG status = READ;
+    char strToHash = 'abc';
 
     // Read through all of the padded message blocks.
     while (pad(&M, infile, &nobits, &status)) {
         // Calculate the next hash value.
-        md5(&M, result);
+        MD5_Prepare(&_MD5_CONTEXT, strToHash);
+        //md5(&M);
     }
 
     for(int i=0;i<4;i++) {
