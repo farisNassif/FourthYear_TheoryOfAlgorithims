@@ -47,6 +47,14 @@
 #define HH(a,b,c,d,m,s,t) { a += H(b,c,d) + m + t; a = b + ROTL(a,s); }
 #define II(a,b,c,d,m,s,t) { a += I(b,c,d) + m + t; a = b + ROTL(a,s); }
 
+void to_bytes(uint32_t val, uint8_t *bytes)
+{
+    bytes[0] = (uint8_t) val;
+    bytes[1] = (uint8_t) (val >> 8);
+    bytes[2] = (uint8_t) (val >> 16);
+    bytes[3] = (uint8_t) (val >> 24);
+}
+
 /*
     https://tools.ietf.org/html/rfc1321 => Page 13 and 14
 
@@ -125,7 +133,7 @@ typedef enum {
 uint32_t output[4];
 
 /* ----------------------- MD5 Implementation ------------------------ */
-void md5(BLOCK *M) {
+void md5(BLOCK *M, uint8_t *digest) {
     WORD a = A, b = B, c = C, d = D;
 
     // Round 1
@@ -205,6 +213,12 @@ void md5(BLOCK *M) {
     output[1] += b;
     output[2] += c;
     output[3] += d;
+
+
+    to_bytes(output[0], digest);
+    to_bytes(output[1], digest + 4);
+    to_bytes(output[2], digest + 8);
+    to_bytes(output[3], digest + 12);
 }
 
 /* ----------------------------- Padding ----------------------------- */
@@ -251,6 +265,8 @@ int pad(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
 
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
+    uint8_t result[16];
+
     // Expect and open a single filename.
     if (argc != 2) {
         printf("Error: expected single filename as argument.\n");
@@ -270,7 +286,7 @@ int main(int argc, char *argv[]) {
     // Read through all of the padded message blocks.
     while (pad(&M, infile, &nobits, &status)) {
         // Calculate the next hash value.
-        md5(&M);
+        md5(&M, result);
     }
 
     for(int i=0;i<4;i++) {
