@@ -166,22 +166,40 @@ void md5(BLOCK *M) {
     GG (b, c, d, a, M->threetwo[12], S[31], T[31]); /* 32 */
 
     // Round 3
-    HH (a, b, c, d, M->threetwo[5] , S[32], T[32]);  /* 33 */
-    HH (d, a, b, c, M->threetwo[8] , S[33], T[33]);  /* 34 */
-    HH (c, d, a, b, M->threetwo[11], S[34], T[34]);  /* 35 */
-    HH (b, c, d, a, M->threetwo[14], S[35], T[35]);  /* 36 */
-    HH (a, b, c, d, M->threetwo[1] , S[36], T[36]);  /* 37 */
-    HH (d, a, b, c, M->threetwo[4] , S[37], T[37]);  /* 38 */
-    HH (c, d, a, b, M->threetwo[7] , S[38], T[38]);  /* 39 */
-    HH (b, c, d, a, M->threetwo[10], S[39], T[39]);  /* 40 */
-    HH (a, b, c, d, M->threetwo[13], S[40], T[40]);  /* 41 */
-    HH (d, a, b, c, M->threetwo[0] , S[41], T[41]);  /* 42 */
-    HH (c, d, a, b, M->threetwo[3] , S[42], T[42]);  /* 43 */
-    HH (b, c, d, a, M->threetwo[6] , S[43], T[43]);  /* 44 */
-    HH (a, b, c, d, M->threetwo[9] , S[44], T[44]);  /* 45 */
-    HH (d, a, b, c, M->threetwo[12], S[45], T[45]);  /* 46 */
-    HH (c, d, a, b, M->threetwo[15], S[46], T[46]);  /* 47 */
-    HH (b, c, d, a, M->threetwo[2] , S[47], T[47]);  /* 48 */
+    HH (a, b, c, d, M->threetwo[5] , S[32], T[32]); /* 33 */
+    HH (d, a, b, c, M->threetwo[8] , S[33], T[33]); /* 34 */
+    HH (c, d, a, b, M->threetwo[11], S[34], T[34]); /* 35 */
+    HH (b, c, d, a, M->threetwo[14], S[35], T[35]); /* 36 */
+    HH (a, b, c, d, M->threetwo[1] , S[36], T[36]); /* 37 */
+    HH (d, a, b, c, M->threetwo[4] , S[37], T[37]); /* 38 */
+    HH (c, d, a, b, M->threetwo[7] , S[38], T[38]); /* 39 */
+    HH (b, c, d, a, M->threetwo[10], S[39], T[39]); /* 40 */
+    HH (a, b, c, d, M->threetwo[13], S[40], T[40]); /* 41 */
+    HH (d, a, b, c, M->threetwo[0] , S[41], T[41]); /* 42 */
+    HH (c, d, a, b, M->threetwo[3] , S[42], T[42]); /* 43 */
+    HH (b, c, d, a, M->threetwo[6] , S[43], T[43]); /* 44 */
+    HH (a, b, c, d, M->threetwo[9] , S[44], T[44]); /* 45 */
+    HH (d, a, b, c, M->threetwo[12], S[45], T[45]); /* 46 */
+    HH (c, d, a, b, M->threetwo[15], S[46], T[46]); /* 47 */
+    HH (b, c, d, a, M->threetwo[2] , S[47], T[47]); /* 48 */
+
+    // Fourth and final round
+    II (a, b, c, d, M->threetwo[0] , S[47], T[48]); /* 49 */
+    II (d, a, b, c, M->threetwo[7] , S[47], T[49]); /* 50 */
+    II (c, d, a, b, M->threetwo[14], S[47], T[50]); /* 51 */
+    II (b, c, d, a, M->threetwo[5] , S[47], T[51]); /* 52 */
+    II (a, b, c, d, M->threetwo[12], S[47], T[52]); /* 53 */
+    II (d, a, b, c, M->threetwo[3] , S[47], T[53]); /* 54 */
+    II (c, d, a, b, M->threetwo[10], S[47], T[54]); /* 55 */
+    II (b, c, d, a, M->threetwo[1] , S[47], T[55]); /* 56 */
+    II (a, b, c, d, M->threetwo[8] , S[47], T[56]); /* 57 */
+    II (d, a, b, c, M->threetwo[15], S[47], T[57]); /* 58 */
+    II (c, d, a, b, M->threetwo[6] , S[47], T[58]); /* 59 */
+    II (b, c, d, a, M->threetwo[13], S[47], T[59]); /* 60 */
+    II (a, b, c, d, M->threetwo[4] , S[47], T[60]); /* 61 */
+    II (d, a, b, c, M->threetwo[11], S[47], T[61]); /* 62 */
+    II (c, d, a, b, M->threetwo[2] , S[47], T[62]); /* 63 */
+    II (b, c, d, a, M->threetwo[9] , S[47], T[63]); /* 64 */
 
     output[0] += a;
     output[1] += b;
