@@ -35,6 +35,7 @@
 
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 10
+    
     [FF, GG, HH, II] => Transformations for rounds 1, 2, 3, and 4
     The first 4 Paramaters for each function are the four 16 bit Words
     The fifth Paramater consists of the union block message (Input for MD5 is 64 bytes / 16 x 32 bit)
@@ -103,7 +104,7 @@ WORD D = 0x10325476;
 */
 typedef union { 
     uint64_t sixfour[8];
-    uint32_t threetwo[16];
+    WORD threetwo[16];
     uint8_t eight[64];
 } BLOCK;
 
@@ -121,7 +122,7 @@ typedef enum {
 } PADFLAG;
 
 /* ----------------------- MD5 Implementation ------------------------ */
-void md5(BLOCK *M, uint32_t *H) {
+void md5(BLOCK *M, WORD *H) {
     WORD a, b, c, d;
     a = H[0];
     b = H[1];
@@ -145,8 +146,8 @@ void md5(BLOCK *M, uint32_t *H) {
     FF(H[3], H[0], H[1], H[2], M->threetwo[13], S[13], T[13]); /* 14 */
     FF(H[2], H[3], H[0], H[1], M->threetwo[14], S[14], T[14]); /* 15 */
     FF(H[1], H[2], H[3], H[0], M->threetwo[15], S[15], T[15]); /* 16 */
-    printf("\n");
-//    /* Round 2 */
+
+    /* Round 2 */
     GG(H[0], H[1], H[2], H[3], M->threetwo[1] , S[16], T[16]); /* 17 */
     GG(H[3], H[0], H[1], H[2], M->threetwo[6] , S[17], T[17]); /* 18 */
     GG(H[2], H[3], H[0], H[1], M->threetwo[11], S[18], T[18]); /* 19 */
@@ -163,8 +164,8 @@ void md5(BLOCK *M, uint32_t *H) {
     GG(H[3], H[0], H[1], H[2], M->threetwo[2] , S[29], T[29]); /* 30 */
     GG(H[2], H[3], H[0], H[1], M->threetwo[7] , S[30], T[30]); /* 31 */
     GG(H[1], H[2], H[3], H[0], M->threetwo[12], S[31], T[31]); /* 32 */
-    printf("\n");
-//    /* Round 3 */
+
+    /* Round 3 */
     HH(H[0], H[1], H[2], H[3], M->threetwo[5] , S[32], T[32]); /* 33 */
     HH(H[3], H[0], H[1], H[2], M->threetwo[8] , S[33], T[33]); /* 34 */
     HH(H[2], H[3], H[0], H[1], M->threetwo[11], S[34], T[34]); /* 35 */
@@ -181,8 +182,8 @@ void md5(BLOCK *M, uint32_t *H) {
     HH(H[3], H[0], H[1], H[2], M->threetwo[12], S[45], T[45]); /* 46 */
     HH(H[2], H[3], H[0], H[1], M->threetwo[15], S[46], T[46]); /* 47 */
     HH(H[1], H[2], H[3], H[0], M->threetwo[2] , S[47], T[47]); /* 48 */
-    printf("\n");
-//    /* Round 4 */
+
+    /* Round 4 */
     II(H[0], H[1], H[2], H[3], M->threetwo[0] , S[48], T[48]); /* 49 */
     II(H[3], H[0], H[1], H[2], M->threetwo[7] , S[49], T[49]); /* 50 */
     II(H[2], H[3], H[0], H[1], M->threetwo[14], S[50], T[50]); /* 51 */
@@ -199,7 +200,7 @@ void md5(BLOCK *M, uint32_t *H) {
     II(H[3], H[0], H[1], H[2], M->threetwo[11], S[61], T[61]); /* 62 */
     II(H[2], H[3], H[0], H[1], M->threetwo[2] , S[62], T[62]); /* 63 */
     II(H[1], H[2], H[3], H[0], M->threetwo[9] , S[63], T[63]); /* 64 */
-    printf("\n");
+
 
     H[0] += a;
     H[1] += b;
@@ -267,20 +268,13 @@ int main(int argc, char *argv[]) {
     BLOCK M;
     uint64_t nobits = 0;
     PADFLAG status = READ;
-    uint32_t H[] = {A, B, C, D};
+    WORD H[] = {A, B, C, D};
 
     // Read through all of the padded message blocks.
     while (nextblock(&M, infile, &nobits, &status)) {
         // Calculate the next hash value.
         md5(&M, H);
     }
-
-    for(int i=0;i<4;i++) {
-        printf("%02x", H[i]);
-    }
-
-    fclose(infile);
-
     return 0;
 } 
 
