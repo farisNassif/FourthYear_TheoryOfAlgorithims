@@ -8,7 +8,7 @@
 |Details  |    |
 | --- | --- |
 | **Project**  | [Project Spec](https://pdfhost.io/v/lgILkbKAl_project_8pdf.pdf) 
-| **GIF** | [Project Running](https://i.imgur.com/fWZhbrR.gif)
+| **GIF** | [Project Running](https://i.imgur.com/HTlEDIJ.gif)
 | **Course** | BSc (Hons) in Software Development
 | **Module** |  Theory of Algorithims |
 | **Author** | [Faris Nassif](https://github.com/farisNassif) |
@@ -19,6 +19,7 @@
 * [Running the Program](#running-the-program)
 * [How it Works](#how-does-it-work) 
 * [Research & Development Diary](#research-and-development-diary)
+* [Testing](#testing)
 
 ## MD5 Overview
 The MD5 hash works by taking a string of any length and encoding it into a 128-bit fingerprint. Encoding the same string over and over will always yielf the same 128-bit hash output. 
@@ -31,7 +32,7 @@ For a detailed breakdown of the algorithim, [see below](#how-does-it-work).
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
 2. Navigate to the <b> \program\ </b> directory: `cd program`
 3. Compile the program: `gcc -o md5 md5.c` || `make md5`
-4. Execute the program: `md5.exe TestFile.txt` || `md5.exe`
+4. Execute the program: `md5.exe TestFile.txt` || `md5.exe` || `./md5`
 
 #### The program may be executed in three different ways 
 * Enter a file name as a command line argument 
@@ -43,7 +44,7 @@ For a detailed breakdown of the algorithim, [see below](#how-does-it-work).
   > md5.exe TestFile.txt
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/DueplYH.png">
+  <img src = "https://i.imgur.com/PACkAXO.png">
 </p>
 
 #### Define input via console menu (File Input)
@@ -51,7 +52,7 @@ For a detailed breakdown of the algorithim, [see below](#how-does-it-work).
   > md5.exe
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/77sy6jl.png">
+  <img src = "https://i.imgur.com/DeAUPx8.png">
 </p>
 
 #### Define input via console menu (String Input)
@@ -59,7 +60,7 @@ For a detailed breakdown of the algorithim, [see below](#how-does-it-work).
   > md5.exe
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/m79eWdc.png">
+  <img src = "https://i.imgur.com/YCWn3RI.png">
 </p>
 
 ## How does it work?
@@ -141,8 +142,16 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 * <b>Week Nine</b>
 	* Having completed the videos I focused solely on the MD5 implementation. I refactored and simplified the function that performs the hash rounds for each block into a single loop by defining the parameterized input values as constant arrays. I also fixed issues with block processing including the context not changing correctly and cases not executing correctly in the switch statement. I was still getting the wrong output so began looking at methods in C to ensure output will always be in little endian (<i>as required for MD5</i>) [[18]](https://stackoverflow.com/questions/54548061/c-little-and-big-endian-confusion).
 * <b>Week Ten</b>
-	* After multiple attempts and testing of different endian solutions one was found that successfuly extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [[tests]](#how-does-it-work) against the project to verify results.
-	
+	* After multiple attempts and testing of different endian solutions one was found that successfuly extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [[tests]](#testing) against the project to verify results.
+
+## Testing
+The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[20]](https://www.md5hashgenerator.com/) [[21]](http://www.md5.cz/).
+
+The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321).
+
+
+
+## References	
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
 [3] https://tools.ietf.org/html/rfc1321 <br>
@@ -162,3 +171,5 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 [17] https://www.geeksforgeeks.org/little-and-big-endian-mystery/ <br>
 [18] https://stackoverflow.com/questions/54548061/c-little-and-big-endian-confusion <br>
 [19] https://stackoverflow.com/a/17913021 <br>
+[20] https://www.md5hashgenerator.com/ <br>
+[21] http://www.md5.cz/ <br>
