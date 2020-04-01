@@ -258,6 +258,29 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
 
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
+
+    int option;
+
+    printf("\n|========= MD5 Message-Digest =========|");
+    printf("\n|============ Faris Nassif ============|");
+    printf("\n|============= G00347032 ==============|\n");
+
+    if (argv[1] == NULL) {
+        printf("\n *No command line argument specified   ");
+        printf("\n 1: Perform MD5 on a File            ");
+        printf("\n 2: Perform MD5 on a String        \n");
+
+		scanf("%d", &option);
+
+        if (option == 1) {
+
+        } else if (option == 2) {
+
+        } else {
+            
+        }
+    }
+
     // Expect and open a single filename.
     if (argc != 2) {
         printf("Error: expected single filename as argument.\n");
