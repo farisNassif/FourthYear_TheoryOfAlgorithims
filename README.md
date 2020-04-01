@@ -140,8 +140,9 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 	* During this week I completed the final video available to us, [Refactoring SHA256](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Video_Code/Refactoring_Sha256/sha.c). The video led me to look over the MD5 code I had written already and check every constant and function to ensure they were written correctly. I did find some errors with auxillary functions and values that weren't initialized correctly however my hash output still wasn't correct.  
 * <b>Week Nine</b>
 	* Having completed the videos I focused solely on the MD5 implementation. I refactored and simplified the function that performs the hash rounds for each block into a single loop by defining the parameterized input values as constant arrays. I also fixed issues with block processing including the context not changing correctly and cases not executing correctly in the switch statement. I was still getting the wrong output so began looking at methods in C to ensure output will always be in little endian (<i>as required for MD5</i>) [[18]](https://stackoverflow.com/questions/54548061/c-little-and-big-endian-confusion).
+* <b>Week Ten</b>
+	* After multiple attempts and testing of different endian solutions one was found that successfuly extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [[tests]](#how-does-it-work) against the project to verify results.
 	
-## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
 [3] https://tools.ietf.org/html/rfc1321 <br>
@@ -160,3 +161,4 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 [16] https://www.programiz.com/c-programming/c-unions <br>
 [17] https://www.geeksforgeeks.org/little-and-big-endian-mystery/ <br>
 [18] https://stackoverflow.com/questions/54548061/c-little-and-big-endian-confusion <br>
+[19] https://stackoverflow.com/a/17913021 <br>
