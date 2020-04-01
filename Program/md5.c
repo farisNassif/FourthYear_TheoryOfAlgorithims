@@ -48,7 +48,17 @@
 #define II(a,b,c,d,m,s,t) { a += I(b,c,d) + m + t; a = b + ROTL(a,s); }
 
 /* 
-    A
+    The four constant arrays below [AA, BB, CC, DD] represent 
+    the first four paramaters for the above transformation functions.
+
+    For example, FF will be performed 16 times, GG 16 times and so on,
+    The first time FF will be performed, it's first paramater (a) will be the first
+    index of AA. So FF(AA[0], BB[0], CC[0], DD[0]), then FF(AA[1], BB[1], CC[1], DD[1])
+    and then once, then it'll be GG(AA[15], BB[15], CC[15], DD[15]) and so on.
+
+    It's kind of a chunky way of doing it, would probably be possible with a multi-dimensional
+    array, however this way works and allow for the four hash rounds to be performed efficiently
+    in a loop.
 */
 const WORD AA[] = {
     0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1,
@@ -57,9 +67,6 @@ const WORD AA[] = {
     0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1
 };
 
-/* 
-    B
-*/
 const WORD BB[] = {
     1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2,
     1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2,
@@ -67,9 +74,6 @@ const WORD BB[] = {
     1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2
 };
 
-/* 
-    C
-*/
 const WORD CC[] = {
     2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3,
     2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3,
@@ -77,9 +81,6 @@ const WORD CC[] = {
     2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3
 };
 
-/* 
-    D
-*/
 const WORD DD[] = {
     3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0,
     3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0,
@@ -88,7 +89,8 @@ const WORD DD[] = {
 };
 
 /* 
-    M
+    Fifth paramater for the transformation functions.
+    MM being the index of the uint32_t block that needs to be accessed
 */
 const WORD MM[] = {
     0, 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
@@ -98,6 +100,7 @@ const WORD MM[] = {
 };
 
 /* 
+    Sixth paramater for the transformation functions.
     https://tools.ietf.org/html/rfc1321 => Page 10
 
     Predefined constants for the MD5 Transform routine
@@ -111,6 +114,7 @@ const WORD S[] = {
 };
 
 /*
+    Seventh and final paramater for the transformation functions.
     https://tools.ietf.org/html/rfc1321 => Page 13 and 14
 
     Predefined hashing constants required for MD5
@@ -138,7 +142,8 @@ const WORD T[] = {
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 4
 
-    Four 'Word' buffer initialized with hex values used in the Message Digest computation
+    Four 'Word' buffer initialized with hex values used in the Message Digest computation.
+    These will be manipulated on each round of the MD5 hash.
 */
 WORD A = 0x67452301;
 WORD B = 0xefcdab89;
@@ -171,14 +176,16 @@ typedef enum {
     FINISH 
 } PADFLAG;
 
-/* ----------------------- MD5 Implementation ------------------------ */
+/* --------------------- Perform MD5 on Blocks ----------------------- */
 void md5(BLOCK *M, WORD *H) {
     WORD a, b, c, d;
+    /* Initialize hash value for this chunk */
     a = H[0];
     b = H[1];
     c = H[2];
     d = H[3];
 
+    /* Perform the four hash rounds for each chunk */
     for(int i = 0; i<64; i++) {
         if (i < 16) {
             FF(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 1 */
@@ -190,7 +197,8 @@ void md5(BLOCK *M, WORD *H) {
             II(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 4 */
         }
     }
-
+    
+    /* Add this chunk's hash to result so far */
     H[0] += a;
     H[1] += b;
     H[2] += c;
@@ -264,5 +272,10 @@ int main(int argc, char *argv[]) {
         // Calculate the next hash value.
         md5(&M, H);
     }
+
+
+
+    fclose(infile);
+    return 0;
 } 
 
