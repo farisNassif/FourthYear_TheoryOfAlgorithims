@@ -54,10 +54,10 @@
     For example, FF will be performed 16 times, GG 16 times and so on,
     The first time FF will be performed, it's first paramater (a) will be the first
     index of AA. So FF(AA[0], BB[0], CC[0], DD[0]), then FF(AA[1], BB[1], CC[1], DD[1])
-    and then once, then it'll be GG(AA[15], BB[15], CC[15], DD[15]) and so on.
+    After 16 iterations then it'll be GG(AA[15], BB[15], CC[15], DD[15]) and so on.
 
     It's kind of a chunky way of doing it, would probably be possible with a multi-dimensional
-    array, however this way works and allow for the four hash rounds to be performed efficiently
+    array, however this way works and allows for the four hash rounds to be performed efficiently
     in a loop.
 */
 const WORD AA[] = {
@@ -207,19 +207,17 @@ void md5(BLOCK *M, WORD *H) {
 
 /* ----------------------- Read Block by Block ----------------------- */
 int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
-
-  int i;
   size_t nobytesread = fread(&M->eight, 1, 64, infile);
   *nobits += nobytesread * 8;
 
     /* Before stuff gets read in, need to check the value of status */  
     switch(*status) {
-    /* If finished, return */
+    /* If all message blocks are finished, return */
     case FINISH:
         return 0;
     case PAD0:
-        // We need an all-padding block without the 1 bit.
-        for (i = 0; i < 57; i++) {
+        /* We need an all-padding block without the 1 bit */
+        for (int i = 0; i < 57; i++) {
             M->eight[i] = 0;
         }
         M->sixfour[7] = *nobits;
@@ -227,19 +225,29 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
         return 1;
         break;  
     default:
+        /* Check if under 56 bytes have been read
+        ** If true, put all padding in this block */
         if (nobytesread < 56) {
-            // We can put all padding in this block.
-            M->eight[nobytesread] = 0x80;
-            for (i = nobytesread + 1; i < 56; i++){
+            /* Insert 1 bit into the current block */
+            M->eight[nobytesread] = 0x80; 
+            /* Add 1 as index into block */
+            for (int i = nobytesread + 1; i < 56; i++) {
+                /* Set bytes to 0 */
                 M->eight[i] = 0;
             }
+            /* Set the final element to nobits (bits in initial message) 
+            ** Then append the size of the file in bits as a unsigned 64bit int */
             M->sixfour[7] = *nobits;
             *status = FINISH;
         } 
+        /* If theres 56 to 64 bytes read, need extra message block full of padding 
+        ** Append 1 and add 64 bit integer to initial message block
+        ** Otherwise check if padding can be inserted into this block */
         else if (nobytesread < 64) {
-            // Otherwise we have read between 56 (incl) and 64 (excl) bytes.
+            /* Insert 1 bit into the current block */
             M->eight[nobytesread] = 0x80;
-            for (i = nobytesread + 1; i < 64; i++) {
+            /* Pad the remainder of the message block with 0 bits */
+            for (int i = nobytesread + 1; i < 64; i++) {
                 M->eight[i] = 0;
             }
             *status = PAD0;
@@ -267,15 +275,27 @@ int main(int argc, char *argv[]) {
     PADFLAG status = READ;
     WORD H[] = {A, B, C, D};
 
-    // Read through all of the padded message blocks.
+    /* Read through all of the padded message blocks */
     while (nextblock(&M, infile, &nobits, &status)) {
-        // Calculate the next hash value.
+        /* For each block, hash it */
         md5(&M, H);
     }
-
-
-
+    output(H);
     fclose(infile);
     return 0;
 } 
 
+/* 
+    https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
+
+    Output in little endian
+*/ 
+void output(WORD H[]) {
+    for (int i = 0; i < 4; ++i) {
+        printf("%02x%02x%02x%02x", 
+        (H[i] >>  0) & 0xFF, 
+        (H[i] >>  8) & 0xFF, 
+        (H[i] >> 16) & 0xFF, 
+        (H[i] >> 24) & 0xFF);
+    }
+}
