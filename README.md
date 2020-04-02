@@ -19,6 +19,8 @@ The MD5 hash works by taking a string of any length and encoding it into a 128-b
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
+For a detailed breakdown of the algorithim, [see below](#MD5-how-does-it-work)
+
 ## Running the Project
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
 2. Navigate to the <b> \program\ </b> directory: `cd program`
@@ -54,9 +56,24 @@ An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i
   <img src = "https://i.imgur.com/m79eWdc.png">
 </p>
 
+## MD5 how does it work
+The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, prior to MD4 collisions being found [[1]](http://cacr.uwaterloo.ca/hac/about/chap9.pdf). It consists of five major steps [[3]](https://tools.ietf.org/html/rfc1321),
+
+1. <b>Append Padding Bits</b>
+2. <b>Append Length</b>
+3. <b>Initialize MD Buffer</b>
+4. <b>Process Message in 16-Word Blocks</b>
+5. <b>Output</b>
+
+### Appending Padding Bits
+The first step consists of padding (or <i>extending</i>) the message so that the length of the message in bits is equal to 448 modulo 512. The point is to extend the message so that it's just 64 bits shy of being a multiple of 512 bits long.
+
+There are three possible i'll finish writing this tomorrow i'm wrecked
+
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
+[3] https://tools.ietf.org/html/rfc1321 <br>
 [3] https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Expressions-and-Operators <br>
 [4] https://graphics.stanford.edu/~seander/bithacks.html <br>
 [5] https://www.youtube.com/watch?v=53O9J2J5i14 <br>
