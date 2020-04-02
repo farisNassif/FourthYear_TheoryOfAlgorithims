@@ -325,10 +325,26 @@ int main(int argc, char *argv[]) {
                 printf("\nClosing %s\n", fileName);
                 fclose(infile);
             }
-        } else if (option == 2) {
+        } 
+        /* They gave a String, write it to a file then read it */
+        else if (option == 2) {
+            printf("Enter a String: \n");
+            scanf("%s", inputString);
 
+            /* Open new file */
+            FILE *f = fopen("StringInput.txt", "w");
+            /* Write user input to the file */ 
+            fprintf(f, "%s", inputString);
+            fclose(f);
+
+            /* Open the file to read */
+            FILE *infile = fopen("StringInput.txt", "rb");
+            printf("Processing String ...\n");
+            preMd5(infile);
+            printf("\nExiting ...\n");
+            fclose(infile);
         } else {
-
+            printf("\nInvalid Input\nExiting ...\n");
         }
     } else {
         /* They added a command line argument, assign it to the file var */
@@ -343,7 +359,7 @@ int main(int argc, char *argv[]) {
         else {
             printf("Processing file contents ...\n");
             preMd5(infile);
-            printf("\nClosing %s\n", argv[1]);
+            printf("\nExiting ...\n");
             fclose(infile);
         }
     }
