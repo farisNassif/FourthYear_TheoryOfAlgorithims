@@ -21,6 +21,41 @@
 
 3. The program should successfully perform the hashing algorithim on the given input and proof of it's success should be evident.
 
+## Running the Project
+1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
+2. Navigate to the <b> \program\ </b> directory: `cd program`
+3. Compile the program: `gcc -o md5 md5.c`
+4. Execute the program: `md5.exe TestFile.txt` || `md5.exe`
+
+The program may be executed in three different ways 
+* Enter a file name as a command line argument 
+* Enter a file name as a string to be hashed at runtime 
+* Enter a String to be hashed at runtime 
+
+#### Execution via command line argument
+```bash
+  > md5.exe TestFile.txt
+```
+<p align="center">
+  <img src = "https://i.imgur.com/7905Y1g.png">
+</p>
+
+#### Execution via console menu (File Input)
+```bash
+  > md5.exe
+```
+<p align="center">
+  <img src = "https://i.imgur.com/9Q8FH6m.png">
+</p>
+
+#### Execution via console menu (String Input)
+```bash
+  > md5.exe
+```
+<p align="center">
+  <img src = "https://i.imgur.com/7asbIwp.png">
+</p>
+
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
 [2] https://www.nist.gov/publications/secure-hash-standard <br>
