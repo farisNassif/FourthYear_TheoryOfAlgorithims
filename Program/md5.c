@@ -176,6 +176,22 @@ typedef enum {
     FINISH 
 } PADFLAG;
 
+/* 
+    https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
+
+    Output in little endian
+*/ 
+void output(WORD H[]) {
+    printf("MD5 -> ");
+    for (int i = 0; i < 4; ++i) {
+        printf("%02x%02x%02x%02x", 
+        (H[i] >>  0) & 0xFF, 
+        (H[i] >>  8) & 0xFF, 
+        (H[i] >> 16) & 0xFF, 
+        (H[i] >> 24) & 0xFF);
+    }
+}
+
 /* --------------------- Perform MD5 on Blocks ----------------------- */
 void md5(BLOCK *M, WORD *H) {
     WORD a, b, c, d;
@@ -256,43 +272,8 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
     }
 }
 
-/* -------------------------- Main Method ---------------------------- */
-int main(int argc, char *argv[]) {
-
-    int option;
-
-    printf("\n|========= MD5 Message-Digest =========|");
-    printf("\n|============ Faris Nassif ============|");
-    printf("\n|============= G00347032 ==============|\n");
-
-    if (argv[1] == NULL) {
-        printf("\n *No command line argument specified   ");
-        printf("\n 1: Perform MD5 on a File            ");
-        printf("\n 2: Perform MD5 on a String        \n");
-
-		scanf("%d", &option);
-
-        if (option == 1) {
-
-        } else if (option == 2) {
-
-        } else {
-            
-        }
-    }
-
-    // Expect and open a single filename.
-    if (argc != 2) {
-        printf("Error: expected single filename as argument.\n");
-        return 1;
-    }
-
-    FILE *infile = fopen(argv[1], "rb");
-    if (!infile) {
-        printf("Error: couldn't open file %s.\n", argv[1]);
-        return 1;
-    }
-    // The current padded message block
+/* ----------------- Pass it a file, kick off hash ------------------- */
+void preMd5(FILE *infile) {
     BLOCK M;
     uint64_t nobits = 0;
     PADFLAG status = READ;
@@ -304,21 +285,68 @@ int main(int argc, char *argv[]) {
         md5(&M, H);
     }
     output(H);
-    fclose(infile);
+}
+
+/* -------------------------- Main Method ---------------------------- */
+int main(int argc, char *argv[]) {
+    FILE *infile = fopen(argv[1], "rb");
+    int option;
+    char fileName[100];
+    char inputString[50];
+    
+
+    printf("\nAuthor :     Faris Nassif");
+    printf("\nModule :     Theory Of Algorithms");
+    printf("\nSummary:     A program that executes a MD5 Hash on a given input\n");
+    printf("\n----------------------------------------------------------------\n");
+
+    if (argv[1] == NULL) {
+        printf("\n*No command line argument specified   ");
+        printf("\n1: Perform MD5 on a File            ");
+        printf("\n2: Perform MD5 on a String        \n");
+
+		scanf("%d", &option);
+
+        /* User wants to input a file .. */
+        if (option == 1) {
+            printf("Enter a Filename: \n");
+			scanf("%s", fileName);    
+
+            FILE *infile = fopen(fileName, "rb");
+            /* If invalid */
+            if (!infile) {
+                printf("Error: couldn't open file %s.\n", argv[1]);
+                return 1;
+            } 
+            /* Otherwise perform MD5 on the contents of the file */
+            else {
+                printf("Processing file contents ...\n");
+                preMd5(infile);
+                printf("\nClosing %s\n", fileName);
+                fclose(infile);
+            }
+        } else if (option == 2) {
+
+        } else {
+
+        }
+    } else {
+        /* They added a command line argument, assign it to the file var */
+        FILE *infile = fopen(argv[1], "rb");    
+
+        /* If invalid */
+        if (!infile) {
+            printf("Error: couldn't open file %s.\n", argv[1]);
+            return 1;
+        } 
+        /* Otherwise perform MD5 on the contents of the file */
+        else {
+            printf("Processing file contents ...\n");
+            preMd5(infile);
+            printf("\nClosing %s\n", argv[1]);
+            fclose(infile);
+        }
+    }
     return 0;
 } 
 
-/* 
-    https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
-
-    Output in little endian
-*/ 
-void output(WORD H[]) {
-    for (int i = 0; i < 4; ++i) {
-        printf("%02x%02x%02x%02x", 
-        (H[i] >>  0) & 0xFF, 
-        (H[i] >>  8) & 0xFF, 
-        (H[i] >> 16) & 0xFF, 
-        (H[i] >> 24) & 0xFF);
-    }
-}
