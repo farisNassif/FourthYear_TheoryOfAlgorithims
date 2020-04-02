@@ -7,19 +7,17 @@
 
 |Details  |    |
 | --- | --- |
-| **Project**  | [Project Spec](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithims) 
+| **Project**  | [Project Spec](https://pdfhost.io/v/lgILkbKAl_project_8pdf.pdf) 
 | **GIF** | [TODO](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithims)
 | **Course** | BSc (Hons) in Software Development
 | **Module** |  Theory of Algorithims |
 | **Author** | [Faris Nassif](https://github.com/farisNassif) |
 | **Lecturer** | Dr Ian McLoughlin |
 
-## Project Outline
-1. Write a program in C that can calculate the MD5 hash of an input.
+## MD5 Overview
+The MD5 hash works by taking a string of any length and encoding it into a 128-bit fingerprint. Encoding the same string over and over will always yielf the same 128-bit hash output. 
 
-2. Provide input in the form of user input or a file.
-
-3. The program should successfully perform the hashing algorithim on the given input and yield the correct hash.
+An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
 ## Running the Project
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
