@@ -177,7 +177,7 @@ typedef enum {
 } PADFLAG;
 
 /* 
-    https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
+    Adapted From: https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
 
     Output in little endian
 */ 
@@ -302,14 +302,14 @@ int main(int argc, char *argv[]) {
 
     if (argv[1] == NULL) {
         printf("\n*No command line argument specified   ");
-        printf("\n1: Perform MD5 on a File            ");
-        printf("\n2: Perform MD5 on a String        \n");
-
+        printf("\nInput - 1: Perform MD5 on a File            ");
+        printf("\nInput - 2: Perform MD5 on a String        \n");
+        printf("\nChoose an option: ");
 		scanf("%d", &option);
 
         /* User wants to input a file .. */
         if (option == 1) {
-            printf("Enter a Filename: \n");
+            printf("Enter a Filename: ");
 			scanf("%s", fileName);    
 
             FILE *infile = fopen(fileName, "rb");
@@ -320,7 +320,7 @@ int main(int argc, char *argv[]) {
             } 
             /* Otherwise perform MD5 on the contents of the file */
             else {
-                printf("Processing file contents ...\n");
+                printf("\nProcessing file contents ...\n");
                 preMd5(infile);
                 printf("\nClosing %s\n", fileName);
                 fclose(infile);
@@ -328,17 +328,17 @@ int main(int argc, char *argv[]) {
         } 
         /* They gave a String, write it to a file then read it */
         else if (option == 2) {
-            printf("Enter a String: \n");
+            printf("Enter a String: ");
             scanf("%s", inputString);
 
             /* Open new file */
-            FILE *f = fopen("StringInput.txt", "w");
+            FILE *f = fopen("test-input/StringInput.txt", "w");
             /* Write user input to the file */ 
             fprintf(f, "%s", inputString);
             fclose(f);
 
             /* Open the file to read */
-            FILE *infile = fopen("StringInput.txt", "rb");
+            FILE *infile = fopen("test-input/StringInput.txt", "rb");
             printf("Processing String ...\n");
             preMd5(infile);
             printf("\nExiting ...\n");

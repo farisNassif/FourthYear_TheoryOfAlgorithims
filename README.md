@@ -19,7 +19,7 @@
 
 2. Provide input in the form of user input or a file.
 
-3. The program should successfully perform the hashing algorithim on the given input and proof of it's success should be evident.
+3. The program should successfully perform the hashing algorithim on the given input and yield the correct hash.
 
 ## Running the Project
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
@@ -27,33 +27,33 @@
 3. Compile the program: `gcc -o md5 md5.c`
 4. Execute the program: `md5.exe TestFile.txt` || `md5.exe`
 
-The program may be executed in three different ways 
+#### The program may be executed in three different ways 
 * Enter a file name as a command line argument 
 * Enter a file name as a string to be hashed at runtime 
 * Enter a String to be hashed at runtime 
 
-#### Execution via command line argument
+#### Define input via a command line argument
 ```bash
   > md5.exe TestFile.txt
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/7905Y1g.png">
+  <img src = "https://i.imgur.com/DueplYH.png">
 </p>
 
-#### Execution via console menu (File Input)
+#### Define input via console menu (File Input)
 ```bash
   > md5.exe
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/9Q8FH6m.png">
+  <img src = "https://i.imgur.com/77sy6jl.png">
 </p>
 
-#### Execution via console menu (String Input)
+#### Define input via console menu (String Input)
 ```bash
   > md5.exe
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/7asbIwp.png">
+  <img src = "https://i.imgur.com/m79eWdc.png">
 </p>
 
 ## References
