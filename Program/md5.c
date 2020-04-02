@@ -52,7 +52,7 @@
     the first four paramaters for the above transformation functions.
 
     For example, FF will be performed 16 times, GG 16 times and so on,
-    The first time FF will be performed, it's first paramater (a) will be the first
+    The first time FF(first round) will be performed, it's first paramater (a) will be the first
     index of AA. So FF(AA[0], BB[0], CC[0], DD[0]), then FF(AA[1], BB[1], CC[1], DD[1])
     After 16 iterations then it'll be GG(AA[15], BB[15], CC[15], DD[15]) and so on.
 
@@ -274,9 +274,12 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
 
 /* ----------------- Pass it a file, kick off hash ------------------- */
 void preMd5(FILE *infile) {
+    /* Block/chunk to be pre-processed */
     BLOCK M;
     uint64_t nobits = 0;
+    /* Read status of the current chunk */
     PADFLAG status = READ;
+    /* Will store the hash result, A,B,C,D will be changed and manipulated throughout the hashing rounds */
     WORD H[] = {A, B, C, D};
 
     /* Read through all of the padded message blocks */
@@ -289,12 +292,12 @@ void preMd5(FILE *infile) {
 
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
-    FILE *infile = fopen(argv[1], "rb");
+    /* Input vars */
     int option;
     char fileName[100];
     char inputString[50];
     
-
+    /* Menu Items */
     printf("\nAuthor :     Faris Nassif");
     printf("\nModule :     Theory Of Algorithms");
     printf("\nSummary:     A program that executes a MD5 Hash on a given input\n");
@@ -347,7 +350,7 @@ int main(int argc, char *argv[]) {
             printf("\nInvalid Input\nExiting ...\n");
         }
     } else {
-        /* They added a command line argument, assign it to the file var */
+        /* They added a command line argument, assign it to the infile var */
         FILE *infile = fopen(argv[1], "rb");    
 
         /* If invalid */
@@ -364,5 +367,4 @@ int main(int argc, char *argv[]) {
         }
     }
     return 0;
-} 
-
+}

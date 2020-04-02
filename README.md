@@ -66,9 +66,23 @@ The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, 
 5. <b>Output</b>
 
 ### Appending Padding Bits
-The first step consists of padding (or <i>extending</i>) the message so that the length of the message in bits is equal to 448 modulo 512. The point is to extend the message so that it's just 64 bits shy of being a multiple of 512 bits long.
+The first step consists of padding (or <i>extending</i>) the message so that the length of the message in bits is equal to 448 modulo 512. The point is to extend the message so that it's just 64 bits shy of being a multiple of 512 bits.
 
-There are three possible i'll finish writing this tomorrow i'm wrecked
+There are three possible cases that may be executed when a message is about to be padded
+
+1. The message block is fortunately 64 bytes (<i>512 bits</i>) already
+2. The message block is less than 56 bytes (<i>448 bits</i>
+3. The message block is greater than 56 bytes and less than 64 bytes
+
+
+```C
+  typedef enum {
+    READ, 
+    PAD0, 
+    FINISH 
+} PADFLAG;
+```
+
 
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
