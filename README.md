@@ -19,7 +19,7 @@ The MD5 hash works by taking a string of any length and encoding it into a 128-b
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
-For a detailed breakdown of the algorithim, [see below](#MD5-how-does-it-work)
+For a detailed breakdown of the algorithim, [see below](#MD5,-how-does-it-work?)
 
 ## Running the Project
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
@@ -56,7 +56,7 @@ For a detailed breakdown of the algorithim, [see below](#MD5-how-does-it-work)
   <img src = "https://i.imgur.com/m79eWdc.png">
 </p>
 
-## MD5 how does it work
+## MD5, how does it work?
 The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, prior to MD4 collisions being found [[1]](http://cacr.uwaterloo.ca/hac/about/chap9.pdf). It consists of five major steps [[3]](https://tools.ietf.org/html/rfc1321),
 
 1. <b>Append Padding Bits</b>
@@ -71,18 +71,51 @@ The first step consists of padding (or <i>extending</i>) the message so that the
 There are three possible cases that may be executed when a message is about to be padded
 
 1. The message block is fortunately 64 bytes (<i>512 bits</i>) already
+No need to perform any padding on this block, return
 2. The message block is less than 56 bytes (<i>448 bits</i>
+Add a byte and fill with 0's so that that the length in bits of the padded message becomes congruent to 448 modulo 512
 3. The message block is greater than 56 bytes and less than 64 bytes
+Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
 
+### Append Length
+A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step
+
+### Initialize Message Digest Buffer
+A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register[3](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
 
 ```C
-  typedef enum {
-    READ, 
-    PAD0, 
-    FINISH 
-} PADFLAG;
+WORD A = 0x67452301;
+WORD B = 0xefcdab89;
+WORD C = 0x98badcfe;
+WORD D = 0x10325476;
 ```
 
+The value of these four 'words' will be changed and manipulated throughout the four hashing rounds, each previous value being used to generate a new value and so on.
+
+### Process Message in 16-Word Blocks
+Four auxiliary functions are defined that each receive three 'words' as input, and output a single 'word' 
+
+```C
+#define F(x,y,z) ((x & y) | (~x & z)) 
+#define G(x,y,z) ((x & z) | (y & ~z)) 
+#define H(x,y,z) (x ^ y ^ z)          
+#define I(x,y,z) (y ^ (x | ~z))       
+```
+
+In each bit position F acts as a conditional: if X then Y else Z.
+The other functions, G, H and I aren't too different from the F function. They function in bitwise parallell to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased[3](https://tools.ietf.org/html/rfc1321).
+
+Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD then the following additions are performed
+```C
+     A = A + AA
+     B = B + BB
+     C = C + CC
+     D = D + DD 
+```
+Each of the four registered are incremented by the value it had before the block was started.
+
+### Output
+The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
 
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
