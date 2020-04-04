@@ -149,7 +149,35 @@ The project was tested on both Linux and Windows machines to ensure portability 
 
 The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321).
 
+#### First Test
 
+| Test | String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 1 | Empty<br>String    | d41d8cd98f00b204e9800998ecf8427e | d41d8cd98f00b204e9800998ecf8427e | :white_check_mark: |
+
+#### Second Test
+
+| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 2 | a    | 0cc175b9c0f1b6a831c399e269772661 | 0cc175b9c0f1b6a831c399e269772661 | :white_check_mark: |
+
+#### Third Test
+
+| Test | String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 3 | abc    | 900150983cd24fb0d6963f7d28e17f72 | 900150983cd24fb0d6963f7d28e17f72 | :white_check_mark: |
+
+#### Fourth Test
+
+| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 4 | message<br>digest    | f96b697d7cb7938d525a2f31aaf161d0 | f96b697d7cb7938d525a2f31aaf161d0 | :white_check_mark: |
+
+#### Fifth Test
+
+| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 5 | abcdefg<br>hijklm<br>nopqrst<br>uvwxyz    | c3fcd3d76192e4007dfb496cca67e13b | c3fcd3d76192e4007dfb496cca67e13b | :white_check_mark: |
 
 ## References	
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
