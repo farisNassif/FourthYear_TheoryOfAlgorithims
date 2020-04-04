@@ -8,20 +8,26 @@
 |Details  |    |
 | --- | --- |
 | **Project**  | [Project Spec](https://pdfhost.io/v/lgILkbKAl_project_8pdf.pdf) 
-| **GIF** | [TODO](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithims)
+| **GIF** | [Project Running](https://i.imgur.com/fWZhbrR.gif)
 | **Course** | BSc (Hons) in Software Development
 | **Module** |  Theory of Algorithims |
 | **Author** | [Faris Nassif](https://github.com/farisNassif) |
 | **Lecturer** | Dr Ian McLoughlin |
+
+## Contents
+* [Assignment Overview](#md5-overview)
+* [Running the Program](#running-the-program)
+* [How it Works](#how-does-it-work) 
+* [Developer Diary & Research](#research-and-project-progress)
 
 ## MD5 Overview
 The MD5 hash works by taking a string of any length and encoding it into a 128-bit fingerprint. Encoding the same string over and over will always yielf the same 128-bit hash output. 
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
-For a detailed breakdown of the algorithim, [see below](#MD5,-how-does-it-work?)
+For a detailed breakdown of the algorithim, [see below](#How-does-it-work?)
 
-## Running the Project
+## Running the Program
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
 2. Navigate to the <b> \program\ </b> directory: `cd program`
 3. Compile the program: `gcc -o md5 md5.c`
@@ -56,7 +62,7 @@ For a detailed breakdown of the algorithim, [see below](#MD5,-how-does-it-work?)
   <img src = "https://i.imgur.com/m79eWdc.png">
 </p>
 
-## MD5, how does it work?
+## How does it work?
 The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, prior to MD4 collisions being found [[1]](http://cacr.uwaterloo.ca/hac/about/chap9.pdf). It consists of five major steps [[3]](https://tools.ietf.org/html/rfc1321),
 
 1. <b>Append Padding Bits</b>
@@ -81,7 +87,7 @@ Same as step two, add a byte and fill with 0's. A new block is added and fill 56
 A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step
 
 ### Initialize Message Digest Buffer
-A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register[3](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
+A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register[[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
 
 ```C
 WORD A = 0x67452301;
@@ -116,6 +122,8 @@ Each of the four registered are incremented by the value it had before the block
 
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
+
+## Research and Project Progress
 
 ## References
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
