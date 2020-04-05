@@ -119,7 +119,7 @@ Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD
      C = C + CC
      D = D + DD 
 ```
-Each of the four registered are incremented by the value it had before the block was started.
+Each of the four registers are incremented by the value it had before the block was started.
 
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].

@@ -179,46 +179,46 @@ typedef enum {
 /* 
     Adapted From: https://stackoverflow.com/questions/17912978/printing-integers-as-a-set-of-4-bytes-arranged-in-little-endian
 
-    Output in little endian
+    Output the MD5 result in little endian
 */ 
-void output(WORD H[]) {
+void output(WORD MD5_RES[]) {
     printf("MD5 -> ");
     for (int i = 0; i < 4; ++i) {
         printf("%02x%02x%02x%02x", 
-        (H[i] >>  0) & 0xFF, 
-        (H[i] >>  8) & 0xFF, 
-        (H[i] >> 16) & 0xFF, 
-        (H[i] >> 24) & 0xFF);
+        (MD5_RES[i] >>  0) & 0xFF, 
+        (MD5_RES[i] >>  8) & 0xFF, 
+        (MD5_RES[i] >> 16) & 0xFF, 
+        (MD5_RES[i] >> 24) & 0xFF);
     }
 }
 
 /* --------------------- Perform MD5 on Blocks ----------------------- */
-void md5(BLOCK *M, WORD *H) {
+void md5(BLOCK *M, WORD *MD5_RES) {
     WORD a, b, c, d;
     /* Initialize hash value for this chunk */
-    a = H[0];
-    b = H[1];
-    c = H[2];
-    d = H[3];
+    a = MD5_RES[0];
+    b = MD5_RES[1];
+    c = MD5_RES[2];
+    d = MD5_RES[3];
 
     /* Perform the four hash rounds for each chunk */
     for(int i = 0; i<64; i++) {
         if (i < 16) {
-            FF(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 1 */
+            FF(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 1 */
         } else if (i < 32) {
-            GG(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 2 */
+            GG(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 2 */
         } else if (i < 48) {
-            HH(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 3 */
+            HH(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 3 */
         } else {
-            II(H[AA[i]], H[BB[i]], H[CC[i]], H[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 4 */
+            II(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]) ; /* ROUND 4 */
         }
     }
     
     /* Add this chunk's hash to result so far */
-    H[0] += a;
-    H[1] += b;
-    H[2] += c;
-    H[3] += d;
+    MD5_RES[0] += a;
+    MD5_RES[1] += b;
+    MD5_RES[2] += c;
+    MD5_RES[3] += d;
 }
 
 /* ----------------------- Read Block by Block ----------------------- */
@@ -245,7 +245,7 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
         ** If true, put all padding in this block */
         if (nobytesread < 56) {
             /* Insert 1 bit into the current block */
-            M->eight[nobytesread] = 0x80; 
+            M->eight[nobytesread] = 0x80; // 00000001
             /* Add 1 as index into block */
             for (int i = nobytesread + 1; i < 56; i++) {
                 /* Set bytes to 0 */
@@ -261,7 +261,7 @@ int nextblock(BLOCK *M, FILE *infile, uint64_t *nobits, PADFLAG *status) {
         ** Otherwise check if padding can be inserted into this block */
         else if (nobytesread < 64) {
             /* Insert 1 bit into the current block */
-            M->eight[nobytesread] = 0x80;
+            M->eight[nobytesread] = 0x80; // 00000001
             /* Pad the remainder of the message block with 0 bits */
             for (int i = nobytesread + 1; i < 64; i++) {
                 M->eight[i] = 0;
@@ -280,14 +280,14 @@ void preMd5(FILE *infile) {
     /* Read status of the current chunk */
     PADFLAG status = READ;
     /* Will store the hash result, A,B,C,D will be changed and manipulated throughout the hashing rounds */
-    WORD H[] = {A, B, C, D};
+    WORD MD5_RES[] = {A, B, C, D};
 
     /* Read through all of the padded message blocks */
     while (nextblock(&M, infile, &nobits, &status)) {
         /* For each block, hash it */
-        md5(&M, H);
+        md5(&M, MD5_RES);
     }
-    output(H);
+    output(MD5_RES);
 }
 
 /* -------------------------- Main Method ---------------------------- */
