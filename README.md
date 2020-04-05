@@ -86,7 +86,7 @@ There are three possible cases that may be executed when a message is about to b
 	* Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
 
 ### Append Length
-A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step ensuring  ensuring the message has a length that is an exact multiple of 16 (32-bit) words.
+A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step ensuring the message has a length that is an exact multiple of 16 (32-bit) words.
 
 ### Initialize Message Digest Buffer
 A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register [[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
