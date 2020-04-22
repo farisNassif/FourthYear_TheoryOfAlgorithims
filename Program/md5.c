@@ -3,10 +3,10 @@
 // Summary:     A program that executes a MD5 Hash on a given input
 //              This program has been adapted based on the process outlined in https://tools.ietf.org/html/rfc1321
 
-#include <stdio.h> // Input/Output
-#include <stdint.h> // Req for uint(x) unsigned int
+#include <stdio.h>    // Input/Output
+#include <stdint.h>   // Req for uint(x) unsigned int
 #include <inttypes.h> // Includes formatters for output
-#include <getopt.h> // Command line argument functionality
+#include <getopt.h>   // Command line argument functionality
 
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 2
@@ -290,6 +290,7 @@ void preMd5(FILE *infile) {
     }
     output(MD5_RES);
 }
+
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
     /* Input vars */
@@ -394,6 +395,23 @@ int main(int argc, char *argv[]) {
 }
 /* ------------------- Command Line Argument Outputs ----------------- */
 void print_usage(int option) {
+    /* All 5 test file names put into an array */
+    const char* testFiles[5] = {
+        "test-input/TestOne.txt",
+        "test-input/TestTwo.txt",
+        "test-input/TestThree.txt",
+        "test-input/TestFour.txt",
+        "test-input/TestFive.txt"
+    };
+
+    /* All 5 test file names put into an array */
+    const char* testFilesExpected[5] = {
+        "d41d8cd98f00b204e9800998ecf8427e",
+        "0cc175b9c0f1b6a831c399e269772661",
+        "900150983cd24fb0d6963f7d28e17f72",
+        "f96b697d7cb7938d525a2f31aaf161d0",
+        "c3fcd3d76192e4007dfb496cca67e13b"
+    };
     /* Switch statement to help clean up the main method a bit, solely for output */
     switch (option) {
     case 0:
@@ -410,7 +428,13 @@ void print_usage(int option) {
         printf("\n Helpful program related information \n");
         break;
     case 2:
-        printf("\n Suite of tests \n");
+        for (int i = 0; i < 5; ++i) {
+            FILE *infile = fopen(testFiles[i], "rb");
+            printf("\nProcessing file contents ...\n");
+            preMd5(infile);
+            printf("\nClosing %s\n", testFiles[i]);
+            fclose(infile);
+        }
         break;
     case 3:
         printf("\n Information about the MD5 hashing algorithm \n");
