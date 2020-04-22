@@ -6,6 +6,7 @@
 #include <stdio.h> // Input/Output
 #include <stdint.h> // Req for uint(x) unsigned int
 #include <inttypes.h> // Includes formatters for output
+#include <getopt.h>
 
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 2
