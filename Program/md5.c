@@ -183,7 +183,6 @@ typedef enum {
     Output the MD5 result in little endian
 */ 
 void output(WORD MD5_RES[]) {
-    printf("MD5 -> ");
     for (int i = 0; i < 4; ++i) {
         printf("%02x%02x%02x%02x", 
         (MD5_RES[i] >>  0) & 0xFF, 
@@ -291,6 +290,69 @@ void preMd5(FILE *infile) {
     output(MD5_RES);
 }
 
+/* ------------------- Command Line Argument Outputs ----------------- */
+void cmd_line_display(int option) {
+    /* Multi-dimensional array to clean up test suite output / input */
+    const char* testFiles[5][3] = {
+        {"test-input/TestOne.txt", "*EMPTY FILE*", "d41d8cd98f00b204e9800998ecf8427e"},
+        {"test-input/TestTwo.txt", "a", "0cc175b9c0f1b6a831c399e269772661"},
+        {"test-input/TestThree.txt", "abc", "900150983cd24fb0d6963f7d28e17f72"},
+        {"test-input/TestFour.txt", "message digest", "f96b697d7cb7938d525a2f31aaf161d0"},
+        {"test-input/TestFive.txt", "abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b"}
+    };
+
+    /* Switch statement to help clean up the main method a bit, solely for output */
+    switch (option) {
+    case 0: // Case 0 - No command line arguments were entered
+        printf("\nAuthor :     Faris Nassif");
+        printf("\nModule :     Theory Of Algorithms");
+        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
+        printf("\n------------------------------------------------------------------\n");
+        printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
+        printf("\nInput - 1: Perform MD5 on a File            ");
+        printf("\nInput - 2: Perform MD5 on a String        \n");
+        printf("\nChoose an option: ");
+        break;
+    case 1: // Case 1 - The argument -h was entered, prompting a helpful display
+        printf("\n Helpful program related information \n");
+        break;
+    case 2: // Case 2 - The argument -t was entered, prompting a suite of tests
+        printf("\n----------------- MD5 Test Suite ----------------\n");
+        /* Loop once for each test */
+        for (int i = 0; i < 5; ++i) {
+            /* Print relevant information about the i'th test being carried out */
+            printf("Test Number: %d\nContent to Test: %s\nExpected Result: %s\n", i + 1, testFiles[i][1], testFiles[i][2]);
+            /* Open the i'th file */
+            FILE *infile = fopen(testFiles[i][0], "rb");
+            printf("Actual Result  : ");
+            /* Perform the MD5 hash on the content and close the file */
+            preMd5(infile);
+            fclose(infile);   
+            printf("\n-------------------------------------------------\n");
+        }
+        break;
+    case 3: // Case 3 - The argument -i was entered, prompting information about the algorithm
+        printf("\n Information about the MD5 hashing algorithm \n");
+        break;
+    case 4: // Case 4 - The argument -l was entered, prompting a list of valid arguments
+        printf("\n----------------Valid Command Line Argument Inputs----------------\n");
+        printf("\n-h  Displays helpful information for running the program.           ");
+        printf("\n-t  Runs the test suite to ensure the MD5 output is valid.          ");
+        printf("\n-i  Provides information about the MD5 algorithm.                   ");
+        printf("\n-l  Lists all command line arguments.                               ");
+        printf("\n-c  Provides a link to the source code on Github.                   ");
+        printf("\n------------------------------------------------------------------  ");
+        printf("\n**  The path to a local file can be entered to hash the chosen file.");
+        printf("\n**  A String of any length may be input to perform the hash on.     ");
+        break;
+    case 5: // Case 5 - The argument -c was entered, prompting the github link
+        printf("\n Github source code \n");
+        break;
+    default:
+        break;
+    }
+}
+
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
     /* Input vars */
@@ -304,7 +366,7 @@ int main(int argc, char *argv[]) {
     /* User ran 'md5.exe' without any arguments, display menu */
     if (argv[1] == NULL) {
         /* List menu and provide some input options */
-        print_usage(0);
+        cmd_line_display(0);
 		scanf("%d", &option);
 
         /* User wants to input a file .. */
@@ -352,23 +414,23 @@ int main(int argc, char *argv[]) {
             switch (getoptOption) {
             case 'h':
                 /* Will list helpful information relative to the program */
-                print_usage(1);
+                cmd_line_display(1);
                 break;
             case 't':
                 /* Will perform a suite of tests to verify correct output */
-                print_usage(2);
+                cmd_line_display(2);
                 break;
             case 'i':
                 /* Will provide some insight about the MD5 hashing algorithm */
-                print_usage(2);
+                cmd_line_display(2);
                 break;
             case 'l':
                 /* Will list all command line arguments for the user */
-                print_usage(4);
+                cmd_line_display(4);
                 break;
             case 'c':
                 /* Provides a link to the github source code */
-                print_usage(5);
+                cmd_line_display(5);
                 break;
             default:
                 printf("Error");
@@ -392,68 +454,4 @@ int main(int argc, char *argv[]) {
         }
     }
     return 0;
-}
-/* ------------------- Command Line Argument Outputs ----------------- */
-void print_usage(int option) {
-    /* All 5 test file names put into an array */
-    const char* testFiles[5] = {
-        "test-input/TestOne.txt",
-        "test-input/TestTwo.txt",
-        "test-input/TestThree.txt",
-        "test-input/TestFour.txt",
-        "test-input/TestFive.txt"
-    };
-
-    /* All 5 test file names put into an array */
-    const char* testFilesExpected[5] = {
-        "d41d8cd98f00b204e9800998ecf8427e",
-        "0cc175b9c0f1b6a831c399e269772661",
-        "900150983cd24fb0d6963f7d28e17f72",
-        "f96b697d7cb7938d525a2f31aaf161d0",
-        "c3fcd3d76192e4007dfb496cca67e13b"
-    };
-    /* Switch statement to help clean up the main method a bit, solely for output */
-    switch (option) {
-    case 0:
-        printf("\nAuthor :     Faris Nassif");
-        printf("\nModule :     Theory Of Algorithms");
-        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
-        printf("\n------------------------------------------------------------------\n");
-        printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
-        printf("\nInput - 1: Perform MD5 on a File            ");
-        printf("\nInput - 2: Perform MD5 on a String        \n");
-        printf("\nChoose an option: ");
-        break;
-    case 1:
-        printf("\n Helpful program related information \n");
-        break;
-    case 2:
-        for (int i = 0; i < 5; ++i) {
-            FILE *infile = fopen(testFiles[i], "rb");
-            printf("\nProcessing file contents ...\n");
-            preMd5(infile);
-            printf("\nClosing %s\n", testFiles[i]);
-            fclose(infile);
-        }
-        break;
-    case 3:
-        printf("\n Information about the MD5 hashing algorithm \n");
-        break;
-    case 4:
-        printf("\n----------------Valid Command Line Argument Inputs----------------\n");
-        printf("\n-h  Displays helpful information for running the program.           ");
-        printf("\n-t  Runs the test suite to ensure the MD5 output is valid.          ");
-        printf("\n-i  Provides information about the MD5 algorithm.                   ");
-        printf("\n-l  Lists all command line arguments.                               ");
-        printf("\n-c  Provides a link to the source code on Github.                   ");
-        printf("\n------------------------------------------------------------------  ");
-        printf("\n**  The path to a local file can be entered to hash the chosen file.");
-        printf("\n**  A String of any length may be input to perform the hash on.     ");
-        break;
-    case 5:
-        printf("\n Github source code \n");
-        break;
-    default:
-        break;
-    }
 }
