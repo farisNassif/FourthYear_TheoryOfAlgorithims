@@ -6,7 +6,7 @@
 #include <stdio.h> // Input/Output
 #include <stdint.h> // Req for uint(x) unsigned int
 #include <inttypes.h> // Includes formatters for output
-#include <getopt.h>
+#include <getopt.h> // Command line argument functionality
 
 /* 
     https://tools.ietf.org/html/rfc1321 => Page 2
@@ -295,17 +295,20 @@ void preMd5(FILE *infile) {
 int main(int argc, char *argv[]) {
     /* Input vars */
     int option;
+    /* CLI input option */
+    int getoptOption;
+    /* Declaration of file/string inputs */
     char fileName[100];
     char inputString[50];
-    
-    /* Menu Items */
-    printf("\nAuthor :     Faris Nassif");
-    printf("\nModule :     Theory Of Algorithms");
-    printf("\nSummary:     A program that executes a MD5 Hash on a given input\n");
-    printf("\n----------------------------------------------------------------\n");
 
+    /* User ran 'md5.exe' without any arguments, display menu */
     if (argv[1] == NULL) {
-        printf("\n*No command line argument specified   ");
+        /* List menu and provide some input options */
+        printf("\nAuthor :     Faris Nassif");
+        printf("\nModule :     Theory Of Algorithms");
+        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
+        printf("\n------------------------------------------------------------------\n");
+        printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
         printf("\nInput - 1: Perform MD5 on a File            ");
         printf("\nInput - 2: Perform MD5 on a String        \n");
         printf("\nChoose an option: ");
@@ -317,7 +320,7 @@ int main(int argc, char *argv[]) {
 			scanf("%s", fileName);    
 
             FILE *infile = fopen(fileName, "rb");
-            /* If invalid */
+            /* If invalid & file couldn't be found */
             if (!infile) {
                 printf("Error: couldn't open file %s.\n", argv[1]);
                 return 1;
@@ -351,6 +354,25 @@ int main(int argc, char *argv[]) {
             printf("\nInvalid Input\nExiting ...\n");
         }
     } else {
+        /* If a command line input char containing either h,t,i,l or c was provided */
+        if(getoptOption = getopt(argc,argv, "htilc")) {
+            switch (getoptOption) {
+            case 'l':
+                printf("\n----------------Valid Command Line Argument Inputs----------------\n");
+                printf("\n-h  Displays helpful information for running the program.          ");
+                printf("\n-t  Runs the test suite to ensure the MD5 output is valid.         ");
+                printf("\n-i  Provides information about the MD5 algorithm.                  ");
+                printf("\n-l  Lists all command line arguments.                              ");
+                printf("\n-c  Provides a link to the source code on Github.                  ");
+                printf("\n------------------------------------------------------------------  ");
+                printf("\n**  The path to a local file can be entered to hash the chosen file.");
+                printf("\n**  A String of any length may be input to perform the hash on.     ");
+                break;
+            default:
+                printf("Error");
+                break;
+            }
+        }
         /* They added a command line argument, assign it to the infile var */
         FILE *infile = fopen(argv[1], "rb");    
 
