@@ -290,7 +290,6 @@ void preMd5(FILE *infile) {
     }
     output(MD5_RES);
 }
-
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
     /* Input vars */
@@ -304,14 +303,7 @@ int main(int argc, char *argv[]) {
     /* User ran 'md5.exe' without any arguments, display menu */
     if (argv[1] == NULL) {
         /* List menu and provide some input options */
-        printf("\nAuthor :     Faris Nassif");
-        printf("\nModule :     Theory Of Algorithms");
-        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
-        printf("\n------------------------------------------------------------------\n");
-        printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
-        printf("\nInput - 1: Perform MD5 on a File            ");
-        printf("\nInput - 2: Perform MD5 on a String        \n");
-        printf("\nChoose an option: ");
+        print_usage(0);
 		scanf("%d", &option);
 
         /* User wants to input a file .. */
@@ -355,18 +347,27 @@ int main(int argc, char *argv[]) {
         }
     } else {
         /* If a command line input char containing either h,t,i,l or c was provided */
-        if(getoptOption = getopt(argc,argv, "htilc")) {
+        if(getoptOption = getopt(argc, argv, "htilc")) {
             switch (getoptOption) {
+            case 'h':
+                /* Will list helpful information relative to the program */
+                print_usage(1);
+                break;
+            case 't':
+                /* Will perform a suite of tests to verify correct output */
+                print_usage(2);
+                break;
+            case 'i':
+                /* Will provide some insight about the MD5 hashing algorithm */
+                print_usage(2);
+                break;
             case 'l':
-                printf("\n----------------Valid Command Line Argument Inputs----------------\n");
-                printf("\n-h  Displays helpful information for running the program.          ");
-                printf("\n-t  Runs the test suite to ensure the MD5 output is valid.         ");
-                printf("\n-i  Provides information about the MD5 algorithm.                  ");
-                printf("\n-l  Lists all command line arguments.                              ");
-                printf("\n-c  Provides a link to the source code on Github.                  ");
-                printf("\n------------------------------------------------------------------  ");
-                printf("\n**  The path to a local file can be entered to hash the chosen file.");
-                printf("\n**  A String of any length may be input to perform the hash on.     ");
+                /* Will list all command line arguments for the user */
+                print_usage(4);
+                break;
+            case 'c':
+                /* Provides a link to the github source code */
+                print_usage(5);
                 break;
             default:
                 printf("Error");
@@ -390,4 +391,45 @@ int main(int argc, char *argv[]) {
         }
     }
     return 0;
+}
+/* ------------------- Command Line Argument Outputs ----------------- */
+void print_usage(int option) {
+    /* Switch statement to help clean up the main method a bit, solely for output */
+    switch (option) {
+    case 0:
+        printf("\nAuthor :     Faris Nassif");
+        printf("\nModule :     Theory Of Algorithms");
+        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
+        printf("\n------------------------------------------------------------------\n");
+        printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
+        printf("\nInput - 1: Perform MD5 on a File            ");
+        printf("\nInput - 2: Perform MD5 on a String        \n");
+        printf("\nChoose an option: ");
+        break;
+    case 1:
+        printf("\n Helpful program related information \n");
+        break;
+    case 2:
+        printf("\n Suite of tests \n");
+        break;
+    case 3:
+        printf("\n Information about the MD5 hashing algorithm \n");
+        break;
+    case 4:
+        printf("\n----------------Valid Command Line Argument Inputs----------------\n");
+        printf("\n-h  Displays helpful information for running the program.           ");
+        printf("\n-t  Runs the test suite to ensure the MD5 output is valid.          ");
+        printf("\n-i  Provides information about the MD5 algorithm.                   ");
+        printf("\n-l  Lists all command line arguments.                               ");
+        printf("\n-c  Provides a link to the source code on Github.                   ");
+        printf("\n------------------------------------------------------------------  ");
+        printf("\n**  The path to a local file can be entered to hash the chosen file.");
+        printf("\n**  A String of any length may be input to perform the hash on.     ");
+        break;
+    case 5:
+        printf("\n Github source code \n");
+        break;
+    default:
+        break;
+    }
 }
