@@ -18,6 +18,7 @@
 * [Assignment Overview](#md5-overview)
 * [Running the Program](#running-the-program)
 * [How it Works](#how-does-it-work) 
+* [Project Implementation](#project-implementation) 
 * [Research & Development Diary](#research-and-development-diary)
 * [Testing](#testing)
 
@@ -85,7 +86,7 @@ There are three possible cases that may be executed when a message is about to b
 	* Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
 
 ### Append Length
-A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step
+A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step ensuring the message has a length that is an exact multiple of 16 (32-bit) words.
 
 ### Initialize Message Digest Buffer
 A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register [[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
@@ -123,6 +124,73 @@ Each of the four registers are incremented by the value it had before the block 
 
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
+
+## Project Implementation
+If comments and constants were stripped out, the actual functional code would only consist of around less than one-hundred lines. In this brief summary of the implementation I plan to talk about how that chunk of functional code operates and interacts with other parts of the program. I'll be talking about declared constants and how they weave into the main chunks of code however since most of the low level operations were detailed [above](#how-does-it-work) this section will be more focused on giving a bit of a higher level overview of the overall implementation.
+
+Upon launching the program, the ```main()``` method is executed initially, this method solely consists of a menu, allowing the user multiple [input options](#running-the-program). All input options lead down the same path, once an input is obtained it gets passed to the ```preMD5()``` function.
+```C
+void preMd5(FILE *infile) {
+    BLOCK M;
+    uint64_t nobits = 0;
+    PADFLAG status = READ;
+    WORD MD5_RES[] = {A, B, C, D};
+
+    while (nextblock(&M, infile, &nobits, &status)) {
+        md5(&M, MD5_RES);
+    }
+    output(MD5_RES);
+}
+```
+The purpose of the ```preMD5()``` function is to handle the pre-processing of the message blocks and then delegate the processed blocks to the ```md5()``` method to perform the hashing rounds. ```WORD MD5_RES[] = {A, B, C, D}``` plays an important role in the program, the array consists of the four 32-bit register values that will be used and manipulated during the actual hashing rounds and will ultimately contain the final hash to be output to the user.
+
+Before any of that happens the user defined input needs to be pre processed via the ```nextblock()``` function. This function processes and pads the message blocks based on the process outlined in the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321). A switch statement checks to see which of the three conditions outlined in the first section of [How does it work?](#how-does-it-work) is true, each message block that gets processed is passed into ```md5(&M, MD5_RES)``` as a parameter along with the array containing the four 32-bit register values needed to compute the hash.
+
+The ```md5()``` function is the final processing step and is executed for each message individual message block.
+```C
+void md5(BLOCK *M, WORD *MD5_RES) {
+    WORD a, b, c, d;
+    a = MD5_RES[0];
+    b = MD5_RES[1];
+    c = MD5_RES[2];
+    d = MD5_RES[3];
+
+    for(int i = 0; i<64; i++) {
+        if (i < 16) {
+            FF(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]);
+        } else if (i < 32) {
+            GG(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]);
+        } else if (i < 48) {
+            HH(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]);
+        } else {
+            II(MD5_RES[AA[i]], MD5_RES[BB[i]], MD5_RES[CC[i]], MD5_RES[DD[i]], M->threetwo[MM[i]] , S[i] , T[i]);
+        }
+    }
+    
+    MD5_RES[0] += a;
+    MD5_RES[1] += b;
+    MD5_RES[2] += c;
+    MD5_RES[3] += d;
+}
+```
+Four temporary values (<i>a, b, c, d</i>) are initialized with the pre-hash values of each of the four 32-bit register values, this is so the old value can be accumulated with each new temporary value for each iteration. The four transformation rounds of hashing consisting of 64(16*4) steps were simplified into a for loop, this was accomplished by initializing the constant parameterized values into pre-defined constant arrays. Each of the four rounds consists of a transformation function that gets executed 16 times. All of the parameters are pre-defined constants with exception of the fifth parameter which contains the processed message block.
+
+Once the four hashing rounds have concluded, the four temporary values that once contained the old 32-bit register values are now transformed, the next step is to add these transformed temporary values to the old 32-bit register values. This is repeated until all message blocks have undergone this process.
+
+Once all the message blocks have been pre-processed and processed, the array ```WORD MD5_RES[] = {A, B, C, D}``` should now contain the final MD5 hash, however printing and outputting the current values won't yet yield the correct output, this is because the MD5 hash output should begin with the low-order byte of A, and end with the high-order byte of D (<i>little endian</i>). To ensure the output follows this rule, the output array must be processed via a function to correct this.
+```C
+void output(WORD MD5_RES[]) {
+    printf("MD5 -> ");
+    for (int i = 0; i < 4; ++i) {
+        printf("%02x%02x%02x%02x", 
+        (MD5_RES[i] >>  0) & 0xFF, 
+        (MD5_RES[i] >>  8) & 0xFF, 
+        (MD5_RES[i] >> 16) & 0xFF, 
+        (MD5_RES[i] >> 24) & 0xFF);
+    }
+}
+```
+The ```output()``` function is called at the end of the program when the hashing rounds are complete. It's job is to display the result in little endian to ensure the output hash is correct. It works by using the bitwise operator ```>>``` which shifts the bits of each index of the array right by different amounts for each iteration of the loop for that index [[19]](https://stackoverflow.com/a/17913021). This ensures the output begins with the low-order byte of A and ends with the high-order byte D. Once all four final 32-bit register values are processed, the correct MD5 hash will be displayed to the user.
 
 ## Research and Development Diary
 * <b>Week One</b>
