@@ -7,7 +7,7 @@
 
 |Details  |    |
 | --- | --- |
-| **Project**  | [Project Spec](https://pdfhost.io/v/lgILkbKAl_project_8pdf.pdf) 
+| **Project**  | [Project Spec](https://pdfhost.io/v/P7KuCLtXS_project_11pdf.pdf) 
 | **GIF** | [Project Running](https://i.imgur.com/HTlEDIJ.gif)
 | **Course** | BSc (Hons) in Software Development
 | **Module** |  Theory of Algorithms |
@@ -211,6 +211,8 @@ The ```output()``` function is called at the end of the program when the hashing
 	* Having completed the videos I focused solely on the MD5 implementation. I refactored and simplified the function that performs the hash rounds for each block into a single loop by defining the parameterized input values as constant arrays. I also fixed issues with block processing including the context not changing correctly and cases not executing correctly in the switch statement. I was still getting the wrong output so began looking at methods in C to ensure output will always be in little endian (<i>as required for MD5</i>) [[18]](https://stackoverflow.com/questions/54548061/c-little-and-big-endian-confusion).
 * <b>Week Ten</b>
 	* After multiple attempts and testing of different endian solutions one was found that successfully extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [tests](#testing) against the project to verify results.
+* <b>Week Thirteen</b>
+	* Following the sudden societial change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html). I attempted to implement some basic arguments and code, however after further resarch discovered the ```getopt() long``` option. Instead of the traditional ```md5.exe -h``` method of invoking command line functions, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=)[[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
 
 ## Testing
 The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[20]](https://www.md5hashgenerator.com/) [[21]](http://www.md5.cz/).
@@ -269,3 +271,6 @@ The contents of the following tests are contained within the `Program/test-input
 [19] https://stackoverflow.com/a/17913021 <br>
 [20] https://www.md5hashgenerator.com/ <br>
 [21] http://www.md5.cz/ <br>
+[22] https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html <br>
+[23] https://www.youtube.com/watch?v=SjyR74lbZOc&t= <br>
+[24] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
