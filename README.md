@@ -44,7 +44,7 @@ For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
   > ./md5 --hashstring abc
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/0WbyNdr.gif">
+  <img src = "https://i.imgur.com/0WbyNdr.gif" width="700" height="425">
 </p>
 
 #### Hashing a File via a command line argument
@@ -52,7 +52,7 @@ For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
   > ./md5 --hashfile path-to/yourfile.txt
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/eVUY9Fz.gif">
+  <img src = "https://i.imgur.com/eVUY9Fz.gif" width="700" height="425">
 </p>
 
 #### Hashing a String OR File via console menu
@@ -60,8 +60,29 @@ For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
   > ./md5
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/J4HNxfC.gif">
+  <img src = "https://i.imgur.com/J4HNxfC.gif" width="700" height="425">
 </p>
+
+### Command Line Arguments
+| Valid Arguments     | Input <br>Examples       | Output         | 
+| :-------------: | :-------------: |:-------------:|
+| --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
+| --test | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
+| --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
+| --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
+
+The arguments were implemented with help from the `GetOpt::Long` module. This allows quick definitions of Unix-like interfaces options into the program.
+
+The Arguments could be declared and assigned to a character, in my case, after research [[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html) they were implemented as an array and associated with a single character meaning it could be utilized and delegated to a single Switch statement. Another benefit is that it could be specified whether to expect an additional argument, like in the case for both `--hashfile` and `--hashstring`.
+
+```C
+        static struct option long_options[] = {
+            {"help"      , no_argument      , 0, 'h'},
+            {"test"      , no_argument      , 0, 't'},
+            {"hashfile"  , required_argument, 0, 'f'},
+            {"hashstring", required_argument, 0, 's'}
+        };
+```
 
 ## How does it work?
 The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, prior to MD4 collisions being found [[1]](http://cacr.uwaterloo.ca/hac/about/chap9.pdf). It consists of five major steps [[3]](https://tools.ietf.org/html/rfc1321),
@@ -211,7 +232,7 @@ The ```output()``` function is called at the end of the program when the hashing
 * <b>Week Ten</b>
 	* After multiple attempts and testing of different endian solutions one was found that successfully extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [tests](#testing) against the project to verify results.
 * <b>Week Thirteen</b>
-	* Following the sudden societial change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html). I attempted to implement some basic arguments and code, however after further resarch discovered the ```getopt() long``` option. Instead of the traditional ```md5.exe -h``` method of invoking command line functions, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=)[[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
+	* Following the sudden societial change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html) [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=). I attempted to implement some basic arguments and code, however after further resarch discovered the ```getopt() long``` option. Instead of, for example, running ```md5.exe -h``` for help, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
 
 ## Testing
 The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[20]](https://www.md5hashgenerator.com/) [[21]](http://www.md5.cz/).
