@@ -8,7 +8,6 @@
 |Details  |    |
 | --- | --- |
 | **Project**  | [Project Spec](https://pdfhost.io/v/P7KuCLtXS_project_11pdf.pdf) 
-| **GIF** | [Project Running](https://i.imgur.com/HTlEDIJ.gif)
 | **Course** | BSc (Hons) in Software Development
 | **Module** |  Theory of Algorithms |
 | **Author** | [Faris Nassif](https://github.com/farisNassif) |
@@ -33,35 +32,35 @@ For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
 2. Navigate to the <b> \program\ </b> directory: `cd program`
 3. Compile the program: `gcc -o md5 md5.c` || `make md5`
-4. Execute the program: `md5.exe TestFile.txt` || `md5.exe` || `./md5`
+4. Execute the program: `md5.exe --hashstring abc` || `md5.exe --hashfile path/to/file.txt` || `md5.exe` || `./md5`
 
-#### The program may be executed in three different ways 
-* Enter a file name as a command line argument 
-* Enter a file name as a string to be hashed at runtime 
-* Enter a String to be hashed at runtime 
+#### The program may be executed in multiple ways
+* Run the program without a command line argument
+* Enter a file as a command line argument to be hashed at runtime 
+* Enter a String as a command line argument to be hashed at runtime 
 
-#### Define input via a command line argument
+#### Hashing a String via a command line argument
 ```bash
-  > md5.exe TestFile.txt
+  > ./md5 --hashstring abc
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/PACkAXO.png">
+  <img src = "https://i.imgur.com/0WbyNdr.gif">
 </p>
 
-#### Define input via console menu (File Input)
+#### Hashing a File via a command line argument
 ```bash
-  > md5.exe
+  > ./md5 --hashfile path-to/yourfile.txt
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/DeAUPx8.png">
+  <img src = "https://i.imgur.com/eVUY9Fz.gif">
 </p>
 
-#### Define input via console menu (String Input)
+#### Hashing a String OR File via console menu
 ```bash
-  > md5.exe
+  > ./md5
 ```
 <p align="center">
-  <img src = "https://i.imgur.com/YCWn3RI.png">
+  <img src = "https://i.imgur.com/J4HNxfC.gif">
 </p>
 
 ## How does it work?
