@@ -337,7 +337,7 @@ void cmd_line_display(int option) {
         printf("\n--hashstring <string>     | Hashes a specified String.             \n");
         printf("  ---------------Examples of Executing Arguments -----------------    ");
         printf("\nHashing a String:     md5.exe --hashstring abc                      ");
-        printf("\nHashing a File  :     md5.exe --hashfile path/to/textfile/text.txt  \n");
+        printf("\nHashing a File  :     md5.exe --hashfile test-input/TestOne.txt   \n");
         break;
     default:
         break;
@@ -463,5 +463,6 @@ int main(int argc, char *argv[]) {
                 abort();   
         }
     }
+    printf("\n");
     return 0;
 }
