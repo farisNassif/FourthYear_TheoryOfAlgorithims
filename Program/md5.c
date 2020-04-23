@@ -3,6 +3,7 @@
 // Summary:     A program that executes a MD5 Hash on a given input
 //              This program has been adapted based on the process outlined in https://tools.ietf.org/html/rfc1321
 
+#include <stdlib.h>   // For additional getopt() functionality
 #include <stdio.h>    // Input/Output
 #include <stdint.h>   // Req for uint(x) unsigned int
 #include <inttypes.h> // Includes formatters for output
@@ -290,34 +291,33 @@ void preMd5(FILE *infile) {
     output(MD5_RES);
 }
 
-/* ------------------- Command Line Argument Outputs ----------------- */
+/* -------------------- Command Line Argument Outputs ------------------ 
+* Very dirty to look at this method, exists to clean up the main method */
 void cmd_line_display(int option) {
-    /* Multi-dimensional array to clean up test suite output / input */
+    /* Multi-dimensional array to clean up test suite input & output */
     const char* testFiles[5][3] = {
-        {"test-input/TestOne.txt", "*EMPTY FILE*", "d41d8cd98f00b204e9800998ecf8427e"},
-        {"test-input/TestTwo.txt", "a", "0cc175b9c0f1b6a831c399e269772661"},
-        {"test-input/TestThree.txt", "abc", "900150983cd24fb0d6963f7d28e17f72"},
-        {"test-input/TestFour.txt", "message digest", "f96b697d7cb7938d525a2f31aaf161d0"},
-        {"test-input/TestFive.txt", "abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b"}
+        {"test-input/TestOne.txt",   "*EMPTY FILE*",               "d41d8cd98f00b204e9800998ecf8427e"},
+        {"test-input/TestTwo.txt",   "a",                          "0cc175b9c0f1b6a831c399e269772661"},
+        {"test-input/TestThree.txt", "abc",                        "900150983cd24fb0d6963f7d28e17f72"},
+        {"test-input/TestFour.txt",  "message digest",             "f96b697d7cb7938d525a2f31aaf161d0"},
+        {"test-input/TestFive.txt",  "abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b"}
     };
 
     /* Switch statement to help clean up the main method a bit, solely for output */
     switch (option) {
     case 0: // Case 0 - No command line arguments were entered
-        printf("\nAuthor :     Faris Nassif");
-        printf("\nModule :     Theory Of Algorithms");
-        printf("\nSummary:     A program that executes a MD5 Hash on a given input  \n");
-        printf("\n------------------------------------------------------------------\n");
         printf("\n*No command line argument specified, 'md5.exe -l' will list all valid command line arguments.\n");
         printf("\nInput - 1: Perform MD5 on a File            ");
         printf("\nInput - 2: Perform MD5 on a String        \n");
         printf("\nChoose an option: ");
         break;
-    case 1: // Case 1 - The argument -h was entered, prompting a helpful display
+    case 1: // Case 1 - The argument --help was entered, prompting a helpful display
         printf("\n Helpful program related information \n");
         break;
-    case 2: // Case 2 - The argument -t was entered, prompting a suite of tests
+    case 2: // Case 2 - The argument --test was entered, prompting a suite of tests
         printf("\n----------------- MD5 Test Suite ----------------\n");
+        printf("The following tests are outlined in Page 21 of the\nRequest for Comments MD5 Document.\nhttps://tools.ietf.org/html/rfc1321\n");
+        printf("-------------------------------------------------\n");
         /* Loop once for each test */
         for (int i = 0; i < 5; ++i) {
             /* Print relevant information about the i'th test being carried out */
@@ -335,18 +335,15 @@ void cmd_line_display(int option) {
         printf("\n Information about the MD5 hashing algorithm \n");
         break;
     case 4: // Case 4 - The argument -l was entered, prompting a list of valid arguments
-        printf("\n----------------Valid Command Line Argument Inputs----------------\n");
-        printf("\n-h  Displays helpful information for running the program.           ");
-        printf("\n-t  Runs the test suite to ensure the MD5 output is valid.          ");
-        printf("\n-i  Provides information about the MD5 algorithm.                   ");
-        printf("\n-l  Lists all command line arguments.                               ");
-        printf("\n-c  Provides a link to the source code on Github.                   ");
-        printf("\n------------------------------------------------------------------  ");
-        printf("\n**  The path to a local file can be entered to hash the chosen file.");
-        printf("\n**  A String of any length may be input to perform the hash on.     ");
-        break;
-    case 5: // Case 5 - The argument -c was entered, prompting the github link
-        printf("\n Github source code \n");
+        printf("\n--------------- Valid Command Line Argument Inputs ---------------  ");
+        printf("\n--help | Displays helpful information for running the program.      ");
+        printf("\n--test | Runs the test suite to ensure the MD5 output is valid.     ");
+        printf("\n--info | Provides information about the MD5 algorithm.              ");
+        printf("\n--hashfile <path_to_file> | Hashes the specified file.              ");
+        printf("\n--hashstring <string>     | Hashes a specified String.              \n");
+        printf("  ----------------Examples of Executing Arguments ------------------  ");
+        printf("\nHashing a String:     md5.exe --hashstring abc                      ");
+        printf("\nHashing a File  :     md5.exe --hashfile path/to/textfile/text.txt  \n");
         break;
     default:
         break;
@@ -355,17 +352,24 @@ void cmd_line_display(int option) {
 
 /* -------------------------- Main Method ---------------------------- */
 int main(int argc, char *argv[]) {
+    printf("------------------------------------------------------------------ ");
+    printf("\nAuthor :     Faris Nassif");
+    printf("\nModule :     Theory Of Algorithms");
+    printf("\nSummary:     A program that executes a MD5 Hash on a given input   ");
+    printf("\nGithub :     https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms   ");
     /* Input vars */
     int option;
     /* CLI input option */
-    int getoptOption;
+    char getoptOption;
     /* Declaration of file/string inputs */
     char fileName[100];
     char inputString[50];
+    /* Long getopt options */
+    int c;
 
     /* User ran 'md5.exe' without any arguments, display menu */
     if (argv[1] == NULL) {
-        /* List menu and provide some input options */
+        /* List menu and provide some input options and information */
         cmd_line_display(0);
 		scanf("%d", &option);
 
@@ -408,7 +412,67 @@ int main(int argc, char *argv[]) {
         } else {
             printf("\nInvalid Input\nExiting ...\n");
         }
-    } else {
+    } 
+    /* Else, a command line argument was detected */
+    else {
+            /* Long getopt() options, adapted from:
+            *  https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html */
+            static struct option long_options[] = {
+                {"add",     no_argument,       0, 'a'},
+                {"append",  no_argument,       0, 'b'},
+                {"help",    no_argument,       0, 'h'},
+                {"test",    no_argument,       0, 't'},
+                {"delete",  required_argument, 0, 'd'},
+                {"create",  required_argument, 0, 'c'},
+                {"file",    required_argument, 0, 'f'},
+                {0, 0, 0, 0}
+            };
+
+            /* getopt_long stores the option index here */
+            int option_index = 0;
+
+            c = getopt_long (argc, argv, "abc:d:f:", long_options, &option_index);
+            switch (c) {
+                case 0:
+                /* If this option set a flag, do nothing else now. */
+                if (long_options[option_index].flag != 0)
+                    break;
+                printf ("option %s", long_options[option_index].name);
+                if (optarg)
+                    printf (" with arg %s", optarg);
+                    printf ("\n");
+                    break;
+                case 'a':
+                    puts ("option -a\n");
+                    break;
+                case 'b':
+                    puts ("option -b\n");
+                    break;
+                case 'c':
+                    printf ("option -c with value `%s'\n", optarg);
+                    break;
+                case 'd':
+                    printf ("option -d with value `%s'\n", optarg);
+                    break;
+                case 'f':
+                    printf ("option -f with value `%s'\n", optarg);
+                    break;
+                case 'h':
+                    cmd_line_display(4);
+                    break;
+                case 't':
+                    /* Will perform a suite of tests to verify correct output */
+                    cmd_line_display(2);
+                    break;
+                case '?':
+                /* getopt_long already printed an error message. */
+                break;
+
+                default:
+                abort ();   
+            }
+            
+        // https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
         /* If a command line input char containing either h,t,i,l or c was provided */
         if(getoptOption = getopt(argc, argv, "htilc")) {
             switch (getoptOption) {
@@ -417,12 +481,11 @@ int main(int argc, char *argv[]) {
                 cmd_line_display(1);
                 break;
             case 't':
-                /* Will perform a suite of tests to verify correct output */
-                cmd_line_display(2);
+
                 break;
             case 'i':
                 /* Will provide some insight about the MD5 hashing algorithm */
-                cmd_line_display(2);
+                cmd_line_display(3);
                 break;
             case 'l':
                 /* Will list all command line arguments for the user */
