@@ -100,6 +100,21 @@ The following prerequisite steps are required to clone and execute the program o
 <i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
 
 ## Command Line Arguments
+The C programming language, like most others allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
+
+```C
+int main(int argc, char *argv[]) {
+
+}
+```
+The program in this case can take two arguments, an integer called `argc` and a character array called `*argv[]`.
+
+* `argc`
+    * Conventially, `argc`, which stands for argument count, retrieves the amount of arguments the program has just taken. For example, if the following was ran `./md5 one two three`, argc would be equal to four, since it includes the actual program declaration [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
+    
+* `*argv[]`
+    * Standing for 'argument vector', `argv[]` is an array containing the command line arguments. Looking at the previous example, if the input was `./md5 one two three`, `argv[]` would be of size four, the first index being `md5`, the second being `one` and so on [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
+
 | Valid Arguments     | Input <br>Examples       | Output         | 
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
@@ -124,4 +139,5 @@ The Arguments could be declared and assigned to a character, in my case, after r
 
 ## References
 [1] https://stackoverflow.com/a/10404524/12314065 <br>
-[2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
+[2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html <br>
+[3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf <i>(Page 102 - 105)</i><br>
