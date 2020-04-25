@@ -51,7 +51,7 @@ The repository is intended to be as simplistic as possible, contents were sepera
 Prerequisite steps may be required before running the program and these steps vary depending on Platform. This section will be divided into instructions for Windows and Debian-based Linux systems.
 
 ### Running on Debian-based Linux Systems
-The following prerequisite steps are required to clone and execute the program on Debian-based machines
+The following prerequisite steps are required to clone and execute the program on <b>Debian-based</b> machines
 
 <b><i>You may skip the following two steps if they don't apply</i></b>,
 
@@ -75,7 +75,7 @@ The following prerequisite steps are required to clone and execute the program o
 <i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
 
 ### Running on Windows-based Systems
-The following prerequisite steps are required to clone and execute the program on Windows-based machines
+The following prerequisite steps are required to clone and execute the program on <b>Windows-based</b> machines
 
 <b><i>You may skip the following two steps if they don't apply</i></b>,
 
@@ -100,7 +100,7 @@ The following prerequisite steps are required to clone and execute the program o
 <i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
 
 ## Command Line Arguments
-The C programming language, like most others allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
+The C programming language, like most others, allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
 
 ```C
 int main(int argc, char *argv[]) {
@@ -113,12 +113,13 @@ The program in this case can take two arguments, an integer called `argc` and a 
     * Conventially, `argc`, which stands for argument count, retrieves the amount of arguments the program has just taken. For example, if the following was ran `./md5 one two three`, argc would be equal to four, since it includes the actual program declaration [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
     
 * `*argv[]`
-    * Standing for 'argument vector', `argv[]` is an array containing the command line arguments. Looking at the previous example, if the input was `./md5 one two three`, `argv[]` would be of size four, the first index being `md5`, the second being `one` and so on [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
+    * Meaning 'argument vector', `argv[]` is an array containing the command line arguments. Looking at the previous example, if the input was `./md5 one two three`, `argv[]` would be of size four, the first index being `md5`, the second being `one` and so on [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
 
 | Valid Arguments     | Input <br>Examples       | Output         | 
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
-| --test | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
+| --test    | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
+| --explain | `./md5 --explain`    | Displays a brief explaination of MD5 including an ASCII high-level diagram | 
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
 
@@ -132,9 +133,15 @@ The Arguments could be declared and assigned to a character, in my case, after r
         static struct option long_options[] = {
             {"help"      , no_argument      , 0, 'h'},
             {"test"      , no_argument      , 0, 't'},
+            {"explain"   , no_argument      , 0, 'e'},
             {"hashfile"  , required_argument, 0, 'f'},
             {"hashstring", required_argument, 0, 's'}
         };
+        
+        
+        
+        
+        
 ```
 
 ## References
