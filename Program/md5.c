@@ -338,6 +338,41 @@ void cmd_line_display(int option) {
         printf("\n Hashing a String:     md5.exe --hashstring abc                     ");
         printf("\n Hashing a File  :     md5.exe --hashfile test-input/TestOne.txt  \n");
         break;
+    case 3: // Case 3 - The argument --explain was entered, display information about MD5
+        printf("\n-------------------------------------------------------------------------\n");
+        printf("The MD5 hashing algorithm is a one-way cryptographic function that \n");
+        printf("accepts a message of any length as input and returns as output a \n");
+        printf("fixed-length digest value to be used for authenticating the original message.\n");
+        
+        printf("\nX (X1, X2, X3, ..... Xn)                                           \n");
+        printf("            +                                                        \n");
+        printf("            |  448 bits                                              \n");
+        printf("            |                                                        \n");
+        printf("            v                                                        \n");
+        printf("+-----------+----------+                    <-----------------------^\n");
+        printf("|                      |                    |                       |\n");
+        printf("|   Padding Process    |                    |                       |\n");
+        printf("|                      |                    |                       |\n");
+        printf("+-----------+----------+                    |                       ^\n");
+        printf("            |                   +-----------v------------+          |\n");
+        printf("            |       512 bits    |                        |          |\n");
+        printf("            +------------------>+  Compression Function  |          |\n");
+        printf("                                |                        |          |\n");
+        printf("                                +-----------+------------+          |\n");
+        printf("                                            |                       |\n");
+        printf("                                            |                       |\n");
+        printf("                                            |                       |\n");
+        printf("                                            +----------------------->\n");
+        printf("                                            |                        \n");
+        printf("                                            |                        \n");
+        printf("                                            |                        \n");
+        printf("                                            v                        \n");
+        printf("                                       128 bit hash                  \n");
+        printf("\nThe MD5 message digest hashing algorithm processes data in 512-bit blocks,\n");
+        printf("broken down into 16 words composed of 32 bits each. The output from MD5 is a \n");
+        printf("128-bit message digest value.\n");
+        printf("\nFor a more in depth overview see: https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms");
+        break;
     default:
         break;
     }
@@ -350,6 +385,7 @@ int main(int argc, char *argv[]) {
     printf("\nModule :     Theory Of Algorithms");
     printf("\nSummary:     A program that executes a MD5 Hash on a given input");
     printf("\nGithub :     https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms\n");
+
     /* Input vars */
     int option;
     /* Declaration of file/string inputs */
@@ -411,6 +447,7 @@ int main(int argc, char *argv[]) {
         static struct option long_options[] = {
             {"help"      , no_argument      , 0, 'h'},
             {"test"      , no_argument      , 0, 't'},
+            {"explain"   , no_argument      , 0, 'e'},
             {"hashfile"  , required_argument, 0, 'f'},
             {"hashstring", required_argument, 0, 's'},
             {0           , 0                , 0,  0 }
@@ -428,6 +465,11 @@ int main(int argc, char *argv[]) {
             case 't':
                 /* Will perform a suite of tests to verify correct output */
                 cmd_line_display(1);
+                break;
+
+            case 'e':
+                /* Will print out some information about MD5 */
+                cmd_line_display(3);
                 break;
             case 'f':
                 /* Attempt to open the file to be hashed */
