@@ -107,9 +107,7 @@ The following prerequisite steps are required to clone and execute the program o
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
 
-<p align="center>
-<b><i>The above input examples are written for Debian-based Linux machines, for Windows, simply replace ```./md5``` with ```md5.exe```, assuming you have followed the compilation steps outlined in the [above section](#running-the-program)</b></i>.
-</p>
+<b><i>The above command-line input examples are written for Debian-based Linux machines, for Windows, simply replace ```./md5``` with ```md5.exe```, assuming you have followed the compilation steps outlined in the [above section](#running-the-program)</b></i>.
 
 The arguments were implemented with help from the `GetOpt::Long` module. This allows quick definitions of Unix-like interface options into the program.
 
