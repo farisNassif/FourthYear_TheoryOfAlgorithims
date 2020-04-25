@@ -51,14 +51,14 @@ The repository is intended to be as simplistic as possible, contents were sepera
 Prerequisite steps may be required before running the program and these steps vary depending on Platform. This section will be divided into instructions for Windows and Debian-based Linux systems.
 
 ### Running on Debian-based Linux Systems
-The following prerequisite steps are required to clone and execute the program, <b><i>You may skip these steps if they don't apply</i></b>,
+The following prerequisite steps are required to clone and execute the program on Debian-based machines, <b><i>You may skip these steps if they don't apply</i></b>,
 
-##### Installing the GCC Compiler
+##### 1. Installing the GCC Compiler
 1. <b>Open a Command Prompt</b>
 2. <b>Type:</b> ```$ sudo apt install gcc```
 3. <b>Confirm Instillation:</b> ```$ gcc --version```  
 
-##### Installing Git
+##### 2. Installing Git
 1. <b>Open a Command Prompt</b>
 2. <b>Type:</b> ```$ sudo apt install git```
 3. <b>Confirm Instillation:</b> ```$ git --version```  
@@ -73,12 +73,27 @@ The following prerequisite steps are required to clone and execute the program, 
 <i>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</i>
 
 ### Running on Windows-based Systems
-The following prerequisite steps are required to clone and execute the program, <b><i>You may skip these steps if they don't apply</i></b>,
+The following prerequisite steps are required to clone and execute the program on Windows-based machines, <b><i>You may skip these steps if they don't apply</i></b>,
 
-##### Installing the GCC Compiler
+##### 1. Installing the GCC Compiler
+1. <b>Download and Install [MinGW](https://sourceforge.net/projects/mingw/) for Windows
+2. <b>Open a Command Prompt</b>
+3. <b>Type:</b> ```mingw-get install gcc``` 
+3. <b>Confirm Instillation:</b> ```gcc --version``` 
+  
+##### 2. Installing Git
+1. <b>Download and Install [Git](https://git-scm.com/download/win)</b>
+2. <b>Open a Command Prompt</b>
+3. <b>Confirm Instillation:</b> ```git --version```
+
+#### Cloning and Executing the Program
 1. <b>Open a Command Prompt</b>
-2. <b>Type:</b> ```$ sudo apt install gcc```
-3. <b>Confirm Instillation:</b> ```$ gcc --version```  
+2. <b>Type:</b> ```git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms```
+3. <b>Navigate to ```/Program```:</b> ```$ cd FourthYear_TheoryOfAlgorithms/Program```
+4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
+5. <b>Execute the Program:</b> ```md5.exe```
+
+<i>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</i>
 
 ## References
 [1] https://stackoverflow.com/a/10404524/12314065
