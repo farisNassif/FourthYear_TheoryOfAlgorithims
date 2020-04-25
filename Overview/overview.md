@@ -6,11 +6,11 @@
 ## Contents of the Report
 * [Introduction](#introduction)
 * [Running the Program](#running-the-program)
+* [Code Overview and MD5 Implementation](#md5-implementation-and-code-overview) 
 * [Command Line Arguments](#command-line-arguments)
-* [Code Overview](#code-overview)
-* [Testing the Program](#testing-the-program)
-* [MD5 Overview](#md5-overview) 
 * [Complexity of MD5](#complexity-of-md5)
+* [Testing the Program](#testing-the-program)
+* [Conclusion](#conclusion)
 * [References](#references)
 
 ## Introduction
@@ -76,14 +76,16 @@ Prerequisite steps may be required before running the program and these steps va
 4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
 5. <b>Execute the Program:</b> ```$ ./md5```
 
-<i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
+<p align="center">
+    <i><b>See the <a href="https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments">Command Line Arguments</a> section for alternative approaches to executing the program</b></i>
+</p>
 
 <h3 align="center">
   Running on Windows-based Systems
 </h3>
   
 <p align="center">
-  The following prerequisite steps are required to clone and execute the program on <b>Windows-based</b> machines<b><i><br>You may skip the following two steps if they don't apply</i></b>,  
+  The following prerequisite steps are required to clone and execute the program on <b>Windows-based</b> machines<b><i><br>You may skip  the following two steps if they don't apply</i></b>,  
 </p>
 
 ##### 1. Installing the GCC Compiler
@@ -104,8 +106,12 @@ Prerequisite steps may be required before running the program and these steps va
 4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
 5. <b>Execute the Program:</b> ```md5.exe```
 
-<i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
+<p align="center">
+    <i><b>See the <a href="https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments">Command Line Arguments</a> section for alternative approaches to executing the program</b></i>
+</p>
 
+## Code Overview and MD5 Implementation 
+ 
 ## Command Line Arguments
 The C programming language, like most others, allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
 
@@ -149,6 +155,8 @@ The Arguments can be declared and assigned to a character, in my case, after rea
             {"hashstring", required_argument, 0, 's'}
         };    
 ```
+
+## Complexity of MD5
 
 ## References
 [1] https://stackoverflow.com/a/10404524/12314065 <br>
