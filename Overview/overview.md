@@ -51,17 +51,19 @@ The repository is intended to be as simplistic as possible, contents were sepera
 Prerequisite steps may be required before running the program and these steps vary depending on Platform. This section will be divided into instructions for Windows and Debian-based Linux systems.
 
 ### Running on Debian-based Linux Systems
-The following prerequisite steps are required to clone and execute the program on Debian-based machines, <b><i>You may skip these steps if they don't apply</i></b>,
+The following prerequisite steps are required to clone and execute the program on Debian-based machines
+
+<b><i>You may skip the following two steps if they don't apply</i></b>,
 
 ##### 1. Installing the GCC Compiler
 1. <b>Open a Command Prompt</b>
 2. <b>Type:</b> ```$ sudo apt install gcc```
-3. <b>Confirm Instillation:</b> ```$ gcc --version```  
+3. <b>Confirm installation:</b> ```$ gcc --version```  
 
 ##### 2. Installing Git
 1. <b>Open a Command Prompt</b>
 2. <b>Type:</b> ```$ sudo apt install git```
-3. <b>Confirm Instillation:</b> ```$ git --version```  
+3. <b>Confirm installation:</b> ```$ git --version```  
 
 #### Cloning and Executing the Program
 1. <b>Open a Command Prompt</b>
@@ -70,13 +72,15 @@ The following prerequisite steps are required to clone and execute the program o
 4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
 5. <b>Execute the Program:</b> ```$ ./md5```
 
-<i>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</i>
+<i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
 
 ### Running on Windows-based Systems
-The following prerequisite steps are required to clone and execute the program on Windows-based machines, <b><i>You may skip these steps if they don't apply</i></b>,
+The following prerequisite steps are required to clone and execute the program on Windows-based machines
+
+<b><i>You may skip the following two steps if they don't apply</i></b>,
 
 ##### 1. Installing the GCC Compiler
-1. <b>Download and Install [MinGW](https://sourceforge.net/projects/mingw/) for Windows
+1. <b>Download and Install [MinGW](https://sourceforge.net/projects/mingw/) for Windows</b>
 2. <b>Open a Command Prompt</b>
 3. <b>Type:</b> ```mingw-get install gcc``` 
 3. <b>Confirm Instillation:</b> ```gcc --version``` 
@@ -93,7 +97,33 @@ The following prerequisite steps are required to clone and execute the program o
 4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
 5. <b>Execute the Program:</b> ```md5.exe```
 
-<i>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</i>
+<i><b>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</b></i>
+
+## Command Line Arguments
+| Valid Arguments     | Input <br>Examples       | Output         | 
+| :-------------: | :-------------: |:-------------:|
+| --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
+| --test | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
+| --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
+| --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
+
+<p align="center>
+<b><i>The above input examples are written for Debian-based Linux machines, for Windows, simply replace ```./md5``` with ```md5.exe```, assuming you have followed the compilation steps outlined in the [above section](#running-the-program)</b></i>.
+</p>
+
+The arguments were implemented with help from the `GetOpt::Long` module. This allows quick definitions of Unix-like interface options into the program.
+
+The Arguments could be declared and assigned to a character, in my case, after research [[2]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html) they were implemented as an array and associated with a single character meaning it could be utilized and delegated to a single Switch statement. Another benefit is that it could be specified whether to expect an additional argument, like in the case for both `--hashfile` and `--hashstring`.
+
+```C
+        static struct option long_options[] = {
+            {"help"      , no_argument      , 0, 'h'},
+            {"test"      , no_argument      , 0, 't'},
+            {"hashfile"  , required_argument, 0, 'f'},
+            {"hashstring", required_argument, 0, 's'}
+        };
+```
 
 ## References
-[1] https://stackoverflow.com/a/10404524/12314065
+[1] https://stackoverflow.com/a/10404524/12314065 <br>
+[2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
