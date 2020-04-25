@@ -115,6 +115,12 @@ The program in this case can take two arguments, an integer called `argc` and a 
 * `*argv[]`
     * Meaning 'argument vector', `argv[]` is an array containing the command line arguments. Looking at the previous example, if the input was `./md5 one two three`, `argv[]` would be of size four, the first index being `md5`, the second being `one` and so on [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
 
+### Functinal Command Line Arguments
+
+<p align="center">
+    <b><i>The table below contains a list of valid command-line arguments specific to the program, an example of how to input them and also their output.<br>The input examples are written for Debian-based Linux machines, for Windows, simply replace './md5' with 'md5.exe', assuming you have followed the compilation steps outlined in the <a href="https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#running-the-program">above section</a></i></b>
+</p>
+
 | Valid Arguments     | Input <br>Examples       | Output         | 
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
@@ -122,8 +128,6 @@ The program in this case can take two arguments, an integer called `argc` and a 
 | --explain | `./md5 --explain`    | Displays a brief explaination of MD5 including an ASCII high-level diagram | 
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
-
-<b><i>The above command-line input examples are written for Debian-based Linux machines, for Windows, simply replace ```./md5``` with ```md5.exe```, assuming you have followed the compilation steps outlined in the [above section](#running-the-program)</b></i>.
 
 The arguments were implemented with help from the `GetOpt::Long` module. This allows quick definitions of Unix-like interface options into the program.
 
@@ -136,12 +140,7 @@ The Arguments could be declared and assigned to a character, in my case, after r
             {"explain"   , no_argument      , 0, 'e'},
             {"hashfile"  , required_argument, 0, 'f'},
             {"hashstring", required_argument, 0, 's'}
-        };
-        
-        
-        
-        
-        
+        };    
 ```
 
 ## References
