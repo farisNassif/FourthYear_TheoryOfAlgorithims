@@ -6,6 +6,7 @@
 ## Contents of the Report
 * [Introduction](#introduction)
 * [Running the Program](#running-the-program)
+* [Command Line Arguments](#command-line-arguments)
 * [Testing the Program](#testing-the-program)
 * [MD5 Overview](#md5-overview) 
 * [Complexity of MD5](#complexity-of-md5)
@@ -47,6 +48,37 @@ The repository is intended to be as simplistic as possible, contents were sepera
     * Following undesireable external circumstances, the scope of the project shifted. This shift in scope meant a thorougly documented report of the project and it's related material was to be included in the repository along with previously included items. 
 
 ## Running the Program
+Prerequisite steps may be required before running the program and these steps vary depending on Platform. This section will be divided into instructions for Windows and Debian-based Linux systems.
+
+### Running on Debian-based Linux Systems
+The following prerequisite steps are required to clone and execute the program, <b><i>You may skip these steps if they don't apply</i></b>,
+
+##### Installing the GCC Compiler
+1. <b>Open a Command Prompt</b>
+2. <b>Type:</b> ```$ sudo apt install gcc```
+3. <b>Confirm Instillation:</b> ```$ gcc --version```  
+
+##### Installing Git
+1. <b>Open a Command Prompt</b>
+2. <b>Type:</b> ```$ sudo apt install git```
+3. <b>Confirm Instillation:</b> ```$ git --version```  
+
+#### Cloning and Executing the Program
+1. <b>Open a Command Prompt</b>
+2. <b>Type:</b> ```$ git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms```
+3. <b>Navigate to ```/Program```:</b> ```$ cd FourthYear_TheoryOfAlgorithms/Program```
+4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
+5. <b>Execute the Program:</b> ```$ ./md5```
+
+<i>See the [Command Line Arguments](https://gcc.gnu.org/) section for alternative approaches to executing the program</i>
+
+### Running on Windows-based Systems
+The following prerequisite steps are required to clone and execute the program, <b><i>You may skip these steps if they don't apply</i></b>,
+
+##### Installing the GCC Compiler
+1. <b>Open a Command Prompt</b>
+2. <b>Type:</b> ```$ sudo apt install gcc```
+3. <b>Confirm Instillation:</b> ```$ gcc --version```  
 
 ## References
 [1] https://stackoverflow.com/a/10404524/12314065
