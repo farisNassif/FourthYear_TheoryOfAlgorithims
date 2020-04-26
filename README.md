@@ -85,9 +85,35 @@ The Arguments could be declared and assigned to a character, in my case, after r
         };
 ```
 ## Project Implementation
-If comments and constants were stripped out, the actual functional code would only consist of around less than one-hundred lines. In this brief summary of the implementation I plan to talk about how that chunk of functional code operates and interacts with other parts of the program. I'll be talking about declared constants and how they weave into the main chunks of code however since most of the low level operations were detailed [above](#how-does-it-work) this section will be more focused on giving a bit of a higher level overview of the overall implementation.
+When looking at the C file containing the code for the MD5 implementation it may be an eyesore, however there really isn't much to it. The hash consists of about a dozen constants and two methods, but I appriciate how it may look more convuluted than it is.
 
-Upon launching the program, the ```main()``` method is executed initially, this method solely consists of a menu, allowing the user multiple [input options](#running-the-program). All input options lead down the same path, once an input is obtained it gets passed to the ```preMD5()``` function.
+Assume the user wants to hash a text file called '<b>textfile.txt</b>' with the contents '<b>abc</b>', and they execute the program from the command line with the statement ```/.md5 --hashfile textfile.txt```, well <i>what actually happens under the hood?</i>, I'll attempt to explain the process step-by-step. (<i>The implementation code is heavily based on the process outlined in the Request for Comments Document and appropriately referenced within the code</i>) [[3]](https://tools.ietf.org/html/rfc1321).
+
+Command-line arguemnts are implemented meaning the program will associate ```--hashfile``` with the character ```f``` and expect an argument as specified by the '<b>required_argument</b>' paramater below.
+
+```C
+        static struct option long_options[] = {
+            {"help"      , no_argument      , 0, 'h'},
+            {"test"      , no_argument      , 0, 't'},
+            {"explain"   , no_argument      , 0, 'e'},
+            {"hashfile"  , required_argument, 0, 'f'},
+            {"hashstring", required_argument, 0, 's'}
+        };    
+```
+In this case, the arugment is '<b>textfile.txt</b>'. A switch statement which checks which command-line argument was ran will execute code according to the input. If no textfile argument was passed with the command-line argument ```--hashfile```, then the program by default will abort. In the case of the above input example, the following case will be reached,
+```C
+case 'f':
+    infile = fopen(optarg, "rb");    
+
+    if (!infile) {
+        return 1;
+    } else {
+        preMd5(infile);
+        fclose(infile);
+    }                    
+    break;
+```
+This case checks to see if the file is valid or invalid, if the latter the program is aborted, however if the former is true the file is passed to the ```preMd5()``` function.
 ```C
 void preMd5(FILE *infile) {
     BLOCK M;
@@ -103,7 +129,7 @@ void preMd5(FILE *infile) {
 ```
 The purpose of the ```preMD5()``` function is to handle the pre-processing of the message blocks and then delegate the processed blocks to the ```md5()``` method to perform the hashing rounds. ```WORD MD5_RES[] = {A, B, C, D}``` plays an important role in the program, the array consists of the four 32-bit register values that will be used and manipulated during the actual hashing rounds and will ultimately contain the final hash to be output to the user.
 
-Before any of that happens the user defined input needs to be pre processed via the ```nextblock()``` function. This function processes and pads the message blocks based on the process outlined in the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321). A switch statement checks to see which of the three conditions outlined in the first section of [How does it work?](#how-does-it-work) is true, each message block that gets processed is passed into ```md5(&M, MD5_RES)``` as a parameter along with the array containing the four 32-bit register values needed to compute the hash.
+Before any of that happens the user defined input needs to be pre processed via the ```nextblock()``` function. This function processes and pads the message blocks based on the process outlined in the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321). A switch statement checks to see which of the three conditions outlined in the first section of [How MD5 Works](#https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#how-md5-works) is true, each message block that gets processed is passed into ```md5(&M, MD5_RES)``` as a parameter along with the array containing the four 32-bit register values needed to compute the hash.
 
 The ```md5()``` function is the final processing step and is executed for each message individual message block.
 ```C
