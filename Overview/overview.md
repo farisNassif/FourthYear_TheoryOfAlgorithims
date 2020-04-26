@@ -6,9 +6,10 @@
 ## Contents of the Report
 * [Introduction](#introduction)
 * [Running the Program](#running-the-program)
-* [Code Overview and MD5 Implementation](#md5-implementation-and-code-overview) 
-* [Command Line Arguments](#command-line-arguments)
+* [How MD5 Works](#how-md5-works) 
 * [Complexity of MD5](#complexity-of-md5)
+* [Code Implementation](#code-implementation)
+* [Command Line Arguments](#command-line-arguments)
 * [Testing the Program](#testing-the-program)
 * [Conclusion](#conclusion)
 * [References](#references)
@@ -37,7 +38,7 @@ FourthYear_TheoryOfAlgorithms
     └── Overview.md
 ```
 #### Repository Design
-The repository is intended to be as simplistic as possible, contents were seperated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
+The repository is construted to be as simplistic as possible, contents were seperated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
 
 * Program
     * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). <i>For an overview on what the code does [see](#code-overview)</i>.
@@ -110,7 +111,24 @@ Prerequisite steps may be required before running the program and these steps va
     <i><b>See the <a href="https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments">Command Line Arguments</a> section for alternative approaches to executing the program</b></i>
 </p>
 
-## Code Overview and MD5 Implementation 
+## How MD5 Works
+At a high level, the MD5 Hashing algorithm is a <b>one-way</b> cryptographic function that as an input, receives a message of any length and outputs a fixed length digest value which can be used for authenticating the original message.
+
+####<i>What does One-Way mean?</i>
+In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text.
+
+#### What is MD5 Used For?
+In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm. A major function of MD5 was validating the integrity of files. Consider the following image, 
+
+<p align="center">
+  <img src = "https://i.imgur.com/aFu16gp.png" width="400" height="400">
+   <br>
+  <b>Illustrating the transmission use for MD5</b><br><i>Made with <a href="http://asciiflow.com/">Asciiflow</a></i>
+</p>
+
+## Complexity of MD5
+
+## Code Implementation
  
 ## Command Line Arguments
 The C programming language, like most others, allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
@@ -156,9 +174,13 @@ The Arguments can be declared and assigned to a character, in my case, after rea
         };    
 ```
 
-## Complexity of MD5
+## Testing the Program
+
+## Conclusion
 
 ## References
 [1] https://stackoverflow.com/a/10404524/12314065 <br>
 [2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html <br>
 [3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf <i>(Page 102 - 105)</i><br>
+[4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function <br>
+[5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf <br>
