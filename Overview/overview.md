@@ -168,6 +168,12 @@ Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD
 ```
 Each of the four registers are incremented by the value it had before the block was started.
 
+<p align="center">
+  <img src = "https://i.imgur.com/CYz7hPV.png" width="400" height="500">
+   <br>
+  <b>Visual Representation of the Compression Function (64 Rounds)</b><br><i>Made with <a href="http://asciiflow.com/">Asciiflow</a></i>
+</p>
+
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
 
