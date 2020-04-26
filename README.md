@@ -68,6 +68,7 @@ For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
 | --test | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
+| --explain | `./md5 --explain`    | Displays a brief explaination of MD5 including an ASCII high-level diagram | 
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
 
@@ -79,68 +80,14 @@ The Arguments could be declared and assigned to a character, in my case, after r
         static struct option long_options[] = {
             {"help"      , no_argument      , 0, 'h'},
             {"test"      , no_argument      , 0, 't'},
+	    {"explain"   , no_argument      , 0, 'e'},
             {"hashfile"  , required_argument, 0, 'f'},
             {"hashstring", required_argument, 0, 's'}
         };
 ```
 
 ## How does it work?
-The MD5 Message-Digest Algorithm was designed as a strengthened version of MD4, prior to MD4 collisions being found [[1]](http://cacr.uwaterloo.ca/hac/about/chap9.pdf). It consists of five major steps [[3]](https://tools.ietf.org/html/rfc1321),
-
-1. <b>Append Padding Bits</b>
-2. <b>Append Length</b>
-3. <b>Initialize MD Buffer</b>
-4. <b>Process Message in 16-Word Blocks</b>
-5. <b>Output</b>
-
-### Appending Padding Bits
-The first step consists of padding (or <i>extending</i>) the message so that the length of the message in bits is equal to 448 modulo 512. The point is to extend the message so that it's just 64 bits shy of being a multiple of 512 bits.
-
-There are three possible cases that may be executed when a message is about to be padded
-
-1. The message block is fortunately 64 bytes (<i>512 bits</i>) already
-	* No need to perform any padding on this block, return
-2. The message block is less than 56 bytes (<i>448 bits</i>
-	* Add a byte and fill with 0's so that the length in bits of the padded message becomes congruent to 448 modulo 512
-3. The message block is greater than 56 bytes and less than 64 bytes
-	* Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
-
-### Append Length
-A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step ensuring the message has a length that is an exact multiple of 16 (32-bit) words.
-
-### Initialize Message Digest Buffer
-A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register [[3]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
-
-```C
-WORD A = 0x67452301;
-WORD B = 0xefcdab89;
-WORD C = 0x98badcfe;
-WORD D = 0x10325476;
-```
-
-The value of these four 'words' will be changed and manipulated throughout the four hashing rounds, each previous value being used to generate a new value and so on.
-
-### Process Message in 16-Word Blocks
-Four auxiliary functions are defined that each receive three 'words' as input, and output a single 'word' 
-
-```C
-#define F(x,y,z) ((x & y) | (~x & z)) 
-#define G(x,y,z) ((x & z) | (y & ~z)) 
-#define H(x,y,z) (x ^ y ^ z)          
-#define I(x,y,z) (y ^ (x | ~z))       
-```
-
-In each bit position F acts as a conditional: if X then Y else Z.
-The other functions, G, H and I aren't too different from the F function. They function in bitwise parallel to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased [[3]](https://tools.ietf.org/html/rfc1321).
-
-Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD then the following additions are performed
-```C
-     A = A + AA
-     B = B + BB
-     C = C + CC
-     D = D + DD 
-```
-Each of the four registers are incremented by the value it had before the block was started.
+For a thorough breakdown of the algorithm and how it works see the [Project Overview](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#how-md5-works)
 
 ### Output
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
