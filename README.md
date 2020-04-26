@@ -16,7 +16,6 @@
 ## Contents
 * [Assignment Overview](#md5-overview)
 * [Running the Program](#running-the-program)
-* [How it Works](#how-does-it-work) 
 * [Project Implementation](#project-implementation) 
 * [Research & Development Diary](#research-and-development-diary)
 * [Testing](#testing)
@@ -26,7 +25,7 @@ The MD5 hash works by taking a string of any length and encoding it into a 128-b
 
 An MD5 hash is <i>not</i> encryption, the hash is considered a <i>fingerprint</i>. However it is a one-way transaction, meaning it's <i>(almost)</i> impossible to reverse engineer an MD5 hash to obtain the original string.
 
-For a detailed breakdown of the algorithm, [see below](#how-does-it-work).
+For a thorough breakdown of the algorithm and how it works see the [Project Overview](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#how-md5-works).
 
 ## Running the Program
 1. In your command line terminal: `git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms`
@@ -85,13 +84,6 @@ The Arguments could be declared and assigned to a character, in my case, after r
             {"hashstring", required_argument, 0, 's'}
         };
 ```
-
-## How does it work?
-For a thorough breakdown of the algorithm and how it works see the [Project Overview](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#how-md5-works)
-
-### Output
-The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
-
 ## Project Implementation
 If comments and constants were stripped out, the actual functional code would only consist of around less than one-hundred lines. In this brief summary of the implementation I plan to talk about how that chunk of functional code operates and interacts with other parts of the program. I'll be talking about declared constants and how they weave into the main chunks of code however since most of the low level operations were detailed [above](#how-does-it-work) this section will be more focused on giving a bit of a higher level overview of the overall implementation.
 
