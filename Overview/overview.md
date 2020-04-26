@@ -185,12 +185,20 @@ In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 
 
 Assume that the file hash value that was sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
 
-Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid MD5 hash that should indicate that it's safe even though the file was interfered with. This is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed) [[5]](https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf).
+Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid matching MD5 hash, which indicates that the downloaded file is safe even though the file was interfered with, this is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed).
+
+However, the chance of collisions occuring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massivley due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem).
+
+#### The Birthday Principle
+To demonstrate this principle, assume a teacher has a class of 30(n) students, The teacher asks all students for the date of their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
+<br>Now assume the teacher picked the date `June 25th`, the chance a student was born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). <br>On the same token, going back to asking individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
+
+The [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
 ## Complexity of MD5
 
 ## Command Line Arguments
-The C programming language, like most others, allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
+The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
 
 ```C
 int main(int argc, char *argv[]) {
