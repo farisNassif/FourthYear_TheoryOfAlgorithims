@@ -18,7 +18,7 @@
 * [Running the Program](#running-the-program)
 * [Project Implementation](#project-implementation) 
 * [Research & Development Diary](#research-and-development-diary)
-* [Testing](#testing)
+* [References](#references)
 
 ## MD5 Overview
 The MD5 hash works by taking a string of any length and encoding it into a 128-bit fingerprint. Encoding the same string over and over will always yield the same 128-bit hash output. 
@@ -174,41 +174,6 @@ The ```output()``` function is called at the end of the program when the hashing
 	* Following the sudden societial change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html) [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=). I attempted to implement some basic arguments and code, however after further resarch discovered the ```getopt() long``` option. Instead of, for example, declaring ```md5.exe -h``` for help, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
 * <b>Week Fourteen</b>
 	* Finish this when most of the Overview is finished
-	
-## Testing
-The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[20]](https://www.md5hashgenerator.com/) [[21]](http://www.md5.cz/).
-
-The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the the Request for Comments document [[3]](https://tools.ietf.org/html/rfc1321).
-
-#### First Test
-
-| Test | String Input       | Expected Result           | Actual Result  | Pass or Fail     |
-| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
-| Test 1 | Empty<br>String    | d41d8cd98f00b204e9800998ecf8427e | d41d8cd98f00b204e9800998ecf8427e | :white_check_mark: |
-
-#### Second Test
-
-| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
-| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
-| Test 2 | a    | 0cc175b9c0f1b6a831c399e269772661 | 0cc175b9c0f1b6a831c399e269772661 | :white_check_mark: |
-
-#### Third Test
-
-| Test | String Input       | Expected Result           | Actual Result  | Pass or Fail     |
-| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
-| Test 3 | abc    | 900150983cd24fb0d6963f7d28e17f72 | 900150983cd24fb0d6963f7d28e17f72 | :white_check_mark: |
-
-#### Fourth Test
-
-| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
-| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
-| Test 4 | message<br>digest    | f96b697d7cb7938d525a2f31aaf161d0 | f96b697d7cb7938d525a2f31aaf161d0 | :white_check_mark: |
-
-#### Fifth Test
-
-| Test |String Input       | Expected Result           | Actual Result  | Pass or Fail     |
-| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
-| Test 5 | abcdefg<br>hijklm<br>nopqrst<br>uvwxyz    | c3fcd3d76192e4007dfb496cca67e13b | c3fcd3d76192e4007dfb496cca67e13b | :white_check_mark: |
 
 ## References	
 [1] http://cacr.uwaterloo.ca/hac/about/chap9.pdf <br>
