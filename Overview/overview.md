@@ -112,12 +112,70 @@ Prerequisite steps may be required before running the program and these steps va
 </p>
 
 ## How MD5 Works
-At a high level, the MD5 Hashing algorithm is a <b>one-way</b> cryptographic function that as an input, receives a message of any length and outputs a fixed length digest value which can be used for authenticating the original message.
+The MD5 hash function was initially developed as a stronger alternative to the [MD4](https://en.wikipedia.org/wiki/MD4) hash function. MD5 consists of five major steps [[6]](https://tools.ietf.org/html/rfc1321).
+
+1. <b>Append Padding Bits</b>
+2. <b>Append Length</b>
+3. <b>Initialize MD Buffer</b>
+4. <b>Process Message in 16-Word Blocks</b>
+5. <b>Output</b>
+
+### Appending Padding Bits
+The first step consists of padding (or <i>extending</i>) the message so that the length of the message in bits is equal to 448 modulo 512. The point is to extend the message so that it's just 64 bits shy of being a multiple of 512 bits.
+
+There are three possible cases that may be executed when a message is about to be padded
+
+1. The message block is fortunately 64 bytes (<i>512 bits</i>) already
+	* No need to perform any padding on this block, return
+2. The message block is less than 56 bytes (<i>448 bits</i>
+	* Add a byte and fill with 0's so that the length in bits of the padded message becomes congruent to 448 modulo 512
+3. The message block is greater than 56 bytes and less than 64 bytes
+	* Same as step two, add a byte and fill with 0's. A new block is added and fill 56 bytes with 0's
+
+### Append Length
+A 64 bit representation of the length of the message prior to bits being added is appended to the result of the previous step ensuring the message has a length that is an exact multiple of 16 (32-bit) words.
+
+### Initialize Message Digest Buffer
+A four word buffer is required to generate the message digest. A 'word' is essentially defined as a 32 bit register [[6]](https://tools.ietf.org/html/rfc1321), these four words are initialized with the following values
+
+```C
+WORD A = 0x67452301;
+WORD B = 0xefcdab89;
+WORD C = 0x98badcfe;
+WORD D = 0x10325476;
+```
+
+The value of these four 'words' will be changed and manipulated throughout the four hashing rounds, each previous value being used to generate a new value and so on.
+
+### Process Message in 16-Word Blocks
+Four auxiliary functions are defined that each receive three 'words' as input, and output a single 'word' 
+
+```C
+#define F(x,y,z) ((x & y) | (~x & z)) 
+#define G(x,y,z) ((x & z) | (y & ~z)) 
+#define H(x,y,z) (x ^ y ^ z)          
+#define I(x,y,z) (y ^ (x | ~z))       
+```
+
+In each bit position F acts as a conditional: if X then Y else Z.
+The other functions, G, H and I aren't too different from the F function. They function in bitwise parallel to produce their output in such a way that if the corresponding bits of X, Y and Z are independent and unbiased then as a result each bit of G(X,Y,Z), H(X,Y,Z) and I(X,Y,Z) will be independent and unbiased [[6]](https://tools.ietf.org/html/rfc1321).
+
+Each 16-word block is processed, A is saved as AA, B as BB, C as CC, and D as DD then the following additions are performed
+```C
+     A = A + AA
+     B = B + BB
+     C = C + CC
+     D = D + DD 
+```
+Each of the four registers are incremented by the value it had before the block was started.
+
+### Output
+The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
 
 #### <i>What does One-Way mean?</i>
-In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text.
+In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text [[4]](https://www.sciencedirect.com/topics/computer-science/one-way-hash-function).
 
-#### What is MD5 Used For?
+#### <i>What is MD5 Used For?</i>
 In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm. A major function of MD5 was validating the integrity of files. Consider the following image, 
 
 <p align="center">
@@ -129,8 +187,6 @@ In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 
 Assume that the file hash value that was sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
 
 Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid MD5 hash that should indicate that it's safe even though the file was interfered with. This is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed) [[5]](https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf).
-
-
 
 ## Complexity of MD5
 
@@ -190,3 +246,4 @@ The Arguments can be declared and assigned to a character, in my case, after rea
 [3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf <i>(Page 102 - 105)</i><br>
 [4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function <br>
 [5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf <br>
+[6] https://tools.ietf.org/html/rfc1321 <br>
