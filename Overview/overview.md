@@ -8,7 +8,6 @@
 * [Running the Program](#running-the-program)
 * [How MD5 Works](#how-md5-works) 
 * [Complexity of MD5](#complexity-of-md5)
-* [Code Implementation](#code-implementation)
 * [Command Line Arguments](#command-line-arguments)
 * [Testing the Program](#testing-the-program)
 * [Conclusion](#conclusion)
@@ -41,7 +40,7 @@ FourthYear_TheoryOfAlgorithms
 The repository is construted to be as simplistic as possible, contents were seperated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
 
 * Program
-    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). <i>For an overview on what the code does [see](#code-overview)</i>.
+    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). <i>For an overview on what the code does [see](#https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation) which provides a detailed breakdown of the implementation</i>.
     
 * Video Code
     * Instructional and educational videos were provided over the course of the module. These videos were written up and served as a helpful foundation and reference point during the development process. I chose to keep the videos within the project but within their own directory for both referencial and development reasons.  
@@ -190,8 +189,6 @@ Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash alg
 
 ## Complexity of MD5
 
-## Code Implementation
- 
 ## Command Line Arguments
 The C programming language, like most others, allow for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
 
@@ -235,8 +232,75 @@ The Arguments can be declared and assigned to a character, in my case, after rea
             {"hashstring", required_argument, 0, 's'}
         };    
 ```
-
 ## Testing the Program
+The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[7]](https://www.md5hashgenerator.com/) [[8]](http://www.md5.cz/).
+
+The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the the Request for Comments document [[6]](https://tools.ietf.org/html/rfc1321) and the same tests are runnable via the ```--test``` command-line operator, expected results are hardcoded and actual results are generated at runtime, ensuring validility.
+
+#### First Test
+
+| Test | File/String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 1 | Empty<br>String    | d41d8cd98f00b204e9800998ecf8427e | d41d8cd98f00b204e9800998ecf8427e | :white_check_mark: |
+
+#### Second Test
+
+| Test | File/String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 2 | a    | 0cc175b9c0f1b6a831c399e269772661 | 0cc175b9c0f1b6a831c399e269772661 | :white_check_mark: |
+
+#### Third Test
+
+| Test | File/String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 3 | abc    | 900150983cd24fb0d6963f7d28e17f72 | 900150983cd24fb0d6963f7d28e17f72 | :white_check_mark: |
+
+#### Fourth Test
+
+| Test | File/String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 4 | message<br>digest    | f96b697d7cb7938d525a2f31aaf161d0 | f96b697d7cb7938d525a2f31aaf161d0 | :white_check_mark: |
+
+#### Fifth Test
+
+| Test | File/String Input       | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Test 5 | abcdefg<br>hijklm<br>nopqrst<br>uvwxyz    | c3fcd3d76192e4007dfb496cca67e13b | c3fcd3d76192e4007dfb496cca67e13b | :white_check_mark: |
+
+### Testing Conclusion
+Testing small strings and files turned out to be fully successful, however there were issues encountered when testing large files, included below (<i>Expected result was chosen to be the Windows generated result since it was the first system to generate the hash for that file on and I needed something to compare the VM hash against</i>).
+
+| Test | File/String        | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Windows | ```md5.c```    | 44b8553838796fc0d7540a5b36362640 | 44b8553838796fc0d7540a5b36362640 | :white_check_mark: |
+
+<p align="center">
+	
+	<i><b>When testing the exact same file with the exact same contents..</b></i>
+</p>
+
+| Test | File/String        | Expected Result           | Actual Result  | Pass or Fail     |
+| :-------------: | :-------------: |:-------------:| :-------------:|:-------------:|
+| Debian VM | ```md5.c```    | 44b8553838796fc0d7540a5b36362640 | 59a382706592547690fda03d49b515ae | :x: |
+
+Following searches and attempts to find the answer I discovered this [post](https://stackoverflow.com/a/24031902/12314065) which explained this is likely due to different line endings depending on the system.
+
+* Windows
+     * Both CR(\r) and LF(\n) can be used to terminate lines
+* MAC
+     * CR(\r) is alone used to temrinate lines
+* UNIX
+     * LF(\n) is alone used to terminate lines
+
+```C
+    const char *remove_any_of = "\n\r";
+    int c;
+    while((c = getchar()) != EOF) {
+        if (!strchr(remove_any_of, c)) putchar(c);
+    }
+    return EXIT_SUCCESS;
+```
+Following research [[9]](https://www.codeproject.com/Questions/1107228/Delete-carriage-return-and-line-feed-on-file-using), the best way I gathered to address the issue would be to remove line endings completely. This would mean reading the file byte-by-byte and checking for line endings. This won't be a feature I'll be able to implement before the project submission date however it will be something I'd like to fix up at some point in the future.
 
 ## Conclusion
 
@@ -247,3 +311,5 @@ The Arguments can be declared and assigned to a character, in my case, after rea
 [4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function <br>
 [5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf <br>
 [6] https://tools.ietf.org/html/rfc1321 <br>
+[7] https://www.md5hashgenerator.com/ <br>
+[8] http://www.md5.cz/ <br>
