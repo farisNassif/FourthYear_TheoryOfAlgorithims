@@ -329,14 +329,15 @@ void cmd_line_display(int option) {
         }
         break;
     case 2: // Case 2 - The argument --help was entered, prompting a helpful display
-        printf("\n--------------- Valid Command Line Argument Inputs ---------------  ");
-        printf("\n --help | Displays helpful information for running the program.     ");
-        printf("\n --test | Runs the test suite to ensure the MD5 output is valid.    ");
+        printf("\n--------------- Valid Command Line Argument Inputs ---------------- ");
+        printf("\n --help    | Displays helpful information for running the program.  ");
+        printf("\n --test    | Runs the test suite to ensure the MD5 output is valid. ");
+        printf("\n --explain | Brief high level overview of MD5, including a diagram. ");
         printf("\n --hashfile <path_to_file> | Hashes the specified file.             ");
         printf("\n --hashstring <string>     | Hashes a specified String.           \n");
         printf("--------------- Examples of Executing Arguments ------------------    ");
-        printf("\n Hashing a String:     md5.exe --hashstring abc                     ");
-        printf("\n Hashing a File  :     md5.exe --hashfile test-input/TestOne.txt  \n");
+        printf("\n Hashing a String :     md5.exe --hashstring abc                    ");
+        printf("\n Hashing a File   :     md5.exe --hashfile test-input/TestOne.txt \n");
         break;
     case 3: // Case 3 - The argument --explain was entered, display information about MD5
         printf("\n-------------------------------------------------------------------------\n");
