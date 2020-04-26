@@ -40,7 +40,7 @@ FourthYear_TheoryOfAlgorithms
 The repository is construted to be as simplistic as possible, contents were seperated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
 
 * Program
-    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). <i>For an overview on what the code does [see](#https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation) which provides a detailed breakdown of the implementation</i>.
+    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. The program processes an input file or string of any length and yields a fixed-length 128 bit '<b><i>fingerprint</i></b>'. The program may be ran in [more than one way](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments). For a lower-level explaination of the overall implementation [see](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation), which provides a detailed breakdown of the implementation</i>. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). 
     
 * Video Code
     * Instructional and educational videos were provided over the course of the module. These videos were written up and served as a helpful foundation and reference point during the development process. I chose to keep the videos within the project but within their own directory for both referencial and development reasons.  
@@ -275,8 +275,7 @@ Testing small strings and files turned out to be fully successful, however there
 | Windows | ```md5.c```    | 44b8553838796fc0d7540a5b36362640 | 44b8553838796fc0d7540a5b36362640 | :white_check_mark: |
 
 <p align="center">
-	
-	<i><b>When testing the exact same file with the exact same contents..</b></i>
+	<i><b>When testing the exact same file with the exact same contents on the VM ..</b></i>
 </p>
 
 | Test | File/String        | Expected Result           | Actual Result  | Pass or Fail     |
@@ -300,7 +299,7 @@ Following searches and attempts to find the answer I discovered this [post](http
     }
     return EXIT_SUCCESS;
 ```
-Following research [[9]](https://www.codeproject.com/Questions/1107228/Delete-carriage-return-and-line-feed-on-file-using), the best way I gathered to address the issue would be to remove line endings completely. This would mean reading the file byte-by-byte and checking for line endings. This won't be a feature I'll be able to implement before the project submission date however it will be something I'd like to fix up at some point in the future.
+Following research [[9]](https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2), the best way I gathered to address the issue would be to remove line endings completely. This would mean reading the file byte-by-byte and checking for line endings. This won't be a feature I'll be able to implement before the project submission date however it will be something I'd like to fix up at some point in the future.
 
 ## Conclusion
 
@@ -313,3 +312,4 @@ Following research [[9]](https://www.codeproject.com/Questions/1107228/Delete-ca
 [6] https://tools.ietf.org/html/rfc1321 <br>
 [7] https://www.md5hashgenerator.com/ <br>
 [8] http://www.md5.cz/ <br>
+[9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2 <br>
