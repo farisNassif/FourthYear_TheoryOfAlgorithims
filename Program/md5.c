@@ -457,7 +457,7 @@ int main(int argc, char *argv[]) {
         /* getopt_long stores the option index here */
         int option_index = 0;
 
-        c = getopt_long (argc, argv, "h:t:f:s", long_options, &option_index);
+        c = getopt_long (argc, argv, "h:t:e:f:s", long_options, &option_index);
         switch (c) {
             case 'h':
                 /* Display some helpful information to the user */
