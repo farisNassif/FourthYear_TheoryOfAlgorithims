@@ -114,17 +114,23 @@ Prerequisite steps may be required before running the program and these steps va
 ## How MD5 Works
 At a high level, the MD5 Hashing algorithm is a <b>one-way</b> cryptographic function that as an input, receives a message of any length and outputs a fixed length digest value which can be used for authenticating the original message.
 
-####<i>What does One-Way mean?</i>
+#### <i>What does One-Way mean?</i>
 In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text.
 
 #### What is MD5 Used For?
 In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm. A major function of MD5 was validating the integrity of files. Consider the following image, 
 
 <p align="center">
-  <img src = "https://i.imgur.com/aFu16gp.png" width="400" height="400">
+  <img src = "https://i.imgur.com/YbJOSWL.png" width="400" height="400">
    <br>
   <b>Illustrating the transmission use for MD5</b><br><i>Made with <a href="http://asciiflow.com/">Asciiflow</a></i>
 </p>
+
+Assume that the file hash value that was sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
+
+Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid MD5 hash that should indicate that it's safe even though the file was interfered with. This is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed) [[5]](https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf).
+
+
 
 ## Complexity of MD5
 
