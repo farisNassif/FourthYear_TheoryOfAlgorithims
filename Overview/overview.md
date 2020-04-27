@@ -40,7 +40,7 @@ FourthYear_TheoryOfAlgorithms
 The repository is constructed to be as simplistic as possible, contents were separated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
 
 * Program
-    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. The program processes an input file or string of any length and yields a fixed-length 128 bit '<b><i>fingerprint</i></b>'. The program may be ran in [more than one way](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments). For a lower-level explanation of the overall implementation [see](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation), which provides a detailed breakdown of the code aspect of the project</i>. <br><br>Additionally, a single library (getopt.h) is present in this directory. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). 
+    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. The program processes an input file or string of any length and yields a fixed-length 128 bit '<b><i>fingerprint</i></b>'. The program may be ran in [more than one way](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments). For a lower-level explanation of the overall implementation see the [coding section](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation) of the README, which provides a detailed breakdown of the code aspect of the project</i>. <br><br>Additionally, a single library (getopt.h) is present in this directory. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). 
     
 * Video Code
     * Instructional and educational videos were provided over the course of the module. These videos were written up and served as a helpful foundation and reference point during the development process. I chose to keep the videos within the project but within their own directory for both referential and development reasons.  
@@ -102,8 +102,8 @@ Prerequisite steps may be required before running the program and these steps va
 #### Cloning and Executing the Program
 1. <b>Open a Command Prompt</b>
 2. <b>Type:</b> ```git clone https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms```
-3. <b>Navigate to ```/Program```:</b> ```$ cd FourthYear_TheoryOfAlgorithms/Program```
-4. <b>Compile the Program:</b> ```$ gcc md5.c -o md5```
+3. <b>Navigate to ```/Program```:</b> ```cd FourthYear_TheoryOfAlgorithms/Program```
+4. <b>Compile the Program:</b> ```gcc md5.c -o md5```
 5. <b>Execute the Program:</b> ```md5.exe```
 
 <p align="center">
@@ -196,26 +196,26 @@ Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash alg
 However, the chance of collisions occurring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massively due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem), which will be discussed in a further section along with similar concepts.
 
 ## Complexity of MD5
-MD5 is a relatively fast hashing algorithm which runs in <i>(O(N))</i> time, just like SHA-256 <i>(one of many other hashing algorithms)</i>. Hash function implementations generally hold linear run times in relation to their input, it's somewhat the point of the functions. With that said, MD5 computes its hash in just over a quarter of the time it takes SHA-256.
+MD5 is a relatively fast hashing algorithm which runs in <i>O(N)</i> time, just like SHA-256 <i>(one of many other hashing algorithms)</i>. Hash function implementations generally hold linear run times in relation to their input, which is somewhat the point of the functions. With that said, MD5 computes its hash in just over a quarter of the time it takes SHA-256.
 
 <p align="center">
   <img src = "https://i.imgur.com/KvBiTJI.png" width="345" height="225">
    <br>
-  <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf">[100]</a></b></i>
+  <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf">[15]</a></b></i>
 </p>
 
-Being faster in this case does not mean better, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
+Being faster does not mean better in this case, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed and penetrability of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
 
-Algorithms like SHA-256 don't necessarily have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second [[11]](https://en.bitcoin.it/wiki/Hash_per_second). If you were to attempt a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option. Naturally the question gets asked,<i> Is there a way to reverse a hash back to it's original state reliably?</i> This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
+Algorithms like SHA-256 don't necessarily have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second [[11]](https://en.bitcoin.it/wiki/Hash_per_second). If you were to attempt a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option. Naturally this would bring up the question,<i> “Is there a way to reverse a calculated hash back to it's original state reliably?”</i> This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
 
 ### P versus NP
-P versus NP is a controversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a polynomial function on the size of the input to the algorithm [[12]](https://en.wikipedia.org/wiki/P_versus_NP_problem). Over the years there have been a colossal list of papers that attempt to 'settle' the question, with none being able to provide a concrete answer [[100]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] which is one of the more well known of many.
+P versus NP is a controversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a polynomial function on the size of the input to the algorithm [[12]](https://en.wikipedia.org/wiki/P_versus_NP_problem). Over the years there have been a colossal list of papers and claims that attempt to 'settle' the question, with none being able to provide a concrete answer [[16]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] which is one of the more well known of many.
 
 #### The Birthday Principle
-To demonstrate this principle, assume a teacher has a class of 30(n) students. The teacher asks all students their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
+To briefly demonstrate this principle, assume a teacher has a class of 30(n) students. The teacher asks all students their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
 <br><br>Now assume the teacher picked the date `June 25th`, the chance any of her 30 students were born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). On the same token, if she once again asked individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
 
-A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
+A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is one of many cryptographic attacks that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
 ### P versus NP <i>(Continued)</i>
 Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, '<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>' [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class(<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
@@ -230,6 +230,7 @@ int main(int argc, char *argv[]) {
 
 }
 ```
+
 The program in this case can take two arguments, an integer called `argc` and a character array called `*argv[]`.
 
 * `argc`
@@ -318,11 +319,11 @@ Testing small strings and files turned out to be fully successful, however there
 Following searches and attempts to find the answer I discovered this [post](https://stackoverflow.com/a/24031902/12314065) which explained this is likely due to different line endings depending on the system.
 
 * Windows
-     * Both CR(\r) and LF(\n) can be used to terminate lines
+     * Both CR(<b><i>\r</i></b>) and LF(<b><i>\n</i></b>) can be used to terminate lines
 * MAC
-     * CR(\r) is alone used to terminate lines
+     * CR(<b><i>\r</i></b>) is alone used to terminate lines
 * UNIX
-     * LF(\n) is alone used to terminate lines
+     * LF(<b><i>\n</i></b>) is alone used to terminate lines
 	 
 Following research [[9]](https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2), the best way I gathered to address the issue would be to remove line endings completely. 
 ```C
@@ -339,17 +340,35 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 ## Conclusion
 
 ## References
-[1] https://stackoverflow.com/a/10404524/12314065 <br>
-[2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html <br>
-[3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf <i>(Page 102 - 105)</i><br>
-[4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function <br>
-[5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf <br>
-[6] https://tools.ietf.org/html/rfc1321 <br>
-[7] https://www.md5hashgenerator.com/ <br>
-[8] http://www.md5.cz/ <br>
-[9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2 <br>
-[10] https://en.bitcoin.it/wiki/Hash_per_second <br>
-[11]https://en.bitcoin.it/wiki/Hash_per_second <br>
-[12] https://arxiv.org/pdf/cs/0606037.pdf (pg 5) <br>
-[13] https://en.wikipedia.org/wiki/One-way_function <br>
-[14] https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf <br>
+* [1] https://stackoverflow.com/a/10404524/12314065 
+	* TODO <br>
+* [2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
+	* TODO <br>
+* [3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf
+	* TODO  <i>(Page 102 - 105)</i><br>
+* [4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function
+	* TODO <br>
+* [5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf
+	* TODO <br>
+* [6] https://tools.ietf.org/html/rfc1321
+	* TODO <br>
+* [7] https://www.md5hashgenerator.com/
+	* Website that was used to generate MD5 hashes for testing. <br> 
+* [8] http://www.md5.cz/ 
+	* Same as above, the second website that was used to generate MD5 hashes for testing just to be 100% safe.<br>
+* [9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2
+	* TODO <br>
+* [10] https://devhints.io/vim
+	* Great cheatsheet that was used for getting the hang of different commands and miscellaneous functions in [Vim](https://www.vim.org/). <br>
+* [11] https://en.bitcoin.it/wiki/Hash_per_second
+	* A little bit of trivia I found that I thought was interesting enough to be included in the complexity section about the rate at which Bitcoin's hashes were being performed. <br>
+* [12] https://arxiv.org/pdf/cs/0606037.pdf
+	*  TODO (pg 5)  <br>
+* [13] https://en.wikipedia.org/wiki/One-way_function
+	* TODO <br>
+* [14] https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf
+	* TODO <br>
+* [15] https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf
+	* TODO <br>
+* [16] https://www.win.tue.nl/~gwoegi/P-versus-NP.htm
+	* TODO <br>
