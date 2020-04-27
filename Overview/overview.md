@@ -218,8 +218,7 @@ To demonstrate this principle, assume a teacher has a class of 30(n) students, T
 A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
 ### P versus NP <i>(Continued)</i>
-Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.
-
+Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class, they are considered: '<i>functions</i> (over binary strings) <i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i>' [[100]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't line up fully with this, both because randomized approaches aren't compatible with the NP class(<i><b>RP being more applicable [[100]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)</b></i>) and because NP is reliant on worst-case behaviour, while one-way functions must have good average-case behaviour [[100]](https://arxiv.org/pdf/cs/0606037.pdf).
 
 ## Command Line Arguments
 The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
@@ -348,3 +347,4 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 [8] http://www.md5.cz/ <br>
 [9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2 <br>
 [10] https://en.bitcoin.it/wiki/Hash_per_second <br>
+[[1d]] https://arxiv.org/pdf/cs/0606037.pdf (pg 5)
