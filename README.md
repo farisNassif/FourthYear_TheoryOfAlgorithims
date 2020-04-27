@@ -67,7 +67,7 @@ For a thorough breakdown of the algorithm and how it works see the [Project Over
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
 | --test | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
-| --explain | `./md5 --explain`    | Displays a brief explaination of MD5 including an ASCII high-level diagram | 
+| --explain | `./md5 --explain`    | Displays a brief explanation of MD5 including an ASCII high-level diagram | 
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
 
@@ -85,11 +85,11 @@ The Arguments could be declared and assigned to a character, in my case, after r
         };
 ```
 ## Project Implementation
-When looking at the C file containing the code for the MD5 implementation it may be an eyesore, however there really isn't much to it. The hash consists of about a dozen constants and two methods, but I appriciate how it may look more convuluted than it is.
+When looking at the C file containing the code for the MD5 implementation it may be an eyesore, however there really isn't much to it. The hash consists of about a dozen constants and two methods, but I appreciate how it may look more convoluted than it is.
 
 Assume the user wants to hash a text file called '<b>textfile.txt</b>' with the contents '<b>abc</b>', and they execute the program from the command line with the statement ```/.md5 --hashfile textfile.txt```, well <i>what actually happens under the hood?</i>, I'll attempt to explain the process step-by-step. (<i>The implementation code is heavily based on the process outlined in the Request for Comments Document and appropriately referenced within the code</i>) [[3]](https://tools.ietf.org/html/rfc1321).
 
-Command-line arguemnts are implemented meaning the program will associate ```--hashfile``` with the character ```f``` and expect an argument as specified by the '<b>required_argument</b>' paramater below.
+Command-line arguments are implemented meaning the program will associate ```--hashfile``` with the character ```f``` and expect an argument as specified by the '<b>required_argument</b>' parameter below.
 
 ```C
         static struct option long_options[] = {
@@ -100,7 +100,7 @@ Command-line arguemnts are implemented meaning the program will associate ```--h
             {"hashstring", required_argument, 0, 's'}
         };    
 ```
-In this case, the arugment is '<b>textfile.txt</b>'. A switch statement which checks which command-line argument was ran will execute code according to the input. If no textfile argument was passed with the command-line argument ```--hashfile```, then the program by default will abort. In the case of the above input example, the following case will be reached,
+In this case, the argument is '<b>textfile.txt</b>'. A switch statement which checks which command-line argument was ran will execute code according to the input. If no textfile argument was passed with the command-line argument ```--hashfile```, then the program by default will abort. In the case of the above input example, the following case will be reached,
 ```C
 case 'f':
     infile = fopen(optarg, "rb");    
@@ -197,7 +197,7 @@ The ```output()``` function is called at the end of the program when the hashing
 * <b>Week Ten</b>
 	* After multiple attempts and testing of different endian solutions one was found that successfully extracts individual bytes from each input value in little endian [[19]](https://stackoverflow.com/a/17913021). Following the implementation of the little endian solution and some changes to the 32 bit output value array the program successfully output correct MD5 values. Once it correctly worked I again began to refactor and comment as much code as I could, included a menu that allowed easy traversal and multiple input options and began to perform more [tests](#testing) against the project to verify results.
 * <b>Week Thirteen</b>
-	* Following the sudden societial change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html) [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=). I attempted to implement some basic arguments and code, however after further resarch discovered the ```getopt() long``` option. Instead of, for example, declaring ```md5.exe -h``` for help, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
+	* Following the sudden societal change, the project scope has been revised. This revision includes additional command-line argument functionality, a document containing a report on the overall project with a fixed structure as well as amplified testing. This week I got to work on the command line functionality. After researching and learning about the ```getopt()``` function which is used to parse command line arguments [[22]](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html) [[23]](https://www.youtube.com/watch?v=SjyR74lbZOc&t=). I attempted to implement some basic arguments and code, however after further research discovered the ```getopt() long``` option. Instead of, for example, declaring ```md5.exe -h``` for help, it would allow long arguments including ```md5.exe --help```, allowing for more possibilities including ```md5.exe --hashfile <path_to_file.txt>``` [[24]](https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html). I felt this to be a cleaner and more straight forward method of implementing the arguments.
 * <b>Week Fourteen</b>
 	* Finish this when most of the Overview is finished
 
