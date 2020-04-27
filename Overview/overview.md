@@ -196,22 +196,28 @@ Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash alg
 However, the chance of collisions occuring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massivley due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem), which will be discussed in a further section along with similar concepts.
 
 ## Complexity of MD5
-When comparing the average running time of the MD5 hash against the average running time of SHA-256 [[100]](https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf) the following can be found, 
+MD5 is a relatively fast hashing algorithm which runs in (O(N)) time just like SHA-256, however MD5 computes its hash in just over a quarter of the time it takes SHA-256.
 
 <p align="center">
-  <img src = "https://i.imgur.com/KvBiTJI.png" width="370" height="270">
+  <img src = "https://i.imgur.com/KvBiTJI.png" width="345" height="225">
    <br>
   <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf">[100]</a></b></i>
 </p>
 
-Both MD5 and SHA-256 have the same complexity that is Ɵ(N)
+Being faster in this case does not mean better, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
+
+Algorithms like SHA-256 don't quite have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second. If you attempted a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option, surely theres a way to reverse a hash back to it's original state reliably? This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
+
+### P versus NP
+P versus NP is a contreversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a polynomial function on the size of the input to the algorithm [[100]](https://en.wikipedia.org/wiki/P_versus_NP_problem). <br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the most reliable, with methods and principles employed including [The Birthday Principle] to name a few.
 
 #### The Birthday Principle
 To demonstrate this principle, assume a teacher has a class of 30(n) students, The teacher asks all students for the date of their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
 <br>Now assume the teacher picked the date `June 25th`, the chance a student was born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). <br>On the same token, going back to asking individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
 
-The [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
+A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
+### P versus NP <i>(Continued)</i>
 
 ## Command Line Arguments
 The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
@@ -339,3 +345,4 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 [7] https://www.md5hashgenerator.com/ <br>
 [8] http://www.md5.cz/ <br>
 [9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2 <br>
+[10] https://en.bitcoin.it/wiki/Hash_per_second <br>
