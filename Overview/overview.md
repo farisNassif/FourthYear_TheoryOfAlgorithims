@@ -37,16 +37,16 @@ FourthYear_TheoryOfAlgorithms
     └── Overview.md
 ```
 #### Repository Design
-The repository is construted to be as simplistic as possible, contents were seperated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
+The repository is constructed to be as simplistic as possible, contents were separated into their relevant directories and irrelevant files and documents were excluded, leaving only files relevant to the compilation, research and testing of the program.
 
 * Program
-    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. The program processes an input file or string of any length and yields a fixed-length 128 bit '<b><i>fingerprint</i></b>'. The program may be ran in [more than one way](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments). For a lower-level explaination of the overall implementation [see](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation), which provides a detailed breakdown of the implementation</i>. <br><br>Additionally, a single library (getopt.h) is present here. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). 
+    * All code relevant to the running of the actual program will be contained within this folder. The `md5.c` file is contained here along with test files which are required for running the test suite within the program. The program processes an input file or string of any length and yields a fixed-length 128 bit '<b><i>fingerprint</i></b>'. The program may be ran in [more than one way](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#command-line-arguments). For a lower-level explanation of the overall implementation [see](https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/README.md#project-implementation), which provides a detailed breakdown of the code aspect of the project</i>. <br><br>Additionally, a single library (getopt.h) is present in this directory. After testing the program on different platforms I made the decision to manually include it within the project. I had no problems running the program on a Linux machine, however on Windows I experienced compatibility problems. After investigating, I found including the library manually here would mean anyone with a compiler could clone the project and execute it without experiencing any compatibility issues [[1]](https://stackoverflow.com/a/10404524/12314065). 
     
 * Video Code
-    * Instructional and educational videos were provided over the course of the module. These videos were written up and served as a helpful foundation and reference point during the development process. I chose to keep the videos within the project but within their own directory for both referencial and development reasons.  
+    * Instructional and educational videos were provided over the course of the module. These videos were written up and served as a helpful foundation and reference point during the development process. I chose to keep the videos within the project but within their own directory for both referential and development reasons.  
     
 * Overview
-    * Following undesireable external circumstances, the scope of the project shifted. This shift in scope meant a thorougly documented report of the project and it's related material was to be included in the repository along with previously included items. 
+    * Following undesirable external circumstances, the scope of the project shifted. This shift in scope meant a thoroughly documented report of the project and it's related material was to be included in the repository along with previously included items. 
 
 ## Running the Program
 Prerequisite steps may be required before running the program and these steps vary depending on Platform. This section will be divided into instructions for Windows and Debian-based Linux systems.
@@ -178,7 +178,7 @@ Each of the four registers are incremented by the value it had before the block 
 The Message Digest should yield an output beginning at low-order byte of A and ending with the high-order byte of D [A,B,C,D].
 
 #### <i>What does One-Way mean?</i>
-In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text [[4]](https://www.sciencedirect.com/topics/computer-science/one-way-hash-function).
+In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text [[4]](https://www.sciencedirect.com/topics/computer-science/one-way-hash-function). This will be discussed further in the [Complexity](#complexity-of-md5) section.
 
 #### <i>What is MD5 Used For?</i>
 In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already long broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm and should absolutely <b>not</b> be used for any delicate information. However, MD5 is still used widely today to validate the integrity of files. Consider the following image, 
@@ -189,14 +189,14 @@ In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 
   <b>Illustrating the transmission use for MD5</b><br><i>Made with <a href="http://asciiflow.com/">Asciiflow</a></i>
 </p>
 
-Assume that the file hash sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
+Assume that the file hash sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interference with the file being sent during transmission since the digital fingerprints don't match.
 
 Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid matching MD5 hash, which indicates that the downloaded file is safe even though the file was interfered with, this is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed).
 
-However, the chance of collisions occuring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massivley due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem), which will be discussed in a further section along with similar concepts.
+However, the chance of collisions occurring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massively due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem), which will be discussed in a further section along with similar concepts.
 
 ## Complexity of MD5
-MD5 is a relatively fast hashing algorithm which runs in <i>(O(N))</i> time, just like SHA-256 <i>(which is one among many others)</i>. Hash function implementations generally linear run times in relation to their input, it's somewhat the point of the functions. With that said MD5 computes its hash in just over a quarter of the time it takes SHA-256.
+MD5 is a relatively fast hashing algorithm which runs in <i>(O(N))</i> time, just like SHA-256 <i>(one of many other hashing algorithms)</i>. Hash function implementations generally hold linear run times in relation to their input, it's somewhat the point of the functions. With that said, MD5 computes its hash in just over a quarter of the time it takes SHA-256.
 
 <p align="center">
   <img src = "https://i.imgur.com/KvBiTJI.png" width="345" height="225">
@@ -206,24 +206,24 @@ MD5 is a relatively fast hashing algorithm which runs in <i>(O(N))</i> time, jus
 
 Being faster in this case does not mean better, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
 
-Algorithms like SHA-256 don't necessiarily have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second [[100]](https://en.bitcoin.it/wiki/Hash_per_second). If you attempted a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option. Naturally the question gets asked,<i> Is there a way to reverse a hash back to it's original state reliably?</i> This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
+Algorithms like SHA-256 don't necessarily have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second [[11]](https://en.bitcoin.it/wiki/Hash_per_second). If you were to attempt a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option. Naturally the question gets asked,<i> Is there a way to reverse a hash back to it's original state reliably?</i> This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
 
 ### P versus NP
-P versus NP is a contreversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a polynomial function on the size of the input to the algorithm [[100]](https://en.wikipedia.org/wiki/P_versus_NP_problem). Over the years there have been a plethora of papers that attempt to 'settle' the question, with none being able to provide a concrete answer [[100]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] to name a few.
+P versus NP is a controversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a polynomial function on the size of the input to the algorithm [[12]](https://en.wikipedia.org/wiki/P_versus_NP_problem). Over the years there have been a colossal list of papers that attempt to 'settle' the question, with none being able to provide a concrete answer [[100]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] which is one of the more well known of many.
 
 #### The Birthday Principle
-To demonstrate this principle, assume a teacher has a class of 30(n) students, The teacher asks all students for the date of their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
-<br><br>Now assume the teacher picked the date `June 25th`, the chance a student was born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). On the same token, going back to asking individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
+To demonstrate this principle, assume a teacher has a class of 30(n) students. The teacher asks all students their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
+<br><br>Now assume the teacher picked the date `June 25th`, the chance any of her 30 students were born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). On the same token, if she once again asked individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
 
 A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
 ### P versus NP <i>(Continued)</i>
-Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered: '<i>functions</i> (over binary strings) <i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i>' [[100]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't line up fully with this, both because randomized approaches aren't compatible with the NP class(<i><b>RP being more applicable</b></i> [[100]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behaviour, while one-way functions must have good average-case behaviour [[100]](https://arxiv.org/pdf/cs/0606037.pdf).
+Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, '<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>' [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class(<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
 
-It's not known whether one-way functions <i>truly</i> exist, if they do then it would show P <b>!=</b> NP, on the same token it is also not known if the reverse is true, whether P <b>!= NP</b> proves that one-way functions exist.
+It's not known whether one-way functions <i>truly</i> exist, if they do then it would show P <b>!=</b> NP, on the same token it is also not known if the reverse is true, whether P <b>!=</b> NP proves that one-way functions exist.
 
 ## Command Line Arguments
-The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
+The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provided to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
 
 ```C
 int main(int argc, char *argv[]) {
@@ -233,12 +233,12 @@ int main(int argc, char *argv[]) {
 The program in this case can take two arguments, an integer called `argc` and a character array called `*argv[]`.
 
 * `argc`
-    * Conventially, `argc`, which stands for argument count, retrieves the amount of arguments the program has just taken. For example, if the following was ran `./md5 one two three`, argc would be equal to four, since it includes the actual program declaration [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
+    * Conventionally, `argc`, which stands for argument count, retrieves the amount of arguments the program has just taken. For example, if the following was ran `./md5 one two three`, argc would be equal to four, since it includes the actual program declaration [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
     
 * `*argv[]`
     * Meaning 'argument vector', `argv[]` is an array containing the command line arguments. Looking at the previous example, if the input was `./md5 one two three`, `argv[]` would be of size four, the first index being `md5`, the second being `one` and so on [[3]](http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf).
 
-### Functinal Command Line Arguments
+### Functional Command Line Arguments
 The table below contains a list of valid command-line arguments specific to the program, an example of how to input them and also their output.
 <p align="center">
     <b><i><br>The input examples are written for Debian-based Linux machines, for Windows, simply replace './md5' with 'md5.exe', assuming you have followed the compilation steps outlined in the <a href="https://github.com/farisNassif/FourthYear_TheoryOfAlgorithms/blob/master/Overview/overview.md#running-the-program">above section</a></i></b>
@@ -248,7 +248,7 @@ The table below contains a list of valid command-line arguments specific to the 
 | :-------------: | :-------------: |:-------------:|
 | --help | `./md5 --help`    | Will detail additional arguments and examples on how to execute them | 
 | --test    | `./md5 --test`    | Runs a suite of tests on local files adapted from the Request for Comments Document | 
-| --explain | `./md5 --explain`    | Displays a brief explaination of MD5 including an ASCII high-level diagram | 
+| --explain | `./md5 --explain`    | Displays a brief explanation of MD5 including an ASCII high-level diagram | 
 | --hashstring | `./md5 --hashstring abc`    | Performs the MD5 hash on a String and returns the result | 
 | --hashfile | `./md5 --hashfile path_to/yourfile.txt`    | Performs the MD5 hash on a file and returns the result | 
 
@@ -268,7 +268,7 @@ The Arguments can be declared and assigned to a character, in my case, after rea
 ## Testing the Program
 The project was tested on both Linux and Windows machines to ensure portability and accuracy. The results were also compared against external MD5 calculation sources [[7]](https://www.md5hashgenerator.com/) [[8]](http://www.md5.cz/).
 
-The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the the Request for Comments document [[6]](https://tools.ietf.org/html/rfc1321) and the same tests are runnable via the ```--test``` command-line operator, expected results are hardcoded and actual results are generated at runtime, ensuring validility.
+The contents of the following tests are contained within the `Program/test-input` folder. The test data was obtained from page 21 of the Request for Comments document [[6]](https://tools.ietf.org/html/rfc1321) and the same tests may be ran via the ```--test``` command-line operator, expected results are hardcoded and actual results are generated at runtime, ensuring validity.
 
 #### First Test
 
@@ -320,7 +320,7 @@ Following searches and attempts to find the answer I discovered this [post](http
 * Windows
      * Both CR(\r) and LF(\n) can be used to terminate lines
 * MAC
-     * CR(\r) is alone used to temrinate lines
+     * CR(\r) is alone used to terminate lines
 * UNIX
      * LF(\n) is alone used to terminate lines
 	 
@@ -349,4 +349,7 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 [8] http://www.md5.cz/ <br>
 [9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2 <br>
 [10] https://en.bitcoin.it/wiki/Hash_per_second <br>
-[[1d]] https://arxiv.org/pdf/cs/0606037.pdf (pg 5)
+[11]https://en.bitcoin.it/wiki/Hash_per_second <br>
+[12] https://arxiv.org/pdf/cs/0606037.pdf (pg 5) <br>
+[13] https://en.wikipedia.org/wiki/One-way_function <br>
+[14] https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf <br>
