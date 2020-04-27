@@ -181,7 +181,7 @@ The Message Digest should yield an output beginning at low-order byte of A and e
 In relation to [Cryptographic Hash Functions](https://en.wikipedia.org/wiki/Cryptographic_hash_function) <b>one-way</b> essentially means there is no way to knowingly reverse the hash. It's important to note a hash is not encryption as it <b>cannot</b> be decrypted back to the original text [[4]](https://www.sciencedirect.com/topics/computer-science/one-way-hash-function).
 
 #### <i>What is MD5 Used For?</i>
-In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm. A major function of MD5 was validating the integrity of files. Consider the following image, 
+In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 is already long broken, meaning it is still a valid hashing algorithm, however it is not a <b>secure</b> hashing algorithm and should absolutely <b>not</b> be used for any delicate information. However, MD5 is still used widely today to validate the integrity of files. Consider the following image, 
 
 <p align="center">
   <img src = "https://i.imgur.com/YbJOSWL.png" width="400" height="400">
@@ -189,11 +189,22 @@ In regards to [collisions](https://en.wikipedia.org/wiki/Collision_attack), MD5 
   <b>Illustrating the transmission use for MD5</b><br><i>Made with <a href="http://asciiflow.com/">Asciiflow</a></i>
 </p>
 
-Assume that the file hash value that was sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
+Assume that the file hash sent to the downloader didn't match the hash value performed by the downloader on the file. This would indicate there was interferrence with the file being sent during transmission since the digital fingerprints don't match.
 
 Unfortunately, with MD5 this is possible since it's not a <b>secure</b> hash algorithm. <b>Collisions</b> may occur, meaning different inputs may yield the same output. Now consider if the file being sent by the distributor is intercepted and tampered with during transmission, but the downloader when hashing the file still receives a valid matching MD5 hash, which indicates that the downloaded file is safe even though the file was interfered with, this is possible because MD5 is <b>not secure</b>, meaning an output (hash), may have multiple inputs (content to be hashed).
 
-However, the chance of collisions occuring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massivley due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem).
+However, the chance of collisions occuring is still incredibly small, standing at (1/2<i><sup>128</sup></i>), a colossally small chance. With that said, if all the hashes are kept as they're hashed, the chance of a collision is increased massivley due to the Birthday Principle [[10]](https://en.wikipedia.org/wiki/Birthday_problem), which will be discussed in a further section along with similar concepts.
+
+## Complexity of MD5
+When comparing the average running time of the MD5 hash against the average running time of SHA-256 [[100]](https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf) the following can be found, 
+
+<p align="center">
+  <img src = "https://i.imgur.com/KvBiTJI.png" width="370" height="270">
+   <br>
+  <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf">[100]</a></b></i>
+</p>
+
+Both MD5 and SHA-256 have the same complexity that is Ɵ(N)
 
 #### The Birthday Principle
 To demonstrate this principle, assume a teacher has a class of 30(n) students, The teacher asks all students for the date of their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
@@ -201,7 +212,6 @@ To demonstrate this principle, assume a teacher has a class of 30(n) students, T
 
 The [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is a cryptographic attack that belongs to a class of brute force attacks. The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
-## Complexity of MD5
 
 ## Command Line Arguments
 The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provded to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
@@ -304,7 +314,8 @@ Following searches and attempts to find the answer I discovered this [post](http
      * CR(\r) is alone used to temrinate lines
 * UNIX
      * LF(\n) is alone used to terminate lines
-
+	 
+Following research [[9]](https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2), the best way I gathered to address the issue would be to remove line endings completely. 
 ```C
     const char *remove_any_of = "\n\r";
     int c;
@@ -313,7 +324,8 @@ Following searches and attempts to find the answer I discovered this [post](http
     }
     return EXIT_SUCCESS;
 ```
-Following research [[9]](https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2), the best way I gathered to address the issue would be to remove line endings completely. This would mean reading the file byte-by-byte and checking for line endings. This won't be a feature I'll be able to implement before the project submission date however it will be something I'd like to fix up at some point in the future.
+This would mean reading the file byte-by-byte and checking for line endings. This won't be a feature I'll be able to implement before the project submission date however it will be something I'd like to fix up at some point in the future.
+
 
 ## Conclusion
 
