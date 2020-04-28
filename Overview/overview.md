@@ -206,31 +206,33 @@ MD5 is a relatively fast hashing algorithm which runs in <i>O(N)</i> time, just 
 
 Being faster does not mean better in this case, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed and penetrability of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
 
+<p align="center">
+  <img src = "https://i.imgur.com/bI5O5oN.png" width="345" height="225">
+   <br>
+  <i><b>Computational Complexity of MD5 <a href="https://daoyuan.li/exploring-the-performance-of-md5-efficiency-and-security/"></b></i>[18]</a>
+</p>
+
 Algorithms like SHA-256 don't necessarily have to worry about this as much, in 2015, [Bitcoin](https://bitcoin.org/en/) was at one point computing 300 quadrillion (300 x 10<sup>15</sup>) SHA-256 hashes a second [[11]](https://en.bitcoin.it/wiki/Hash_per_second). If you were to attempt a collision attack and needed to calculate 2<sup>128</sup> hashes at 300 quadrillion hashes a second it would take 10<sup>13</sup> years to find a collision. Brute forcing would not be a viable option. Naturally this would bring up the question,<i> “Is there a way to reverse a calculated hash back to it's original state reliably?”</i> This is where the [P versus NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) problem becomes relevant.
 
 ### P versus NP
 P versus NP is a controversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a <b>polynomial</b> function on the size of the input to the algorithm [[12]](https://en.wikipedia.org/wiki/P_versus_NP_problem). 
 
-##### <i>Polynomial-time Algorithm</i>
+#### <i>Polynomial-time Algorithm</i>
 A Polynomial-time Algorithm is defined by the [Handbook of Applied Cryptography](http://cacr.uwaterloo.ca/hac/) as: <b><i>“ An algorithm whose worst-case running time function is of the form O(n<sup>k</sup>), where n is the input size and k is a constant”</i></b><br><br> Any algorithm whose running time cannot be so bounded is called an exponential-time algorithm [[17]](http://cacr.uwaterloo.ca/hac/about/chap2.pdf).
 
 ### P versus NP <i>(Continued)</i>
 Over the years there have been a colossal list of papers and claims that attempt to 'settle' the question, with none being able to provide a concrete answer [[16]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] which is one of the more well known of many.
 
-##### The Birthday Principle
+#### The Birthday Principle
 To briefly demonstrate this principle, assume a teacher has a class of 30(n) students. The teacher asks all students their birthday to determine if any students have the same birthday (<i>Liken this to checking 30 hashes individually for a collision</i>).
 <br><br>Now assume the teacher picked the date `June 25th`, the chance any of her 30 students were born on that specific day is <i>7.9%</i> (1 - (364/365)<sup>30</sup>). On the same token, if she once again asked individual students for their birthday, assume the first student she asks has their birthday occur on `April 3rd`, the chance one of the remaining 29 students shares their birthday goes up to <i>70%</i> (1 - 365!/(365 - n)!∙365<sup>n</sup>) [[11]](https://en.wikipedia.org/wiki/Birthday_attack).
 
 A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is one of many cryptographic attacks that belongs to a class of brute force attacks [[5]](https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf). The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
 ### P versus NP <i>(Continued)</i>
-Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, '<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>' [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class (<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
+Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, “<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>” [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class (<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
 
 As well as both complexity classes <b>P</b> and <b>NP</b>, there exist other sets of decisional problems including <b>co-NP</b> and <b>NPC</b>.
-
-NP-complete problems are the hardest problems in NP in the sense that they are at
-least as difficult as every other problem in NP. There are thousands of problems drawn from
-diverse fields such as combinatorics, number theory, and logic, that are known to be NPcomplete.
 
 * <b>co-NP</b>
 	* The set of all decision problems for which a NO answer can be verified in polynomial time using an appropriate certificate [[17]](http://cacr.uwaterloo.ca/hac/about/chap2.pdf).
@@ -244,6 +246,8 @@ diverse fields such as combinatorics, number theory, and logic, that are known t
 </p>
 
 It's not known whether one-way functions <i>truly</i> exist, if they do then it would show P <b>!=</b> NP, on the same token it is also not known if the reverse is true, whether P <b>!=</b> NP proves that one-way functions exist.
+
+#### Grover's Algorithm
 
 ## Command Line Arguments
 The C programming language allows for the use of command-line arguments. Command-line arguments allow data to be provided to the program at runtime. Arguments can be passed to the main method if the main method is declared as follows
@@ -380,7 +384,7 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 * [8] http://www.md5.cz/ 
 	* Same as above, the second website that was used to generate MD5 hashes for testing just to be 100% safe.<br>
 * [9] https://www.codeproject.com/Answers/1107399/Delete-carriage-return-and-line-feed-on-file-using#answer2
-	* TODO <br>
+	* Found this solution when looking for answers on how to deal with the line-breaks on different systems. <br>
 * [10] https://devhints.io/vim
 	* Great cheatsheet that was used for getting the hang of different commands and miscellaneous functions in [Vim](https://www.vim.org/). <br>
 * [11] https://en.bitcoin.it/wiki/Hash_per_second
@@ -397,3 +401,5 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 	* TODO <br>
 * [17] http://cacr.uwaterloo.ca/hac/about/chap2.pdf
 	* TODO <br>
+* [18] https://daoyuan.li/exploring-the-performance-of-md5-efficiency-and-security/
+	* Isn't a whole lot to this link, found while researching MD5 & complexity, had a nice graph that I felt would be a nice inclusion to the complexity section.
