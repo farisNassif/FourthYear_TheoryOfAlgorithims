@@ -201,7 +201,7 @@ MD5 is a relatively fast hashing algorithm which runs in <i>O(N)</i> time, just 
 <p align="center">
   <img src = "https://i.imgur.com/KvBiTJI.png" width="345" height="225">
    <br>
-  <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf">[15]</a></b></i>
+  <i><b>Comparison of Running Time between MD5 Algorithm and SHA256 Algorithm <a href="https://iopscience.iop.org/article/10.1088/1742-6596/978/1/012116/pdf"></b></i>[15]</a>
 </p>
 
 Being faster does not mean better in this case, ideally hashing algorithms shouldn't be aiming for speed for security reasons, being too fast would make the algorithm weaker against most forms of attack, allowing attackers an easier route to generate collisions. Being able to calculate 1,000,000,000 hashes per second instead of 10,000 increases the speed and penetrability of [Brute-Force Attacks](https://en.wikipedia.org/wiki/Brute-force_attack) significantly. 
@@ -212,9 +212,9 @@ Algorithms like SHA-256 don't necessarily have to worry about this as much, in 2
 P versus NP is a controversial problem in computer science, it asks whether every problem whose solution can be quickly verified can also be solved by an algorithm running in <b>polynomial</b> time, such that the time to complete the task varies as a <b>polynomial</b> function on the size of the input to the algorithm [[12]](https://en.wikipedia.org/wiki/P_versus_NP_problem). 
 
 ##### <i>Polynomial-time Algorithm</i>
-A Polynomial-time Algorithm is defined by the [Handbook of Applied Cryptography](http://cacr.uwaterloo.ca/hac/) as: <b><i>An algorithm whose worst-case running time function is of the form O(n<sup>k</sup>), where n is the input size and k is a constant. Any algorithm
-whose running time cannot be so bounded is called an exponential-time algorithm.</i></b>
+A Polynomial-time Algorithm is defined by the [Handbook of Applied Cryptography](http://cacr.uwaterloo.ca/hac/) as: <b><i>“ An algorithm whose worst-case running time function is of the form O(n<sup>k</sup>), where n is the input size and k is a constant”</i></b><br><br> Any algorithm whose running time cannot be so bounded is called an exponential-time algorithm [[17]](http://cacr.uwaterloo.ca/hac/about/chap2.pdf).
 
+### P versus NP <i>(Continued)</i>
 Over the years there have been a colossal list of papers and claims that attempt to 'settle' the question, with none being able to provide a concrete answer [[16]](https://www.win.tue.nl/~gwoegi/P-versus-NP.htm)<br><br> As mentioned in previous sections, MD5 is a <b>one-way</b> function, there is no known algorithm for reliably converting an output hash into it's original pre-hash value in <b>polynomial time</b> <i>(O(n<sup>k</sup>))</i>, brute-forcing is currently the best alternative, with methods and principles employed including [The Birthday Principle] which is one of the more well known of many.
 
 ##### The Birthday Principle
@@ -223,7 +223,25 @@ To briefly demonstrate this principle, assume a teacher has a class of 30(n) stu
 
 A [Birthday Attack](https://en.wikipedia.org/wiki/Birthday_attack) is based on this principle. A Birthday Attack is one of many cryptographic attacks that belongs to a class of brute force attacks [[5]](https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf). The success of the attack almost completely depends on the increased likelihood of collisions matching between random attack attempts and a constant degree of permutations. [[12]](https://www.geeksforgeeks.org/birthday-attack-in-cryptography/)
 
-Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, '<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>' [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class(<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
+### P versus NP <i>(Continued)</i>
+Many hash functions can be reversed in polynomial time, for example the function <b><i>f(x)=(5x+7) mod 2<sup>32</sup></i></b>, however, <b>cryptographic</b> hashes are all (<i>as mentioned previously</i>) <b>one-way</b> functions, and these types of functions are closely tied to the <b>NP</b> <i>(nondeterministic polynomial time)</i> complexity class.<br><br>These functions are considered to be, '<b><i>functions</i></b> (over binary strings) <b><i>which can be computed in polynomial-time, but for which any randomized polynomial-time inverse succeeds with only negligible probability</i></b>' [[13]](https://en.wikipedia.org/wiki/One-way_function). The class of NP problems doesn't conform fully with this, both because randomized approaches aren't compatible with the NP class (<i><b>RP being more applicable</b></i> [[14]](https://people.eecs.berkeley.edu/~luca/cs278-04/notes/lecture08.pdf)) and because NP is reliant on worst-case behavior, while one-way functions must have good average-case behavior [[12]](https://arxiv.org/pdf/cs/0606037.pdf).
+
+As well as both complexity classes <b>P</b> and <b>NP</b>, there exist other sets of decisional problems including <b>co-NP</b> and <b>NPC</b>.
+
+NP-complete problems are the hardest problems in NP in the sense that they are at
+least as difficult as every other problem in NP. There are thousands of problems drawn from
+diverse fields such as combinatorics, number theory, and logic, that are known to be NPcomplete.
+
+* <b>co-NP</b>
+	* The set of all decision problems for which a NO answer can be verified in polynomial time using an appropriate certificate [[17]](http://cacr.uwaterloo.ca/hac/about/chap2.pdf).
+* <b>NPC</b>
+	* NP-complete problems, problems within <b>NP</b> that are considered the hardest contained within the complexity class in the sense that they are at least as difficult as every other problem in NP.
+	
+<p align="center">
+  <img src = "https://i.imgur.com/6ENl8zw.png" width="490" height="225">
+   <br>
+  <i><b>Conjectured relationship between the complexity classes P, NP, co-NP, and NPC. <a href="http://cacr.uwaterloo.ca/hac/about/chap2.pdf"></b></i>[17]</a>
+</p>
 
 It's not known whether one-way functions <i>truly</i> exist, if they do then it would show P <b>!=</b> NP, on the same token it is also not known if the reverse is true, whether P <b>!=</b> NP proves that one-way functions exist.
 
@@ -350,7 +368,7 @@ This would mean reading the file byte-by-byte and checking for line endings. Thi
 * [2] https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options
 	* How to parse options with getopt_long, helped a lot when trying to implement long command-line arguments. <br>
 * [3] http://117.3.71.125:8080/dspace/bitstream/DHKTDN/6554/1/The%20C%20Programming%20Language4603.pdf
-	* Some reading I did on command-line arguments, how they work, what they're used for and how to implement them. (<b>Pages 102 - 105<b/>) <br>
+	* Some reading I did on command-line arguments, how they work, what they're used for and how to implement them. (<b>Pages 102 - 105</b>) <br>
 * [4] https://www.sciencedirect.com/topics/computer-science/one-way-hash-function
 	* Helped with polishing off my knowledge of hash functions / cryptographic hash functions. Also talks about MD5 under the headlines of one-way hashing and vunerabilities. <br>
 * [5] https://ad-pdf.s3.amazonaws.com/papers/wp.MD5_Collisions.en_us.pdf
